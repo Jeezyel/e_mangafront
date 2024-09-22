@@ -11,12 +11,22 @@ export class MunicipioService {
 
   constructor(private httpClient: HttpClient) {  }
 
-  findAll(): Observable<Municipio[]> {
-    return this.httpClient.get<Municipio[]>(this.baseUrl);
+  findAll(page?: number, pageSize?: number): Observable<Municipio[]> {
+    
+    let params = {};
+
+    if (page !== undefined && pageSize !== undefined) {
+      params = {
+        page: page.toString(),
+        pageSize: pageSize.toString()
+      }
+    }
+
+    return this.httpClient.get<Municipio[]>(`${this.baseUrl}/getall`, {params});
   }
 
   findByName(name: string): Observable<Municipio> {
-    return this.httpClient.get<Municipio>(`${this.baseUrl}/${name}`);
+    return this.httpClient.get<Municipio>(`${this.baseUrl}/search/${name}`);
   }
 
   insert(municipio: Municipio): Observable<Municipio> {
@@ -24,7 +34,7 @@ export class MunicipioService {
       nome: municipio.nome,
       idEstado: municipio.estado.id
     }
-    return this.httpClient.post<Municipio>(this.baseUrl, data);
+    return this.httpClient.post<Municipio>(`${this.baseUrl}/insert`, data);
   }
   
   update(municipio: Municipio): Observable<Municipio> {
@@ -32,11 +42,11 @@ export class MunicipioService {
       nome: municipio.nome,
       idEstado: municipio.estado.id
     }
-    return this.httpClient.put<Municipio>(`${this.baseUrl}/${municipio.id}`, data);
+    return this.httpClient.put<Municipio>(`${this.baseUrl}/update/${municipio.id}`, data);
   }
 
   delete(municipio: Municipio): Observable<any> {
-    return this.httpClient.delete<any>(`${this.baseUrl}/${municipio.id}`);
+    return this.httpClient.delete<any>(`${this.baseUrl}/delete/${municipio.id}`);
   }
 
 }
