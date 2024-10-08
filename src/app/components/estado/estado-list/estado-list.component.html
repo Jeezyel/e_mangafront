@@ -1,7 +1,7 @@
 <mat-toolbar color="primary">
     <div class="flex-container">
         <span class="toolbar-title">Controle de Estados</span>
-        <button mat-fab color="accent" routerLink="estados./new">
+        <button mat-fab color="accent" routerLink="/estados/new">
             <mat-icon>add</mat-icon>
         </button>
     </div>
@@ -27,7 +27,7 @@
         <td mat-cell *matCellDef="let estado"> {{estado.sigla}} </td>
     </ng-container>
 
-    <!-- Acao Column -->
+    <!-- Ação Column -->
     <ng-container matColumnDef="acao">
         <th mat-header-cell *matHeaderCellDef> Ação </th>
         <td mat-cell *matCellDef="let estado"> 
@@ -37,7 +37,8 @@
                 <mat-icon>edit</mat-icon>
             </button>
             <button mat-icon-button
-                color="warn">
+                color="warn"
+                (click)="deletar(estado.id)">
                 <mat-icon>delete</mat-icon>
             </button>
         </td>
@@ -45,11 +46,5 @@
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-</table>
 
-<mat-paginator 
-    [pageSizeOptions]="[10, 20, 30, 40]" 
-    [pageSize]="pageSize" 
-    [length]="totalRecords"
-    (page)="paginar($event)">
-</mat-paginator>
+</table>

@@ -9,48 +9,32 @@ import { Estado } from '../models/estado.model';
 export class EstadoService {
   private baseUrl = 'http://localhost:8080/estados';
 
-  constructor(private httpClient: HttpClient) {  }
+  constructor(private httpClient: HttpClient) {}
 
-  findAll(page?: number, pageSize?: number): Observable<Estado[]> {
-    
-    let params = {};
-
-    if (page !== undefined && pageSize !== undefined) {
-      params = {
-        page: page.toString(),
-        pageSize: pageSize.toString()
-      }
-    }
-
-    return this.httpClient.get<Estado[]>(`${this.baseUrl}/getall`, {params});
+  //A paginação fica aqui
+  findAll(page: number, size: number): Observable<Estado[]> {
+    return this.httpClient.get<Estado[]>(`${this.baseUrl}?page=${page}&size=${size}`);
   }
 
+  findById(id: number): Observable<Estado> {
+    return this.httpClient.get<Estado>(`${this.baseUrl}/${id}`); 
+  }
+
+  create(estado: Estado): Observable<Estado> {
+    return this.httpClient.post<Estado>(`${this.baseUrl}/insert`, estado);
+  }
+
+  update(estado: Estado): Observable<Estado> {
+    return this.httpClient.put<Estado>(`${this.baseUrl}/update/${estado.id}`, estado); 
+  }
+
+  delete(id: number): Observable<any>{
+    return this.httpClient.delete<any>(`${this.baseUrl}/delete/${id}`); 
+  }
+
+  // Método para contar o total de registros (usado para a paginação)
   count(): Observable<number> {
     return this.httpClient.get<number>(`${this.baseUrl}/count`);
-  }
-
-  findByName(name: string): Observable<Estado> {
-    return this.httpClient.get<Estado>(`${this.baseUrl}/search/${name}`);
-  }
-
-  insert(estado: Estado): Observable<Estado> {
-    const data = {
-      nome: estado.nome,
-      sigla: estado.sigla
-    }
-    return this.httpClient.post<Estado>(`${this.baseUrl}/insert`, data);
-  }
-  
-  update(estado: Estado): Observable<Estado> {
-    const data = {
-      nome: estado.nome, 
-      sigla: estado.sigla
-    }
-    return this.httpClient.put<any>(`${this.baseUrl}/update/${estado.id}`, data);
-  }
-
-  delete(estado: Estado): Observable<any> {
-    return this.httpClient.delete<any>(`${this.baseUrl}/delete/${estado.id}`);
   }
 
 }
