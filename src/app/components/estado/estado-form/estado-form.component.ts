@@ -51,6 +51,10 @@ export class EstadoFormComponent {
   }
 
   salvar() {
+    
+    const page = 0; // Página inicial
+    const size = 10; // Número de itens por página
+
     this.formGroup.markAllAsTouched();
     if (this.formGroup.valid) {
         const estado = this.formGroup.value;
@@ -60,7 +64,10 @@ export class EstadoFormComponent {
         : this.estadoService.update(estado);
 
         operacao.subscribe({
-            next: () => this.router.navigateByUrl('/estados'),
+            next: () => {
+              this.estadoService.findAll(page,size);
+              this.router.navigate(['/estados'], { queryParams: { success: true } });
+            },
             error: (error: HttpErrorResponse) => {
                 console.log('Erro ao salvar: ', error);
                 this.tratarErros(error);
