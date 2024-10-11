@@ -37,12 +37,13 @@ export class EstadoListComponent implements OnInit {
   constructor(private estadoService: EstadoService, private route: ActivatedRoute) {}
 
   ngOnInit(): void {
-    this.loadEstados(this.page, this.size);
     // Verificar se a operação foi bem-sucedida
     this.route.queryParams.subscribe((params: Params) => {
       if (params['success']) {
+        this.loadEstados(this.page, this.size);
       }
     });
+    this.loadEstados(this.page, this.size);
   }
 
   loadEstados(page: number, size: number): void {

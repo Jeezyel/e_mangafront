@@ -16,8 +16,13 @@
     text-align: center;
 }
 
-.mat-column-cor {
+.mat-column-nome {
     width: 100%;
+}
+
+.mat-column-sigla {
+    text-align: center;
+    width: 10em;
 }
 
 .mat-column-acao {
