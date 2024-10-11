@@ -1,0 +1,71 @@
+<mat-toolbar color="white">
+    <span class="toolbar-title" style="color: black;"> Nova Editora </span>
+</mat-toolbar>
+<div class="form-container">
+    <mat-card>
+        <mat-card-content>
+            <form [formGroup]="formGroup">
+
+                <mat-form-field appearance="fill" class="full-width-input">
+                    <mat-label> Nome da Editora </mat-label>
+                    <input matInput type="text" formControlName="nome">
+                    <mat-error *ngIf="formGroup.get('nome')?.errors && 
+                                      formGroup.get('nome')?.touched">
+                        <ng-container *ngIf="formGroup.get('nome')?.errors?.['required']">
+                            <span> O nome da editora deve ser informado. </span>
+                        </ng-container>
+                        <ng-container *ngIf="formGroup.get('nome')?.hasError('apiError')">
+                            <span>{{ formGroup.get('nome')?.getError('apiError') }}</span>
+                        </ng-container>
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="fill" class="full-width-input">
+                    <mat-label> CNPJ </mat-label>
+                    <input matInput type="text" formControlName="cnpj">
+                    <mat-error *ngIf="formGroup.get('cnpj')?.errors && 
+                                      formGroup.get('cnpj')?.touched">
+                        <ng-container *ngIf="formGroup.get('cnpj')?.errors?.['required']">
+                            <span> O CNPJ deve ser informado. </span>
+                        </ng-container>
+                        <ng-container *ngIf="formGroup.get('cnpj')?.errors?.['minlength']">
+                            <span> O CNPJ da editora deve possuir ao menos 18 caracteres. </span>
+                        </ng-container>
+                        <ng-container *ngIf="formGroup.get('cnpj')?.hasError('apiError')">
+                            <span>{{ formGroup.get('cnpj')?.getError('apiError') }}</span>
+                        </ng-container>
+                    </mat-error>
+                </mat-form-field>
+                                
+                <mat-form-field appearance="fill" class="full-width-input">
+                    <mat-label> Telefone </mat-label>
+                    <input matInput type="text" formControlName="telefone">
+                    <mat-error *ngIf="formGroup.get('telefone')?.errors && 
+                                      formGroup.get('telefone')?.touched">
+                        <ng-container *ngIf="formGroup.get('telefone')?.errors?.['required']">
+                            <span> O telefone da editora deve ser informado. </span>
+                        </ng-container>
+                        <ng-container *ngIf="formGroup.get('telefone')?.hasError('apiError')">
+                            <span>{{ formGroup.get('telefone')?.getError('apiError') }}</span>
+                        </ng-container>
+                    </mat-error>
+                </mat-form-field>
+
+                <!-- Adicione outros campos da editora conforme necessário -->
+            
+            </form>
+        </mat-card-content>
+        <mat-card-actions>
+            <button mat-raised-button  
+                    routerLink="/editoras"> 
+                Cancelar 
+            </button>
+            <button mat-raised-button  
+                    (click)="salvar()"
+                    routerLink="/editoras">
+                Salvar 
+            </button>
+        </mat-card-actions>
+    </mat-card>
+</div>
+

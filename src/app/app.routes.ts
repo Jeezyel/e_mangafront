@@ -8,6 +8,10 @@ import { MunicipioListComponent } from './components/municipio/municipio-list/mu
 import { MunicipioFormComponent } from './components/municipio/municipio-form/municipio-form.component';
 import { municipioResolver } from './components/municipio/resolver/municipio-resolver';
 
+import { EditoraListComponent } from './components/editora/editora-list/editora-list.component';
+import { EditoraFormComponent } from './components/editora/editora-form/editora-form.component';
+import { editoraResolver } from './components/editora/resolver/editora-resolver';
+
 export const routes: Routes = [
 
     {path: 'estados',component: EstadoListComponent, title: 'Lista de Estados'},
@@ -16,6 +20,10 @@ export const routes: Routes = [
 
     {path: 'municipios',component: MunicipioListComponent, title: 'Lista de Municipios'},
     {path: 'municipios/new',component: MunicipioFormComponent, title: 'Novo Municipio'},
-    {path: 'municipios/edit/:id',component: MunicipioFormComponent, resolve: {municipio: municipioResolver}}
+    {path: 'municipios/edit/:id',component: MunicipioFormComponent, resolve: {municipio: municipioResolver}},
+
+    {path: 'editoras',component: EditoraListComponent, title: 'Lista de Editoras'},
+    {path: 'editoras/new',component: EditoraFormComponent, title: 'Nova Editora'},
+    {path: 'editoras/edit/:idEditora',component: EditoraFormComponent, resolve: {editora: editoraResolver}}
 
 ];

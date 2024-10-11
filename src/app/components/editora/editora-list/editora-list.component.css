@@ -1,0 +1,38 @@
+.toolbar-title {
+    flex: 1;
+    text-align: center;
+}
+  
+.flex-container {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+  
+.mat-column-idEditora {
+    width: 5%;
+    border-right: 1px solid currentColor;
+    padding-right: 24px;
+    text-align: center;
+}
+
+.mat-column-nome {
+    text-align: left;
+    width: 45%;
+}
+
+.mat-column-cnpj {
+    text-align: center;
+    width: 20%;
+}
+
+.mat-column-telefone {
+    text-align: center;
+    width: 20%;
+    border-right: 1px solid currentColor;
+}
+
+.mat-column-acao {
+    text-align: center;
+    width: 10%;;
+}
