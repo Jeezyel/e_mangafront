@@ -12,6 +12,10 @@ import { EditoraListComponent } from './components/editora/editora-list/editora-
 import { EditoraFormComponent } from './components/editora/editora-form/editora-form.component';
 import { editoraResolver } from './components/editora/resolver/editora-resolver';
 
+import { FormatoListComponent } from './components/formatoManga/formato-list/formato-list.component';
+import { FormatoFormComponent } from './components/formatoManga/formato-form/formato-form.component';
+import { formatoResolver } from './components/formatoManga/resolver/formato-resolver';
+
 export const routes: Routes = [
 
     {path: 'estados',component: EstadoListComponent, title: 'Lista de Estados'},
@@ -24,6 +28,10 @@ export const routes: Routes = [
 
     {path: 'editoras',component: EditoraListComponent, title: 'Lista de Editoras'},
     {path: 'editoras/new',component: EditoraFormComponent, title: 'Nova Editora'},
-    {path: 'editoras/edit/:idEditora',component: EditoraFormComponent, resolve: {editora: editoraResolver}}
+    {path: 'editoras/edit/:idEditora',component: EditoraFormComponent, resolve: {editora: editoraResolver}},
+
+    {path: 'formatos',component: FormatoListComponent, title: 'Lista de Formatos de Mangá'},
+    {path: 'formatos/new',component: FormatoFormComponent, title: 'Novo Formato de Mangá'},
+    {path: 'formatos/edit/:idFormato', component: FormatoFormComponent, title:'Editar Formato de Mangá', resolve: {formato: formatoResolver}}
 
 ];

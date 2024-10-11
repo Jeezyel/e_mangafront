@@ -1,0 +1,38 @@
+<mat-toolbar color="white">
+    <span class="toolbar-title" style="color: black;"> Novo Formato de Mangá </span>
+</mat-toolbar>
+<div class="form-container">
+    <mat-card>
+        <mat-card-content>
+            <form [formGroup]="formGroup">
+
+                <mat-form-field appearance="fill" class="full-width-input">
+                    <mat-label> Formato do Mangá </mat-label>
+                    <input matInput type="text" formControlName="formato">
+                    <mat-error *ngIf="formGroup.get('formato')?.errors && 
+                                      formGroup.get('formato')?.touched">
+                        <ng-container *ngIf="formGroup.get('formato')?.errors?.['required']">
+                            <span> O nome do formato deve ser informado. </span>
+                        </ng-container>
+                        <ng-container *ngIf="formGroup.get('formato')?.hasError('apiError')">
+                            <span>{{ formGroup.get('formato')?.getError('apiError') }}</span>
+                        </ng-container>
+                    </mat-error>
+                </mat-form-field>
+                <!-- Adicione outros campos do estado conforme necessário -->
+            </form>
+        </mat-card-content>
+        <mat-card-actions>
+            <button mat-raised-button  
+                    routerLink="/formatos"> 
+                Cancelar 
+            </button>
+            <button mat-raised-button  
+                    (click)="salvar()"
+                    routerLink="/formatos">
+                Salvar 
+            </button>
+        </mat-card-actions>
+    </mat-card>
+</div>
+
