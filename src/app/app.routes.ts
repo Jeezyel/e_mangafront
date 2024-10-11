@@ -16,6 +16,10 @@ import { FormatoListComponent } from './components/formatoManga/formato-list/for
 import { FormatoFormComponent } from './components/formatoManga/formato-form/formato-form.component';
 import { formatoResolver } from './components/formatoManga/resolver/formato-resolver';
 
+import { IdiomaListComponent } from './components/idioma/idioma-list/idioma-list.component';
+import { IdiomaFormComponent } from './components/idioma/idioma-form/idioma-form.component';
+import { idiomaResolver } from './components/idioma/resolver/idioma-resolver';
+
 export const routes: Routes = [
 
     {path: 'estados',component: EstadoListComponent, title: 'Lista de Estados'},
@@ -32,6 +36,9 @@ export const routes: Routes = [
 
     {path: 'formatos',component: FormatoListComponent, title: 'Lista de Formatos de Mangá'},
     {path: 'formatos/new',component: FormatoFormComponent, title: 'Novo Formato de Mangá'},
-    {path: 'formatos/edit/:idFormato', component: FormatoFormComponent, title:'Editar Formato de Mangá', resolve: {formato: formatoResolver}}
-
+    {path: 'formatos/edit/:idFormato', component: FormatoFormComponent, title:'Editar Formato de Mangá', resolve: {formato: formatoResolver}},
+    
+    {path: 'idiomas',component: IdiomaListComponent, title: 'Lista de Idiomas'},
+    {path: 'idiomas/new',component: IdiomaFormComponent, title: 'Novo Idioma'},
+    {path: 'idiomas/edit/:idIdioma', component: IdiomaFormComponent, title:'Editar Idioma', resolve: {idioma: idiomaResolver}}
 ];
