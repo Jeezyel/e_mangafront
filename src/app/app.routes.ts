@@ -20,6 +20,10 @@ import { GeneroListComponent } from './components/genero/genero-list/genero-list
 import { GeneroFormComponent } from './components/genero/genero-form/genero-form.component';
 import { generoResolver } from './components/genero/resolver/genero-resolver';
 
+import { IdiomaListComponent } from './components/idioma/idioma-list/idioma-list.component';
+import { IdiomaFormComponent } from './components/idioma/idioma-form/idioma-form.component';
+import { idiomaResolver } from './components/idioma/resolver/idioma-resolver';
+
 export const routes: Routes = [
 
     {path: 'estados',component: EstadoListComponent, title: 'Lista de Estados'},
@@ -40,6 +44,10 @@ export const routes: Routes = [
 
     {path: 'generos',component: GeneroListComponent, title: 'Lista de Genero de Mangá'},
     {path: 'generos/new',component: GeneroFormComponent, title: 'Novo Genero de Mangá'},
-    {path: 'generos/edit/:idMangaGenero', component: GeneroFormComponent, title:'Editar Genero de Mangá', resolve: {genero: generoResolver}}
+    {path: 'generos/edit/:idMangaGenero', component: GeneroFormComponent, title:'Editar Genero de Mangá', resolve: {genero: generoResolver}},
+
+    {path: 'idiomas',component: IdiomaListComponent, title: 'Lista de Idiomas'},
+    {path: 'idiomas/new',component: IdiomaFormComponent, title: 'Novo Idioma'},
+    {path: 'idiomas/edit/:idIdioma', component: IdiomaFormComponent, title:'Editar Idioma', resolve: {idioma: idiomaResolver}}
 
 ];
