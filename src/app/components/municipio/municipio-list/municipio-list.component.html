@@ -12,7 +12,7 @@
       <!-- Position Column -->
       <ng-container matColumnDef="id">
         <th mat-header-cell *matHeaderCellDef> No. </th>
-        <td mat-cell *matCellDef="let municipio"> {{municipio.id}} </td>
+        <td mat-cell *matCellDef="let municipio"> {{municipio.idMunicipio}} </td>
       </ng-container>
     
       <!-- Nome Column -->
@@ -33,7 +33,7 @@
         <td mat-cell *matCellDef="let municipio"> 
           <button mat-icon-button 
                   color="primary"
-                  routerLink="/municipios/edit/{{municipio.id}}">
+                  routerLink="/municipios/edit/{{municipio.idMunicipio}}">
                   <mat-icon>edit</mat-icon>
           </button>
           <button mat-icon-button 

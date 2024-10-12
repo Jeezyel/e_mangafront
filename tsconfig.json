@@ -14,6 +14,7 @@
     "esModuleInterop": true,
     "sourceMap": true,
     "declaration": false,
+    "typeRoots": ["node_modules/@types"],//add essa linha para o import { Routes } from '@angular/router'; parar de dar erro
     "experimentalDecorators": true,
     "moduleResolution": "bundler",
     "importHelpers": true,

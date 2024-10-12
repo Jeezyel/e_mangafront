@@ -26,7 +26,13 @@ export class MunicipioService {
   }
 
   update(municipio: Municipio): Observable<Municipio> {
-    return this.httpClient.put<Municipio>(`${this.baseUrl}/update/${municipio.id}`, municipio); 
+
+    const data = {
+      nome: municipio.nome,
+      idEstado: municipio.estado.id
+    }
+
+    return this.httpClient.put<Municipio>(`${this.baseUrl}/update/${municipio.idMunicipio}`, data); 
   }
 
   delete(id: number): Observable<any>{

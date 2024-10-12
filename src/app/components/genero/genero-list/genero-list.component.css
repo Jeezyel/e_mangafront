@@ -1,0 +1,27 @@
+.toolbar-title {
+    flex: 1;
+    text-align: center;
+}
+  
+.flex-container {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+  
+.mat-column-idMangaGenero {
+    width: 5em;
+    border-right: 1px solid currentColor;
+    padding-right: 24px;
+    text-align: center;
+}
+
+.mat-column-genero {
+    width: 100%;
+}
+
+
+.mat-column-acao {
+    text-align: center;
+    min-width: 10em;
+}

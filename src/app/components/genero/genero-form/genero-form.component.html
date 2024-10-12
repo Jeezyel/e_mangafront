@@ -1,0 +1,37 @@
+<mat-toolbar color="white">
+    <span class="toolbar-title" style="color: black;"> Novo Genero </span>
+</mat-toolbar>
+<div class="form-container">
+    <mat-card>
+        <mat-card-content>
+            <form [formGroup]="formGroup">
+                <mat-form-field appearance="fill" class="full-width-input">
+                    <mat-label> Genero do Manga </mat-label>
+                    <input matInput type="text" formControlName="genero">
+                    <mat-error *ngIf="formGroup.get('genero')?.errors && 
+                                      formGroup.get('genero')?.touched">
+                        <ng-container *ngIf="formGroup.get('genero')?.errors?.['required']">
+                            <span> O genero do genero deve ser informado. </span>
+                        </ng-container>
+                        <ng-container *ngIf="formGroup.get('genero')?.hasError('apiError')">
+                            <span>{{ formGroup.get('genero')?.getError('apiError') }}</span>
+                        </ng-container>
+                    </mat-error>
+                </mat-form-field>
+                <!-- Adicione outros campos do genero conforme necessário -->
+            </form>
+        </mat-card-content>
+        <mat-card-actions>
+            <button mat-raised-button  
+                    routerLink="/generos"> 
+                Cancelar 
+            </button>
+            <button mat-raised-button  
+                    (click)="salvar()"
+                    routerLink="/generos">
+                Salvar 
+            </button>
+        </mat-card-actions>
+    </mat-card>
+</div>
+

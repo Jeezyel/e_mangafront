@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -9,16 +9,12 @@ import { MatCardModule } from '@angular/material/card';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { Observable } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
-import { MatSelectModule } from '@angular/material/select';
-import { CommonModule } from '@angular/common';
 
-import { Estado } from '../../../models/estado.model';
-import { EstadoService } from '../../../services/estado.service';
-import { Municipio } from '../../../models/municipio.model';
-import { MunicipioService } from '../../../services/municipio.service';
+import { Genero } from '../../../models/genero.model';
+import { GeneroService } from '../../../services/genero.service';
 
 @Component({
-  selector: 'app-municipio-form',
+  selector: 'app-genero-form',
   standalone: true,
   imports: [
     NgIf, 
@@ -28,35 +24,28 @@ import { MunicipioService } from '../../../services/municipio.service';
     MatButtonModule, 
     MatCardModule, 
     MatToolbarModule, 
-    RouterModule,
-    MatSelectModule,
-    CommonModule
+    RouterModule
   ],
-  templateUrl: './municipio-form.component.html',
-  styleUrls: ['./municipio-form.component.css'] // Corrigi o nome para 'styleUrls'
+  templateUrl: './genero-form.component.html',
+  styleUrls: ['./genero-form.component.css'] // Corrigi o nome para 'styleUrls'
 })
-export class MunicipioFormComponent {
+export class GeneroFormComponent {
 
   formGroup: FormGroup;
-  estados: Estado[] = [];
 
   constructor (
     private formBuilder: FormBuilder,
-    private estadoService: EstadoService,
-    private municipioService: MunicipioService,
+    private generoService: GeneroService,
     private router: Router,
     private activatedRoute: ActivatedRoute) {
       
-    const estado: Estado = activatedRoute.snapshot.data['estado'];
-    const municipio: Municipio = activatedRoute.snapshot.data['municipio'];  
-    
-    this.formGroup = this.formBuilder.group({
-      id: [(municipio && municipio.idMunicipio) ? municipio.idMunicipio : null],
-      nome: [(municipio && municipio.nome) ? municipio.nome : null, 
-              Validators.compose([Validators.required, Validators.minLength(4)])],
-      estado: [estado]
-    })
-
+    const genero: Genero = activatedRoute.snapshot.data['genero'];
+      
+    this.formGroup = formBuilder.group({ 
+      idMangaGenero: [(genero && genero.idMangaGenero) ? genero.idMangaGenero : null],
+      genero: [(genero && genero.genero) ? genero.genero: '',
+              Validators.compose([Validators.required])]
+    });
   }
 
   salvar() {
@@ -66,16 +55,16 @@ export class MunicipioFormComponent {
 
     this.formGroup.markAllAsTouched();
     if (this.formGroup.valid) {
-        const municipio = this.formGroup.value;
+        const genero = this.formGroup.value;
 
-        const operacao = municipio.id == null
-        ? this.municipioService.create(municipio) // Aqui você chama o método create
-        : this.municipioService.update(municipio);
+        const operacao = genero.idMangaGenero == null
+        ? this.generoService.create(genero) // Aqui você chama o método create
+        : this.generoService.update(genero);
 
         operacao.subscribe({
             next: () => {
-              this.municipioService.findAll(page,size);
-              this.router.navigate(['/municipios'], { queryParams: { success: true } });
+              this.generoService.findAll(page,size);
+              this.router.navigate(['/generos'], { queryParams: { success: true } });
             },
             error: (error: HttpErrorResponse) => {
                 console.log('Erro ao salvar: ', error);
@@ -83,11 +72,6 @@ export class MunicipioFormComponent {
             }
         });
     }
-  }
-
-  
-  getEstadoForSelect(): void{
-    this.estadoService.findAll(0,100).subscribe(data => {this.estados = data})
   }
 
   tratarErros(error: HttpErrorResponse) {
@@ -108,9 +92,8 @@ export class MunicipioFormComponent {
   }
 
   errorMessages: {[controlName: string]: {[errorName: string] : string}} = {
-    nome: {
-      required: 'O nome do município deve ser informado.',
-      minlength: 'O nome do município deve possuir ao menos 4 caracteres.'
+    genero: {
+      required: 'O genero do genero deve ser informado.'
     }
   }
 
@@ -128,5 +111,4 @@ export class MunicipioFormComponent {
     return 'Erro não mapeado (entre em contato com o desenvolvedor)';
   }
 
-  
 }

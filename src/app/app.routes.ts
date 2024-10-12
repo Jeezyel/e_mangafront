@@ -16,6 +16,10 @@ import { FormatoListComponent } from './components/formatoManga/formato-list/for
 import { FormatoFormComponent } from './components/formatoManga/formato-form/formato-form.component';
 import { formatoResolver } from './components/formatoManga/resolver/formato-resolver';
 
+import { GeneroListComponent } from './components/genero/genero-list/genero-list.component';
+import { GeneroFormComponent } from './components/genero/genero-form/genero-form.component';
+import { generoResolver } from './components/genero/resolver/genero-resolver';
+
 export const routes: Routes = [
 
     {path: 'estados',component: EstadoListComponent, title: 'Lista de Estados'},
@@ -32,6 +36,10 @@ export const routes: Routes = [
 
     {path: 'formatos',component: FormatoListComponent, title: 'Lista de Formatos de Mangá'},
     {path: 'formatos/new',component: FormatoFormComponent, title: 'Novo Formato de Mangá'},
-    {path: 'formatos/edit/:idFormato', component: FormatoFormComponent, title:'Editar Formato de Mangá', resolve: {formato: formatoResolver}}
+    {path: 'formatos/edit/:idFormato', component: FormatoFormComponent, title:'Editar Formato de Mangá', resolve: {formato: formatoResolver}},
+
+    {path: 'generos',component: GeneroListComponent, title: 'Lista de Genero de Mangá'},
+    {path: 'generos/new',component: GeneroFormComponent, title: 'Novo Genero de Mangá'},
+    {path: 'generos/edit/:idMangaGenero', component: GeneroFormComponent, title:'Editar Genero de Mangá', resolve: {genero: generoResolver}}
 
 ];

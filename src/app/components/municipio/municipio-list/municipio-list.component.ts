@@ -9,6 +9,8 @@ import { HttpErrorResponse } from '@angular/common/http';
 
 import { Municipio } from '../../../models/municipio.model';
 import { MunicipioService } from '../../../services/municipio.service';
+import { EstadoService } from '../../../services/estado.service';
+import { Estado } from '../../../models/estado.model';
 
 @Component({
   selector: 'app-municipio-list',
@@ -33,7 +35,8 @@ export class MunicipioListComponent implements OnInit {
   page: number = 0; // página atual
   size: number = 10; // número de itens por página
 
-  constructor(private municipioService: MunicipioService) {}
+  constructor(private municipioService: MunicipioService
+  ) {}
 
   ngOnInit(): void {
     this.loadMunicipios(this.page, this.size);
@@ -45,6 +48,7 @@ export class MunicipioListComponent implements OnInit {
       error => { console.error('Erro ao carregar municípios', error); }
     );
   }
+
 
   deletar(id: number): void {
     if (confirm('Tem certeza que deseja excluir este município?')) {
