@@ -32,7 +32,7 @@ export class IdiomaListComponent implements OnInit {
 
   // Variáveis para paginação
   page: number = 0; // página atual
-  size: number = 10; // número de itens por página
+  size: number = 50; // número de itens por página
 
   constructor(private idiomaService: IdiomaService, private route: ActivatedRoute) {}
 
