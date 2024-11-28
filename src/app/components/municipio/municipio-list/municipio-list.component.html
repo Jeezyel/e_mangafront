@@ -1,6 +1,6 @@
-<mat-toolbar color="primary">
+<mat-toolbar>
     <div class="flex-container">
-      <span class="toolbar-title">Controle de Municípios</span>
+      <span class="toolbar-title"> Controle de Municípios </span>
       <button mat-fab color="accent" routerLink="/municipios/new">
         <mat-icon>add</mat-icon>
       </button>
@@ -10,36 +10,39 @@
   <table mat-table [dataSource]="municipios" class="mat-elevation-z8">
   
       <!-- Position Column -->
-      <ng-container matColumnDef="id">
+      <ng-container matColumnDef="idMunicipio">
         <th mat-header-cell *matHeaderCellDef> No. </th>
-        <td mat-cell *matCellDef="let municipio"> {{municipio.idMunicipio}} </td>
+        <td mat-cell *matCellDef="let element"> {{element.idMunicipio}} </td>
       </ng-container>
     
       <!-- Nome Column -->
       <ng-container matColumnDef="nome">
         <th mat-header-cell *matHeaderCellDef> Nome </th>
-        <td mat-cell *matCellDef="let municipio"> {{municipio.nome}} </td>
+        <td mat-cell *matCellDef="let element"> {{element.nome}} </td>
       </ng-container>
     
       <!-- Sigla Column -->
       <ng-container matColumnDef="estado">
         <th mat-header-cell *matHeaderCellDef> Estado </th>
-        <td mat-cell *matCellDef="let municipio"> {{municipio.nomeEstado}} </td>
+        <td mat-cell *matCellDef="let element"> {{element.estado.nome}} - {{element.estado.sigla}} </td>
       </ng-container>
   
       <!-- Acao Column -->
       <ng-container matColumnDef="acao">
         <th mat-header-cell *matHeaderCellDef> Ação </th>
-        <td mat-cell *matCellDef="let municipio"> 
+        <td mat-cell *matCellDef="let element"> 
+          
           <button mat-icon-button 
                   color="primary"
-                  routerLink="/municipios/edit/{{municipio.idMunicipio}}">
+                  routerLink="/municipios/edit/{{element.idMunicipio}}">
                   <mat-icon>edit</mat-icon>
           </button>
+          
           <button mat-icon-button 
                   color="warn">
                   <mat-icon>delete</mat-icon>
-          </button>        
+          </button>
+
         </td>
       </ng-container>
     

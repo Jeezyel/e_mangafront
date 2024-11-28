@@ -1,5 +1,5 @@
-<mat-toolbar color="primary">
-    <div class="toolbar-title"> Cadastro de Município</div>
+<mat-toolbar>
+    <div class="toolbar-title"> Cadastro de Município </div>
 </mat-toolbar>
 <div class="form-container">
     <mat-card>
@@ -20,9 +20,9 @@
                     <mat-label>Estado</mat-label>
                     <mat-select formControlName="estado">
                         @for (estado of estados; track estado.id) {
-                        <mat-option [value]="estado">
-                            {{estado.nome}}
-                        </mat-option>
+                            <mat-option [value]="estado">
+                                {{estado.nome}}
+                            </mat-option>
                         }
                     </mat-select>
                 </mat-form-field>
@@ -30,16 +30,20 @@
             </form>
         </mat-card-content>
         <mat-card-actions>
-            <button mat-raised-button 
-                routerLink="/municipios">
+
+            <button mat-raised-button routerLink="/municipios">
                 Cancelar
             </button>
 
-            <button mat-raised-button 
-                (click)="salvar()"
-                routerLink="/municipios">
+            <button mat-raised-button *ngIf="formGroup?.get('id')?.value" color="warn" (click)="deletar()"
+            [disabled]="formGroup.invalid">
+                Excluir
+            </button>
+
+            <button mat-raised-button (click)="salvar()" routerLink="/municipios">
                 Salvar
             </button>
+            
         </mat-card-actions>
     </mat-card>
 </div>

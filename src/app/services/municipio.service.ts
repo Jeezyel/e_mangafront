@@ -13,35 +13,32 @@ export class MunicipioService {
   constructor(private httpClient: HttpClient) {
   }
 
-  findAll(page: number, size: number): Observable<Municipio[]> {
-    return this.httpClient.get<Municipio[]>(`${this.baseUrl}?page=${page}&size=${size}`); 
+  findAll(): Observable<Municipio[]> {
+    return this.httpClient.get<Municipio[]>(this.baseUrl); 
   }
 
-  findById(id: number): Observable<Municipio> {
-    return this.httpClient.get<Municipio>(`${this.baseUrl}/${id}`); 
+  findById(idMunicipio: number): Observable<Municipio> {
+    return this.httpClient.get<Municipio>(`${this.baseUrl}/${idMunicipio}`); 
   }
 
   create(municipio: Municipio): Observable<Municipio> {
-    return this.httpClient.post<Municipio>(`${this.baseUrl}/insert`, municipio);
-  }
-
-  update(municipio: Municipio): Observable<Municipio> {
-
     const data = {
       nome: municipio.nome,
       idEstado: municipio.estado.id
     }
-
-    return this.httpClient.put<Municipio>(`${this.baseUrl}/update/${municipio.idMunicipio}`, data); 
+    return this.httpClient.post<Municipio>(this.baseUrl, data);
   }
 
-  delete(id: number): Observable<any>{
-    return this.httpClient.delete<any>(`${this.baseUrl}/delete/${id}`); 
+  update(municipio: Municipio): Observable<Municipio> {
+    const data = {
+      nome: municipio.nome,
+      idEstado: municipio.estado.id
+    }
+    return this.httpClient.put<any>(`${this.baseUrl}/${municipio.idMunicipio}`, data); 
   }
 
-  // Método para contar o total de registros (usado para a paginação)
-  count(): Observable<number> {
-    return this.httpClient.get<number>(`${this.baseUrl}/count`);
+  delete(idMunicipio: number): Observable<any>{
+    return this.httpClient.delete<any>(`${this.baseUrl}/delete/${idMunicipio}`); 
   }
 
 }

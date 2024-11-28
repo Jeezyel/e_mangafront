@@ -6,6 +6,6 @@ import { MunicipioService } from "../../../services/municipio.service";
 
 export const municipioResolver: ResolveFn<Observable<Municipio>> =
     (route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Municipio> => {
-        const id = route.paramMap.get('id');
-        return inject(MunicipioService).findById(Number(id));
+        const idMunicipio = route.paramMap.get('idMunicipio');
+        return inject(MunicipioService).findById(Number(idMunicipio));
     }
