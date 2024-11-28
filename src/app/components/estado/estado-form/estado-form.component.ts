@@ -1,13 +1,13 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
-import { MatButtonModule } from '@angular/material/button';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { MatSelectModule } from '@angular/material/select';
+import { NgIf } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { NgIf } from '@angular/common';
-import { MatCardModule } from '@angular/material/card';
+import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { Observable } from 'rxjs';
+import { MatCardModule } from '@angular/material/card';
 import { HttpErrorResponse } from '@angular/common/http';
 
 import { Estado } from '../../../models/estado.model';
@@ -24,12 +24,13 @@ import { EstadoService } from '../../../services/estado.service';
     MatButtonModule, 
     MatCardModule, 
     MatToolbarModule, 
-    RouterModule
+    RouterModule,
+    MatSelectModule
   ],
   templateUrl: './estado-form.component.html',
   styleUrls: ['./estado-form.component.css'] // Corrigi o nome para 'styleUrls'
 })
-export class EstadoFormComponent {
+export class EstadoFormComponent implements OnInit {
 
   formGroup: FormGroup;
 
@@ -37,66 +38,85 @@ export class EstadoFormComponent {
     private formBuilder: FormBuilder,
     private estadoService: EstadoService,
     private router: Router,
-    private activatedRoute: ActivatedRoute) {
-      
-    const estado: Estado = activatedRoute.snapshot.data['estado'];
-      
+    private activatedRoute: ActivatedRoute) {    
     this.formGroup = formBuilder.group({
-      id: [(estado && estado.id) ? estado.id : null],
-      nome: [(estado && estado.nome) ? estado.nome: '',
-              Validators.compose([Validators.required,Validators.minLength(4)])],
-      sigla: [(estado && estado.sigla) ? estado.sigla: '',
-              Validators.compose([Validators.required,Validators.minLength(2)])],
+      id: [null],
+      nome: ['', Validators.required],
+      sigla: ['', Validators.required]
     });
   }
 
-  salvar() {
-    
-    const page = 0; // Página inicial
-    const size = 10; // Número de itens por página
+  ngOnInit(): void {
+      this.initializeForm();
+  }
 
+  initializeForm(): void {
+    const estado: Estado = this.activatedRoute.snapshot.data['estado'];
+
+    this.formGroup = this.formBuilder.group({
+
+      id: [(estado && estado.id) ? estado.id : null],
+      nome: [(estado && estado.nome) ? estado.nome : null],
+      sigla: [(estado && estado.sigla) ? estado.sigla : null]
+    
+    })
+  }
+
+  tratarErros(errorResponse: HttpErrorResponse) {
+
+    if (errorResponse.status === 400) {
+      if (errorResponse.error?.errors) {
+        errorResponse.error.errors.forEach((validationError: any) => {
+          const formControl = this.formGroup.get(validationError.fieldName);
+
+          if (formControl) {
+            formControl.setErrors({apiError: validationError.message})
+          }
+
+        });
+      }
+    } else if (errorResponse.status < 400){
+      alert(errorResponse.error?.message || 'Erro genérico do envio do formulário.');
+    } else if (errorResponse.status >= 500) {
+      alert('Erro interno do servidor.');
+    }
+
+  }
+
+  salvar() {
     this.formGroup.markAllAsTouched();
     if (this.formGroup.valid) {
-        const estado = this.formGroup.value;
+      const estado = this.formGroup.value;
 
-        const operacao = estado.id == null
-        ? this.estadoService.create(estado) // Aqui você chama o método create
-        : this.estadoService.update(estado);
+      // selecionando a operacao (insert ou update)
+      const operacao = estado.id == null
+      ? this.estadoService.insert(estado)
+      : this.estadoService.update(estado);
 
-        operacao.subscribe({
-            next: () => {
-              this.estadoService.findAll(page,size);
-              this.router.navigate(['/estados'], { queryParams: { success: true } });
-            },
-            error: (error: HttpErrorResponse) => {
-                console.log('Erro ao salvar: ', error);
-                this.tratarErros(error);
-            }
-        });
+      // executando a operacao
+      operacao.subscribe({
+        next: () => this.router.navigateByUrl('/admin/estados'),
+        error: (error) => {
+          console.log('Erro ao Salvar' + JSON.stringify(error));
+          this.tratarErros(error);
+        }
+      });
     }
   }
 
-  tratarErros(error: HttpErrorResponse) {
-    if (error.status === 400) {
-      if (error.error?.errors) {
-        error.error.errors.forEach((validationError: any) => {
-          const formControl = this.formGroup.get(validationError.fieldName);
-          if (formControl) {
-            formControl.setErrors({ apiError: validationError.message });
+  excluir() {
+    if (this.formGroup.valid) {
+      const estado = this.formGroup.value;
+      if (estado.id != null) {
+        this.estadoService.delete(estado).subscribe({
+          next: () => {
+            this.router.navigateByUrl('/admin/estados');
+          },
+          error: (err) => {
+            console.log('Erro ao Excluir' + JSON.stringify(err));
           }
         });
       }
-    } else if (error.status < 400) {
-      alert(error.error?.message || 'Erro genérico no envio do formulário.');
-    } else if (error.status >= 500) {
-      alert('Erro interno do servidor. Por favor, tente novamente mais tarde.');
-    }
-  }
-
-  errorMessages: {[controlName: string]: {[errorName: string] : string}} = {
-    nome: {
-      required: 'O nome do estado deve ser informado.',
-      minlength: 'O nome do estado deve possuir ao menos 4 caracteres.'
     }
   }
 
@@ -105,13 +125,29 @@ export class EstadoFormComponent {
       return '';
     }
     for (const errorName in errors) {
-      if (errors.hasOwnProperty(errorName) && 
-          this.errorMessages[controlName][errorName]) {
+      if (errors.hasOwnProperty(errorName) && this.errorMessages[controlName][errorName]) {
         return this.errorMessages[controlName][errorName];
       }
     }
 
-    return 'Erro não mapeado (entre em contato com o desenvolvedor)';
+    return 'invalid field';
+  }
+
+  errorMessages: { [controlName: string]: { [errorName: string]: string } } = {
+
+    nome: {
+      required: 'O nome deve ser informado.',
+      minlength: 'O nome deve conter ao menos 2 letras.',
+      apiError: ' '
+    },
+
+    sigla: {
+      required: 'A sigla deve ser informada.',
+      minlength: 'O nome deve conter 2 letras.',
+      maxlength: 'O nome deve conter 2 letras.',
+      apiError: ' '
+    }
+  
   }
 
 }
