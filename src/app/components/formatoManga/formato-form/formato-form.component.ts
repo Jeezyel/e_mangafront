@@ -10,7 +10,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { Observable } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 
-import { Formato } from '../../../models/formato';
+import { Formato } from '../../../models/formato.model';
 import { FormatoService } from '../../../services/formato.service';
 
 @Component({

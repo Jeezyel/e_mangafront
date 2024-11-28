@@ -1,7 +1,7 @@
 import { ActivatedRouteSnapshot, ResolveFn, RouterStateSnapshot } from "@angular/router";
 import { inject } from "@angular/core";
 import { Observable } from 'rxjs';
-import { Formato } from "../../../models/formato";
+import { Formato } from "../../../models/formato.model";
 import { FormatoService } from "../../../services/formato.service";
 
 export const formatoResolver: ResolveFn<Observable<Formato>> = 

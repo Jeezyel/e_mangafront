@@ -8,7 +8,7 @@ import { MatTableModule } from '@angular/material/table';
 import { RouterModule } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 
-import { Formato } from '../../../models/formato';
+import { Formato } from '../../../models/formato.model';
 import { FormatoService } from '../../../services/formato.service';
 
 @Component({
