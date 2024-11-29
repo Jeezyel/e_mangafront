@@ -49,8 +49,8 @@ export const routes: Routes = [
         component: AdminTemplateComponent,
         title: 'Administração e-manga commerce',
         children: [
+
             {path: '', pathMatch: 'full', redirectTo: 'estados'},
-            
             {path: 'login', component: LoginComponent, title: 'Login'},
 
             {path: 'estados', component: EstadoListComponent, title: 'Lista de Estados'},

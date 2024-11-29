@@ -1,14 +1,18 @@
 <mat-toolbar color="primary">
-    <button (click)="clickMenu()" mat-icon-button>
-        <mat-icon>menu</mat-icon>
+
+  <mat-toolbar color="primary">
+    <button mat-icon-button (click)="clickMenu()">
+      <mat-icon>menu</mat-icon>
     </button>
+    <span>E-manga Commerce</span>
+  </mat-toolbar>
+  
+  <span class="faixa-spacer"></span>
+
+  <button  mat-icon-button (click)="onLogout()">
+    <mat-icon>exit_to_app</mat-icon>
+  </button>
     
-    <span>Faixas</span>
-
-    <span class="faixa-spacer"></span>
-
-    <button  mat-icon-button (click)="deslogar()">
-      <mat-icon>exit_to_app</mat-icon>
-    </button>
-    <span>{{usuarioLogado?.username}}</span>
+  <span>{{usuarioLogado?.username}}</span>
+  
 </mat-toolbar>

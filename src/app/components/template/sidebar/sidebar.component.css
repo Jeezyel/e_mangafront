@@ -1,0 +1,22 @@
+mat-drawer-container {
+    height: 100vh;
+}
+  
+mat-drawer {
+    width: 250px;
+}
+  
+mat-toolbar {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.container {
+    height: 100vh;
+}
+
+.active {
+    font-weight: bold;
+    color: #3f51b5;
+} 

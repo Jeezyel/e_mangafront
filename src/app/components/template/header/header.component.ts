@@ -14,7 +14,7 @@ import { Subscription } from 'rxjs';
   standalone: true,
   imports: [MatToolbar, MatIcon, MatBadge, MatButton, MatIconButton, RouterModule],
   templateUrl: './header.component.html',
-  styleUrl: './header.component.css'
+  styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit, OnDestroy {
   usuarioLogado: Usuario | null = null;
@@ -40,9 +40,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.sidebarService.toggle();
   }
 
-  deslogar() {
-    this.authService.removeToken();
-    this.authService.removeUsuarioLogado();
+  onLogout(): void {
+    this.authService.logout(); // Chama o método público encapsulado
+  }
+  
+  public onToggleSidebar(): void {
+    this.sidebarService.toggle();
   }
 
 }

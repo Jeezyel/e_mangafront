@@ -1,17 +1,14 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SidebarService {
+  public sideNavToggleSubject = new Subject<void>();
 
-  public sideNavToggleSubject: BehaviorSubject<any> =
-    new BehaviorSubject(null);
-
-  constructor() { }
-
-  public toggle() {
-    return this.sideNavToggleSubject.next(null);
+  public toggle(): void {
+    this.sideNavToggleSubject.next();
   }
+
 }
