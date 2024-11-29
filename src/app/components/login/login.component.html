@@ -13,7 +13,7 @@
 
             <!-- Campo Senha -->
             <mat-form-field class="login-input">
-                <input matInput type="senha" placeholder="Senha" formControlName="senha" required>
+                <input matInput type="password" placeholder="Senha" formControlName="senha" required>
                 <mat-error *ngIf="loginForm.get('senha')?.hasError('required')">
                     A senha é obrigatória
                 </mat-error>

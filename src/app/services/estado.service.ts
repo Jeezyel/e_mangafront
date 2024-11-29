@@ -1,5 +1,5 @@
 import { Injectable, signal } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Estado } from '../models/estado.model';
 
@@ -11,6 +11,14 @@ export class EstadoService {
   private baseUrl = 'http://localhost:8080/estados';
 
   constructor(private httpClient: HttpClient) {}
+
+  // Método para gerar cabeçalhos com o token JWT
+  private getHeaders(): HttpHeaders {
+    const token = localStorage.getItem('token'); // Recupera o token do localStorage
+    return new HttpHeaders({
+      Authorization: `Bearer ${token}`, // Adiciona o token no cabeçalho
+    });
+  }  
 
   //A paginação fica aqui
   findAll(page?: number, pageSize?: number): Observable<Estado[]> {

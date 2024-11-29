@@ -18,7 +18,7 @@ import { AuthService } from '../../services/auth.service';
     MatInputModule, MatButtonModule, MatCardModule, MatToolbarModule,
     RouterModule],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.css'
+  styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
   
@@ -55,6 +55,7 @@ export class LoginComponent implements OnInit {
           }
   
           // Redirecione ou realize outras ações
+          this.router.navigate(['/admin/estados']);
         },
         error: (err) => {
           console.error('Erro no login:', err);

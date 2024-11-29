@@ -10,4 +10,7 @@ export class Manga {
     formato!: Formato;
     idioma!: Idioma;
     classificacaoindicativa!: ClassificacaoIndicativa;
+    nomeImagem!: string;
+    estoque!: number;
+    preco!: number; 
 }
