@@ -68,13 +68,29 @@ export class EditoraFormComponent {
         operacao.subscribe({
             next: () => {
               this.editoraService.findAll(0, 100);
-              this.router.navigate(['/editoras'], { queryParams: { success: true } });
+              this.router.navigate(['/admin/editoras'], { queryParams: { success: true } });
             },
             error: (error: HttpErrorResponse) => {
                 console.log('Erro ao salvar: ', error);
                 this.tratarErros(error);
             }
         });
+    }
+  }
+
+  excluir() {
+    if (this.formGroup.valid) {
+      const editora = this.formGroup.value;
+      if (editora.idEditora != null) {
+        this.editoraService.delete(editora).subscribe({
+          next: () => {
+            this.router.navigateByUrl('/admin/estados');
+          },
+          error: (err) => {
+            console.log('Erro ao Excluir' + JSON.stringify(err));
+          }
+        });
+      }
     }
   }
 
