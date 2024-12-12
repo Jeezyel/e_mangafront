@@ -8,7 +8,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { NgIf } from '@angular/common';
-
 import { AuthService } from '../../services/auth.service';
 
 @Component({
@@ -21,7 +20,6 @@ import { AuthService } from '../../services/auth.service';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-  
   loginForm!: FormGroup;
 
   constructor(
@@ -38,35 +36,24 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  onSubmit(): void {
+  onSubmit() {
     if (this.loginForm.valid) {
-      const { username, senha } = this.loginForm.value;
-  
-      this.authService.login(username, senha, true).subscribe({
-        next: (response) => {
-          console.log('Login realizado com sucesso!', response);
-  
-          // Pegue o token do cabeçalho de autorização
-          const token = response.headers.get('authorization');
-          if (token) {
-            // Armazene o token no localStorage ou sessionStorage
-            localStorage.setItem('token', token);
-            console.log('Token JWT armazenado com sucesso!');
-          }
-  
-          // Redirecione ou realize outras ações
-          this.router.navigate(['/admin/estados']);
+      const username = this.loginForm.get('username')?.value;
+      const password = this.loginForm.get('senha')?.value;
+
+      this.authService.loginADM(username, password).subscribe ({
+        next: (resp) => {
+          // redirecionando para a pagina principal
+          this.router.navigateByUrl('/admin');
         },
         error: (err) => {
-          console.error('Erro no login:', err);
-          alert('Erro ao realizar login. Verifique as credenciais.');
+          console.log(err);
+          this.showSnackbarTopPosition("Username ou senha inválido");
         }
-      });
-    } else {
-      alert('Por favor, preencha todos os campos corretamente.');
+      })
+
     }
   }
-  
 
   onRegister() {
     // criar usuário
