@@ -1,7 +1,7 @@
-<mat-toolbar color="primary">
+<mat-toolbar>
     <div class="flex-container">
         <span class="toolbar-title">Controle de Idiomas</span>
-        <button mat-fab color="accent" routerLink="/idiomas/new">
+        <button mat-fab color="accent" routerLink="./new">
             <mat-icon>add</mat-icon>
         </button>
     </div>
@@ -33,7 +33,7 @@
         <td mat-cell *matCellDef="let idioma"> 
             <button mat-icon-button
                 color="primary"
-                routerLink="/idiomas/edit/{{idioma.idIdioma}}">
+                [routerLink]="['edit', idioma.idIdioma]">
                 <mat-icon>edit</mat-icon>
             </button>
             <button mat-icon-button

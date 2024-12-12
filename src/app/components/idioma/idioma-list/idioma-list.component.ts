@@ -31,6 +31,7 @@ export class IdiomaListComponent implements OnInit {
   displayedColumns: string[] = ['idIdioma', 'idioma', 'sigla', 'acao'];
 
   // Variáveis para paginação
+  totalRecords = 0;
   page: number = 0; // página atual
   size: number = 50; // número de itens por página
 

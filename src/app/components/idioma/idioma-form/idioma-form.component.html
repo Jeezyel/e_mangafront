@@ -1,5 +1,5 @@
-<mat-toolbar color="white">
-    <span class="toolbar-title" style="color: black;"> Novo Idioma </span>
+<mat-toolbar>
+    <span class="toolbar-title"> Novo Idioma </span>
 </mat-toolbar>
 <div class="form-container">
     <mat-card>
@@ -39,12 +39,14 @@
         </mat-card-content>
         <mat-card-actions>
             <button mat-raised-button  
-                    routerLink="/idiomas"> 
+                    routerLink="../"> 
                 Cancelar 
             </button>
-            <button mat-raised-button  
-                    (click)="salvar()"
-                    routerLink="/idiomas">
+            <button mat-raised-button *ngIf="formGroup?.get('id')?.value" color="warn" (click)="excluir()"
+                [disabled]="formGroup.invalid">
+                Excluir
+            </button>
+            <button mat-raised-button color="primary" (click)="salvar()">
                 Salvar 
             </button>
         </mat-card-actions>

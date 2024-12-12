@@ -66,13 +66,29 @@ export class IdiomaFormComponent {
         operacao.subscribe({
             next: () => {
               this.idiomaService.findAll(page,size);
-              this.router.navigate(['/idiomas'], { queryParams: { success: true } });
+              this.router.navigate(['/admin/idiomas'], { queryParams: { success: true } });
             },
             error: (error: HttpErrorResponse) => {
                 console.log('Erro ao salvar: ', error);
                 this.tratarErros(error);
             }
         });
+    }
+  }
+
+  excluir() {
+    if (this.formGroup.valid) {
+      const idioma = this.formGroup.value;
+      if (idioma.idIdioma != null) {
+        this.idiomaService.delete(idioma).subscribe({
+          next: () => {
+            this.router.navigateByUrl('/admin/idiomas');
+          },
+          error: (err) => {
+            console.log('Erro ao Excluir' + JSON.stringify(err));
+          }
+        });
+      }
     }
   }
 
