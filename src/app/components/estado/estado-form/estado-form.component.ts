@@ -66,13 +66,29 @@ export class EstadoFormComponent {
         operacao.subscribe({
             next: () => {
               this.estadoService.findAll(page,size);
-              this.router.navigate(['/estados'], { queryParams: { success: true } });
+              this.router.navigate(['/admin/estados'], { queryParams: { success: true } });
             },
             error: (error: HttpErrorResponse) => {
                 console.log('Erro ao salvar: ', error);
                 this.tratarErros(error);
             }
         });
+    }
+  }
+
+  excluir() {
+    if (this.formGroup.valid) {
+      const estado = this.formGroup.value;
+      if (estado.id != null) {
+        this.estadoService.delete(estado).subscribe({
+          next: () => {
+            this.router.navigateByUrl('/admin/estados');
+          },
+          error: (err) => {
+            console.log('Erro ao Excluir' + JSON.stringify(err));
+          }
+        });
+      }
     }
   }
 
