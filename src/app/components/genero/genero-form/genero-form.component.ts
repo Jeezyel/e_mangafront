@@ -64,13 +64,29 @@ export class GeneroFormComponent {
         operacao.subscribe({
             next: () => {
               this.generoService.findAll(page,size);
-              this.router.navigate(['/generos'], { queryParams: { success: true } });
+              this.router.navigate(['/admin/generos'], { queryParams: { success: true } });
             },
             error: (error: HttpErrorResponse) => {
                 console.log('Erro ao salvar: ', error);
                 this.tratarErros(error);
             }
         });
+    }
+  }
+
+  excluir() {
+    if (this.formGroup.valid) {
+      const genero = this.formGroup.value;
+      if (genero.idMangaGenero != null) {
+        this.generoService.delete(genero).subscribe({
+          next: () => {
+            this.router.navigateByUrl('/admin/generos');
+          },
+          error: (err) => {
+            console.log('Erro ao Excluir' + JSON.stringify(err));
+          }
+        });
+      }
     }
   }
 

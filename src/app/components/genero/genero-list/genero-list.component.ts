@@ -31,8 +31,9 @@ export class GeneroListComponent implements OnInit {
   displayedColumns: string[] = ['idMangaGenero', 'genero', 'acao'];
 
   // Variáveis para paginação
+  totalRecords = 0;
   page: number = 0; // página atual
-  size: number = 10; // número de itens por página
+  size: number = 15; // número de itens por página
 
   constructor(private generoService: GeneroService, private route: ActivatedRoute) {}
 
