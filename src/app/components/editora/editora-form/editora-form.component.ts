@@ -84,7 +84,7 @@ export class EditoraFormComponent {
       if (editora.idEditora != null) {
         this.editoraService.delete(editora).subscribe({
           next: () => {
-            this.router.navigateByUrl('/admin/estados');
+            this.router.navigateByUrl('/admin/editoras');
           },
           error: (err) => {
             console.log('Erro ao Excluir' + JSON.stringify(err));
