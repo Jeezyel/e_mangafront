@@ -43,7 +43,7 @@ export class EditoraListComponent implements OnInit {
   }
 
   loadEditoras(): void {
-    this.editoraService.findAll().subscribe(
+    this.editoraService.findAll(0, 100).subscribe(
       data => { this.editoras = data; },
       error => { console.error('Erro ao carregar editora', error); }
     );

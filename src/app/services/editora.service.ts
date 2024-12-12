@@ -13,8 +13,8 @@ import { Editora } from '../models/editora.model';
     constructor(private httpClient: HttpClient) {}
   
     //A paginação fica aqui
-    findAll(): Observable<Editora[]> {
-      return this.httpClient.get<Editora[]>(`${this.baseUrl}`);
+    findAll(page:number, size:number): Observable<Editora[]> {
+      return this.httpClient.get<Editora[]>(`${this.baseUrl}?page=${page}&size=${size}`);
     }
   
     findById(idEditora: number): Observable<Editora> {

@@ -67,7 +67,7 @@ export class EditoraFormComponent {
 
         operacao.subscribe({
             next: () => {
-              this.editoraService.findAll();
+              this.editoraService.findAll(0, 100);
               this.router.navigate(['/editoras'], { queryParams: { success: true } });
             },
             error: (error: HttpErrorResponse) => {

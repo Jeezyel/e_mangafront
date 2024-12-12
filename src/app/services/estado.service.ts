@@ -1,5 +1,5 @@
 import { Injectable, signal } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Estado } from '../models/estado.model';
 
@@ -7,55 +7,34 @@ import { Estado } from '../models/estado.model';
   providedIn: 'root'
 })
 export class EstadoService {
-  
   private baseUrl = 'http://localhost:8080/estados';
 
   constructor(private httpClient: HttpClient) {}
 
-  // Método para gerar cabeçalhos com o token JWT
-  private getHeaders(): HttpHeaders {
-    const token = localStorage.getItem('token'); // Recupera o token do localStorage
-    return new HttpHeaders({
-      Authorization: `Bearer ${token}`, // Adiciona o token no cabeçalho
-    });
-  }  
-
   //A paginação fica aqui
-  findAll(page?: number, pageSize?: number): Observable<Estado[]> {
-
-    let params = {};
-
-    if (page !== undefined && pageSize !== undefined){
-      params = {
-        page: page.toString(),
-        pageSize: pageSize.toString()
-      }
-    }
-
-    console.log(params);
-
-    return this.httpClient.get<Estado[]>(this.baseUrl,{params});
+  findAll(page: number, size: number): Observable<Estado[]> {
+    return this.httpClient.get<Estado[]>(`${this.baseUrl}?page=${page}&size=${size}`);
   }
-
-  // Método para contar o total de registros (usado para a paginação)
-  count(): Observable<number> {
-    return this.httpClient.get<number>(`${this.baseUrl}/count`);
-  }  
 
   findById(id: number): Observable<Estado> {
     return this.httpClient.get<Estado>(`${this.baseUrl}/${id}`); 
   }
 
-  insert(estado: Estado): Observable<Estado> {
-    return this.httpClient.post<Estado>(this.baseUrl, estado);
+  create(estado: Estado): Observable<Estado> {
+    return this.httpClient.post<Estado>(`${this.baseUrl}/insert`, estado);
   }
 
   update(estado: Estado): Observable<Estado> {
-    return this.httpClient.put<any>(`${this.baseUrl}/${estado.id}`, estado); 
+    return this.httpClient.put<Estado>(`${this.baseUrl}/update/${estado.id}`, estado); 
   }
 
   delete(id: number): Observable<any>{
-    return this.httpClient.delete<any>(`${this.baseUrl}/${id}`); 
+    return this.httpClient.delete<any>(`${this.baseUrl}/delete/${id}`); 
+  }
+
+  // Método para contar o total de registros (usado para a paginação)
+  count(): Observable<number> {
+    return this.httpClient.get<number>(`${this.baseUrl}/count`);
   }
 
 }
