@@ -1,20 +1,10 @@
-<mat-drawer-container class="container">
-
-    <mat-drawer #drawer  mode="side" opened="true">
-        <mat-nav-list>
-            <mat-list-item routerLink="/admin/home" routerLinkActive="active">Home</mat-list-item>
-            <mat-list-item routerLink="/admin/estados" routerLinkActive="active">Controle de Estado</mat-list-item>
-            <mat-list-item routerLink="/admin/municipios" routerLinkActive="active">Controle de Municípios</mat-list-item>
-            <mat-list-item routerLink="/admin/editoras" routerLinkActive="active">Controle de Editoras</mat-list-item>
-            <mat-list-item routerLink="/admin/generos" routerLinkActive="active">Controle de Gêneros</mat-list-item>
-            <mat-list-item routerLink="/admin/formatos" routerLinkActive="active">Controle de Formatos</mat-list-item>
-            <mat-list-item routerLink="/admin/idiomas" routerLinkActive="active">Controle de Idiomas</mat-list-item>
-            <mat-list-item routerLink="/admin/mangas" routerLinkActive="active">Controle de Mangás</mat-list-item>
-        </mat-nav-list>
-    </mat-drawer>
-
-    <mat-drawer-content>
-        <router-outlet></router-outlet>
-    </mat-drawer-content>
-
-</mat-drawer-container>
+<nav class="sidebar">
+  <ul>
+    <li *ngFor="let route of routesToDisplay">
+      <a [routerLink]="'/admin/' + route.path" routerLinkActive="active">
+        <i class="material-icons">{{ route.icon }}</i>
+        {{ route.label }}
+      </a>
+    </li>
+  </ul>
+</nav>

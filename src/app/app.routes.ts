@@ -48,13 +48,10 @@ export const routes: Routes = [
         component: UserTemplateComponent,
         title: 'e-manga commerce',
         children: [
-
             {path: '', pathMatch: 'full', redirectTo: 'ecommerce'},
             {path: 'ecommerce', component: MangaCardListComponent, title: 'Lista de Cards de Mangás'},
-
-        ]
+        ],
     },
-
     {
         path: 'admin',
         component: AdminTemplateComponent,

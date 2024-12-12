@@ -1,59 +1,48 @@
-import { ChangeDetectorRef, Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
-import { MatDrawer } from '@angular/material/sidenav';
-import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatListModule } from '@angular/material/list';
-import { RouterModule } from '@angular/router';
-import { SidebarService } from '../../../services/sidebar.service';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-sidebar',
-  templateUrl: './sidebar.component.html',
-  styleUrls: ['./sidebar.component.css'],
   standalone: true,
-  imports: [
-    MatSidenavModule, // Para mat-drawer e mat-drawer-container
-    MatListModule,    // Para mat-list e mat-list-item
-    RouterModule      // Para routerLink e router-outlet
-  ],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  imports: [CommonModule, RouterModule],
+  templateUrl: './sidebar.component.html',
+  styleUrls: ['./sidebar.component.css']
 })
-export class SidebarComponent implements OnInit, AfterViewInit {
-  transformState: string = 'void';
-  @ViewChild('drawer') public drawer!: MatDrawer;
+export class SidebarComponent implements OnInit {
+  adminRoutes = [
+    { path: 'estados', label: 'Estados', icon: 'map' },
+    { path: 'municipios', label: 'Municípios', icon: 'location_city' },
+    { path: 'enderecos', label: 'Endereços', icon: 'place' },
+    { path: 'telefones', label: 'Telefones', icon: 'phone' },
+    { path: 'editoras', label: 'Editoras', icon: 'library_books' },
+    { path: 'formatos', label: 'Formatos', icon: 'view_module' },
+    { path: 'generos', label: 'Gêneros', icon: 'category' },
+    { path: 'idiomas', label: 'Idiomas', icon: 'language' },
+    { path: 'mangas', label: 'Mangás', icon: 'menu_book' },
+  ];
 
-  constructor(private sidebarService: SidebarService, private cdr: ChangeDetectorRef) {}
+  userRoutes = [
+    { path: 'ecommerce', label: 'E-commerce', icon: 'shopping_cart' },
+  ];
+
+  routesToDisplay: { path: string; label: string; icon: string }[] = [];
+
+  constructor(private router: Router) {}
 
   ngOnInit(): void {
-    // Nada a inicializar no momento
+    const isAdminRoute = this.router.url.startsWith('/admin');
+    this.routesToDisplay = isAdminRoute ? this.adminRoutes : this.userRoutes;
   }
 
-  ngAfterViewInit(): void {
-    this.sidebarService.sideNavToggle$.subscribe(() => {
-      if (this.drawer) {
-        this.drawer.toggle();
-        this.updateTransformState();
-      } else {
-        console.error('Drawer não inicializado!');
-      }
-    });
+  updateRoutes(): void {
+    const isAdminRoute = this.router.url.startsWith('/admin');
+    this.routesToDisplay = isAdminRoute ? this.filterAdminRoutes() : this.userRoutes;
   }
 
-  public toggle(): void {
-    if (this.drawer) {
-      this.drawer.toggle();
-      this.updateTransformState();
-    } else {
-      console.error('Drawer não inicializado no toggle()!');
-    }
-  }
-
-  private updateTransformState(): void {
-    Promise.resolve().then(() => {
-      if (this.drawer) {
-        this.transformState = this.drawer.opened ? 'open' : 'void';
-        this.cdr.detectChanges(); // Força o Angular a reconhecer a mudança
-      }
-    });
+  filterAdminRoutes(): { path: string; label: string; icon: string }[] {
+    return this.adminRoutes.filter(
+      route => !route.path.includes('/new') && !route.path.includes('/edit')
+    );
   }
 }
