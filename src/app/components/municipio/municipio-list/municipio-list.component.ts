@@ -32,6 +32,7 @@ export class MunicipioListComponent implements OnInit {
   displayedColumns: string[] = ['id', 'nome', 'estado','acao'];
 
   // Variáveis para paginação
+  totalRecords = 0;
   page: number = 0; // página atual
   size: number = 100; // número de itens por página
 

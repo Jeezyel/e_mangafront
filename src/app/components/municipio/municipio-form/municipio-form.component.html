@@ -1,5 +1,5 @@
-<mat-toolbar color="primary">
-    <div class="toolbar-title"> Cadastro de Município</div>
+<mat-toolbar>
+    <div class="toolbar-title">Novo Município</div>
 </mat-toolbar>
 <div class="form-container">
     <mat-card>
@@ -31,13 +31,16 @@
         </mat-card-content>
         <mat-card-actions>
             <button mat-raised-button 
-                routerLink="/municipios">
+                routerLink="../">
                 Cancelar
             </button>
 
-            <button mat-raised-button 
-                (click)="salvar()"
-                routerLink="/municipios">
+            <button mat-raised-button *ngIf="formGroup?.get('idMunicipio')?.value" color="warn" (click)="excluir()"
+                [disabled]="formGroup.invalid">
+                Excluir
+            </button>
+
+            <button mat-raised-button color="primary" (click)="salvar()">
                 Salvar
             </button>
         </mat-card-actions>

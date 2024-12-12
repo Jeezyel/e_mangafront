@@ -92,12 +92,28 @@ export class MunicipioFormComponent implements OnInit {
         this.municipioService.create(payload).subscribe({
             next: (response) => {
                 console.log('Resposta do backend:', response);
-                this.router.navigate(['/municipios'], { queryParams: { success: true } });
+                this.router.navigate(['/admin/municipios'], { queryParams: { success: true } });
             },
             error: (error) => {
                 console.error('Erro ao salvar:', error);
             },
         });
+    }
+  }
+
+  excluir() {
+    if (this.formGroup.valid) {
+      const municipio = this.formGroup.value;
+      if (municipio.idMunicipio != null) {
+        this.estadoService.delete(municipio).subscribe({
+          next: () => {
+            this.router.navigateByUrl('/admin/municipios');
+          },
+          error: (err) => {
+            console.log('Erro ao Excluir' + JSON.stringify(err));
+          }
+        });
+      }
     }
   }
 
