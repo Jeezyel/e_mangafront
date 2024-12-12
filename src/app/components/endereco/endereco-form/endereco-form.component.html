@@ -1,0 +1,75 @@
+<mat-toolbar color="primary">
+    <div class="toolbar-title"> Cadastro de Endereços</div>
+</mat-toolbar>
+<div class="form-container">
+    <mat-card>
+        <mat-card-content>
+            <form [formGroup]="formGroup">
+                
+                <mat-form-field appearance="fill" class="full-width-input">
+                    <mat-label>CEP</mat-label>
+                    <input matInput type="text" formControlName="cep">
+                    <mat-error *ngIf="formGroup.get('cep') 
+                                   && formGroup.get('cep')?.invalid
+                                   && formGroup.get('cep')?.touched">
+                        {{getErrorMessage('cep', formGroup.get('cep')?.errors)}}
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="fill" class="full-width-input">
+                    <mat-label>Logradouro</mat-label>
+                    <input matInput type="text" formControlName="logradouro">
+                    <mat-error *ngIf="formGroup.get('logradouro') 
+                                   && formGroup.get('logradouro')?.invalid
+                                   && formGroup.get('logradouro')?.touched">
+                        {{getErrorMessage('logradouro', formGroup.get('logradouro')?.errors)}}
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="fill" class="full-width-input">
+                    <mat-label>Complemento</mat-label>
+                    <input matInput type="text" formControlName="complemento">
+                    <mat-error *ngIf="formGroup.get('complemento') 
+                                   && formGroup.get('complemento')?.invalid
+                                   && formGroup.get('complemento')?.touched">
+                        {{getErrorMessage('complemento', formGroup.get('complemento')?.errors)}}
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="fill" class="full-width-input">
+                    <mat-label>Bairro</mat-label>
+                    <input matInput type="text" formControlName="bairro">
+                    <mat-error *ngIf="formGroup.get('bairro') 
+                                   && formGroup.get('bairro')?.invalid
+                                   && formGroup.get('bairro')?.touched">
+                        {{getErrorMessage('bairro', formGroup.get('bairro')?.errors)}}
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="fill">
+                    <mat-label>Municipio</mat-label>
+                    <mat-select formControlName="municipio">
+                        @for (municipio of municipios; track municipio.idMunicipio) {
+                        <mat-option [value]="municipio">
+                            {{municipio.nome}}
+                        </mat-option>
+                        }
+                    </mat-select>
+                </mat-form-field>
+
+            </form>
+        </mat-card-content>
+        <mat-card-actions>
+            <button mat-raised-button 
+                routerLink="/enderecos">
+                Cancelar
+            </button>
+
+            <button mat-raised-button 
+                (click)="salvar()"
+                routerLink="/enderecos">
+                Salvar
+            </button>
+        </mat-card-actions>
+    </mat-card>
+</div>

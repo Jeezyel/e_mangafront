@@ -1,0 +1,42 @@
+.toolbar-title {
+    flex: 1;
+    text-align: center;
+}
+  
+.flex-container {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+  
+.mat-column-idEndereco {
+    width: 5em;
+    border-right: 1px solid currentColor;
+    padding-right: 24px;
+    text-align: center;
+}
+
+.mat-column-cep {
+    width: 10%;
+}
+  
+.mat-column-logradouro {
+    width: 30%;
+}
+  
+.mat-column-complemento {
+    width: 20%;
+}
+  
+.mat-column-bairro {
+    width: 20%;
+}
+
+.mat-column-municipio {
+    width: 20%;
+}
+
+.mat-column-acao {
+    text-align: center;
+    min-width: 10em;
+}

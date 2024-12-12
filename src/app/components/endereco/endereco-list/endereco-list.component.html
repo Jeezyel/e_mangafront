@@ -1,0 +1,69 @@
+<mat-toolbar color="primary">
+    <div class="flex-container">
+      <span class="toolbar-title">Controle de Endereços</span>
+      <button mat-fab color="accent" routerLink="/enderecos/new">
+        <mat-icon>add</mat-icon>
+      </button>
+    </div>
+</mat-toolbar>
+  
+<table mat-table [dataSource]="enderecos" class="mat-elevation-z8">
+  
+    <!-- Position Column -->
+    <ng-container matColumnDef="idEndereco">
+        <th mat-header-cell *matHeaderCellDef> No. </th>
+        <td mat-cell *matCellDef="let endereco"> {{endereco.idEndereco}} </td>
+    </ng-container>
+    
+    <!-- CEP Column -->
+    <ng-container matColumnDef="cep">
+        <th mat-header-cell *matHeaderCellDef> CEP </th>
+        <td mat-cell *matCellDef="let endereco"> {{endereco.cep}} </td>
+    </ng-container>
+
+    <!-- Logradouro Column -->
+    <ng-container matColumnDef="logradouro">
+        <th mat-header-cell *matHeaderCellDef> Logradouro </th>
+        <td mat-cell *matCellDef="let endereco"> {{endereco.logradouro}} </td>
+    </ng-container>
+    
+    <!-- Complemento Column -->
+    <ng-container matColumnDef="complemento">
+        <th mat-header-cell *matHeaderCellDef> Complemento</th>
+        <td mat-cell *matCellDef="let endereco"> {{endereco.complemento}} </td>
+    </ng-container>
+      
+    <!-- Bairro Column -->
+    <ng-container matColumnDef="bairro">
+        <th mat-header-cell *matHeaderCellDef> Bairro </th>
+        <td mat-cell *matCellDef="let endereco"> {{endereco.bairro}} </td>
+    </ng-container>
+        
+    <!-- Logradouro Column -->
+    <ng-container matColumnDef="idMunicipio">
+        <th mat-header-cell *matHeaderCellDef> Município </th>
+        <td mat-cell *matCellDef="let endereco"> {{endereco.nomeMunicipio}} </td>
+    </ng-container>
+  
+    <!-- Acao Column -->
+    <ng-container matColumnDef="acao">
+        <th mat-header-cell *matHeaderCellDef> Ação </th>
+        <td mat-cell *matCellDef="let endereco"> 
+        <button mat-icon-button 
+                color="primary"
+                routerLink="/enderecos/edit/{{endereco.idEndereco}}">
+                <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button 
+                color="warn"
+                (click)="deletar(endereco.idEndereco)">
+                <mat-icon>delete</mat-icon>
+        </button>        
+        </td>
+    </ng-container>
+    
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    
+</table>
+
