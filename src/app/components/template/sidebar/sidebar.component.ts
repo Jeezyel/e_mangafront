@@ -1,34 +1,38 @@
-import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
-import { MatDrawer, MatDrawerContainer, MatDrawerContent, MatSidenav } from '@angular/material/sidenav';
-import { MatToolbar } from '@angular/material/toolbar';
-import { MatList, MatListItem, MatNavList } from '@angular/material/list';
-import { MatIconModule } from '@angular/material/icon'; // Adicionado
-import { RouterModule, RouterOutlet } from '@angular/router';
+import { ChangeDetectorRef, Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { MatDrawer } from '@angular/material/sidenav';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatListModule } from '@angular/material/list';
+import { RouterModule } from '@angular/router';
 import { SidebarService } from '../../../services/sidebar.service';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 @Component({
   selector: 'app-sidebar',
+  templateUrl: './sidebar.component.html',
+  styleUrls: ['./sidebar.component.css'],
   standalone: true,
   imports: [
-    MatSidenav, MatDrawer, MatDrawerContainer, RouterModule,
-    MatDrawerContent, MatToolbar, MatList, MatNavList, MatListItem, RouterOutlet, MatIconModule
+    MatSidenavModule, // Para mat-drawer e mat-drawer-container
+    MatListModule,    // Para mat-list e mat-list-item
+    RouterModule      // Para routerLink e router-outlet
   ],
-  templateUrl: './sidebar.component.html',
-  styleUrls: ['./sidebar.component.css'] // Corrigi o nome de 'styleUrl' para 'styleUrls'
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class SidebarComponent implements OnInit, AfterViewInit {
+  transformState: string = 'void';
   @ViewChild('drawer') public drawer!: MatDrawer;
 
-  constructor(private sidebarService: SidebarService) { }
+  constructor(private sidebarService: SidebarService, private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
-    // Eventos do serviço serão registrados após a inicialização da visualização
+    // Nada a inicializar no momento
   }
 
   ngAfterViewInit(): void {
-    this.sidebarService.sideNavToggleSubject.subscribe(() => {
+    this.sidebarService.sideNavToggle$.subscribe(() => {
       if (this.drawer) {
         this.drawer.toggle();
+        this.updateTransformState();
       } else {
         console.error('Drawer não inicializado!');
       }
@@ -38,8 +42,18 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   public toggle(): void {
     if (this.drawer) {
       this.drawer.toggle();
+      this.updateTransformState();
     } else {
       console.error('Drawer não inicializado no toggle()!');
     }
+  }
+
+  private updateTransformState(): void {
+    Promise.resolve().then(() => {
+      if (this.drawer) {
+        this.transformState = this.drawer.opened ? 'open' : 'void';
+        this.cdr.detectChanges(); // Força o Angular a reconhecer a mudança
+      }
+    });
   }
 }

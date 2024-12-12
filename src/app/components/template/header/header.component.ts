@@ -49,7 +49,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   clickMenu(): void {
-    this.sidebarService.toggle(); // Alterna o Sidebar
+    this.sidebarService.toggleSidebar(); // Alterna o Sidebar
   }
 
   onLogout(): void {
@@ -63,6 +63,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   public onToggleSidebar(): void {
-    this.sidebarService.toggle(); // Alterna o Sidebar
+    this.sidebarService.toggleSidebar(); // Alterna o Sidebar
   }
 }
