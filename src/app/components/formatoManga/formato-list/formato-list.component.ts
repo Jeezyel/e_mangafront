@@ -31,6 +31,7 @@ export class FormatoListComponent implements OnInit {
   displayedColumns: string[] = ['idFormato', 'formato', 'acao'];
 
   // Variáveis para paginação
+  totalRecords = 0;
   page: number = 0; // página atual
   size: number = 10; // número de itens por página
 

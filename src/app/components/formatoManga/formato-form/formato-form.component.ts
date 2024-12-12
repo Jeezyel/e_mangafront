@@ -64,13 +64,29 @@ export class FormatoFormComponent {
         operacao.subscribe({
             next: () => {
               this.formatoService.findAll(page,size);
-              this.router.navigate(['/formatos'], { queryParams: { success: true } });
+              this.router.navigate(['/admin/formatos'], { queryParams: { success: true } });
             },
             error: (error: HttpErrorResponse) => {
                 console.log('Erro ao salvar: ', error);
                 this.tratarErros(error);
             }
         });
+    }
+  }
+
+  excluir() {
+    if (this.formGroup.valid) {
+      const formato = this.formGroup.value;
+      if (formato.idFormato != null) {
+        this.formatoService.delete(formato).subscribe({
+          next: () => {
+            this.router.navigateByUrl('/admin/formatos');
+          },
+          error: (err) => {
+            console.log('Erro ao Excluir' + JSON.stringify(err));
+          }
+        });
+      }
     }
   }
 
