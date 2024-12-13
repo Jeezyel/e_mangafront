@@ -217,22 +217,22 @@ export class MangaFormComponent implements OnInit {
 
   }
 
-  //private uploadImage(mangaId: number) {
-    //if (this.selectedFile) {
-      //this.mangaService.uploadImage(mangaId, this.selectedFile.name, this.selectedFile)
-      //.subscribe({
-        //next: () => {
-          //this.voltarPagina();
-        //},
-        //error: err => {
-          //console.log('Erro ao fazer o upload da imagem');
-          // tratar o erro
-        //}
-      //})
-    //} else {
-      //this.voltarPagina();
-    //}
-  //}
+  private uploadImage(idManga: number) {
+    if (this.selectedFile) {
+      this.mangaService.uploadImage(idManga, this.selectedFile.name, this.selectedFile)
+      .subscribe({
+        next: () => {
+          this.voltarPagina();
+        },
+        error: err => {
+          console.log('Erro ao fazer o upload da imagem');
+           //tratar o erro
+        }
+      })
+    } else {
+      this.voltarPagina();
+    }
+  }
 
   excluir() {
     if (this.formGroup.valid) {

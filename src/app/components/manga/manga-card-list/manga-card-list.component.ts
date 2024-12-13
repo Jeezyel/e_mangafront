@@ -18,7 +18,7 @@ type Card = {
   formato: string,
   idioma: string,
   estoque: number,
-  //imageUrl: string,
+  imageUrl: string,
 }
 
 @Component({
@@ -64,7 +64,7 @@ export class MangaCardListComponent implements OnInit {
         genero: manga.genero.genero,
         idioma: manga.idioma.idioma,
         estoque: manga.estoque,
-        //imageUrl: this.mangaService.getUrlImage(manga.nomeImagem)
+        imageUrl: this.mangaService.getUrlImage(manga.nomeImagem)
       })
     });
     this.cards.set(cards);
