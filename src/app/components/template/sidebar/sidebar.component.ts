@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
+import { SidebarService } from '../../../services/sidebar.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -10,6 +11,9 @@ import { Router, RouterModule } from '@angular/router';
   styleUrls: ['./sidebar.component.css']
 })
 export class SidebarComponent implements OnInit {
+
+  isSidebarVisible: boolean = true; // Estado inicial da sidebar
+  
   adminRoutes = [
     { path: 'estados', label: 'Estados', icon: 'map' },
     { path: 'municipios', label: 'Municípios', icon: 'location_city' },
@@ -27,12 +31,16 @@ export class SidebarComponent implements OnInit {
   ];
 
   routesToDisplay: { path: string; label: string; icon: string }[] = [];
-
-  constructor(private router: Router) {}
+  
+  constructor(private router: Router, private sidebarService: SidebarService) {}
 
   ngOnInit(): void {
     const isAdminRoute = this.router.url.startsWith('/admin');
     this.routesToDisplay = isAdminRoute ? this.adminRoutes : this.userRoutes;
+    // Escuta as alterações de estado do SidebarService
+    this.sidebarService.sideNavToggle$.subscribe(() => {
+      this.isSidebarVisible = !this.isSidebarVisible;
+    });
   }
 
   updateRoutes(): void {

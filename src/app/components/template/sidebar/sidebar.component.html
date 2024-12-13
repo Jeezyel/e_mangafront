@@ -1,9 +1,9 @@
-<nav class="sidebar">
+<nav class="sidebar" *ngIf="isSidebarVisible">
   <ul>
     <li *ngFor="let route of routesToDisplay">
       <a [routerLink]="'/admin/' + route.path" routerLinkActive="active">
-        <i class="material-icons">{{ route.icon }}</i>
-        {{ route.label }}
+        <i class="material-icons sidebar-icon">{{ route.icon }}</i>
+        <span class="sidebar-label">{{ route.label }}</span>
       </a>
     </li>
   </ul>

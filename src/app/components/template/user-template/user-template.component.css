@@ -1,0 +1,20 @@
+.header {
+  background-color: #FFE4C4; /* Laranja pastel inspirado na manga */
+  color: #000;
+  padding: 10px;
+  font-family: Arial, sans-serif;
+}
+
+.user-content {
+  padding: 20px;
+  background-color: #FFF5E1; /* Fundo claro */
+  min-height: calc(100vh - 120px); /* Espaço dinâmico ajustado ao header e footer */
+}
+
+.footer {
+  background-color: #FFDAB9; /* Outro tom pastel laranja */
+  color: #333;
+  text-align: center;
+  padding: 10px;
+  font-size: 0.9rem;
+}

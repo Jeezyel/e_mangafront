@@ -1,28 +1,46 @@
 <div class="login-container">
     <div class="login-box">
-        <img src="assets/icons/passkey.svg" alt="Passkey" class="login-icon">
+        <img src="assets/icons/passkey.svg" alt="Passkey" class="login-icon"/>
         <h2 class="login-title">Bem-vindo</h2>
         <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
             <!-- Campo Username -->
-            <mat-form-field class="login-input">
-                <input matInput placeholder="Username" formControlName="username" required>
+            <mat-form-field class="login-input" appearance="outline">
+                <mat-label>Username</mat-label>
+                <input 
+                    matInput 
+                    placeholder="Digite o seu username" 
+                    formControlName="username" 
+                    required
+                    aria-label="Digite seu username"
+                />
                 <mat-error *ngIf="loginForm.get('username')?.hasError('required')">
                     O username é obrigatório
                 </mat-error>
             </mat-form-field>
 
             <!-- Campo Senha -->
-            <mat-form-field class="login-input">
-                <input matInput type="senha" placeholder="Senha" formControlName="senha" required>
+            <mat-form-field class="login-input" appearance="outline">
+                <mat-label>Senha</mat-label>
+                <input 
+                    matInput 
+                    type="password" 
+                    placeholder="Digite sua senha" 
+                    formControlName="senha" 
+                    required
+                    aria-label="Senha"
+                />
                 <mat-error *ngIf="loginForm.get('senha')?.hasError('required')">
                     A senha é obrigatória
                 </mat-error>
             </mat-form-field>
 
             <!-- Botão Login -->
-            <button mat-raised-button class="login-button" color="primary" type="submit">
+            <button mat-raised-button class="login-button" type="submit" [disabled]="loginForm.invalid">
                 Login
             </button>
         </form>
+        <button mat-flat-button class="register-button" (click)="onRegister()">
+            Não tem Login? Faça seu cadastro!
+        </button>       
     </div>
 </div>

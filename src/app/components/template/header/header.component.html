@@ -1,19 +1,21 @@
 <mat-toolbar color="primary">
+  
   <mat-toolbar color="primary">
     <!-- O botão de menu só será exibido se exibirSidebar for verdadeiro -->
     <button *ngIf="exibirSidebar" mat-icon-button (click)="clickMenu()">
       <mat-icon>menu</mat-icon>
     </button>
-    <span>E-manga Commerce</span>
+    <span class="header-title">E-manga</span>
   </mat-toolbar>
-  
+
   <span class="faixa-spacer"></span>
 
   <!-- Botão de logout -->
   <button mat-icon-button (click)="onLogout()">
     <mat-icon>exit_to_app</mat-icon>
   </button>
-    
+
   <!-- Nome do usuário logado -->
-  <span>{{usuarioLogado?.username}}</span>
+  <span class="username">{{usuarioLogado?.username}}</span>
+
 </mat-toolbar>

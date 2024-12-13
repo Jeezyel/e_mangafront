@@ -1,27 +1,30 @@
-.header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: white;
-  }
-  .header .menu-toggle {
-    background: none;
-    border: none;
-    color: white;
-    font-size: 24px;
-    cursor: pointer;
-  }
-  .header h1 {
-    margin: 0;
-  }
-  .header .user-info {
-    display: flex;
-    align-items: center;
-  }
-  .header .user-info i {
-    margin-right: 5px;
-    font-size: 20px;
-  }
+mat-toolbar {
+  background-color: #FFE4C4; /* Laranja pastel */
+  color: #333;
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.header-title {
+  font-family: 'Arial', sans-serif;
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-left: 10px;
+}
+
+.faixa-spacer {
+  flex: 1;
+}
+
+.username {
+  font-size: 1rem;
+  margin-left: 10px;
+  color: #555;
+}
+
+button[mat-icon-button] {
+  margin: 0 5px;
+}
   

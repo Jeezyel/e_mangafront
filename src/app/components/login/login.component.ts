@@ -50,16 +50,18 @@ export class LoginComponent implements OnInit {
           console.log(err);
           this.showSnackbarTopPosition("Username ou senha inválido");
         }
-      })
-
+      });
+    } else {
+      this.showSnackbarTopPosition('Preencha todos os campos corretamente.');  
     }
   }
 
   onRegister() {
+    // this.router.navigate(['/register']);
     // criar usuário
   }
 
-  showSnackbarTopPosition(content: any) {
+  showSnackbarTopPosition(content: string) {
     this.snackBar.open(content, 'fechar', {
       duration: 3000,
       verticalPosition: "top",
