@@ -25,10 +25,11 @@
         <button mat-raised-button class="login-button" type="submit" [disabled]="loginForm.invalid">
           Entrar
         </button>
+
+        <button mat-flat-button class="register-button" (click)="onRegister()">
+          Ainda não possui conta? Cadastre-se
+        </button>
+      
       </form>
-  
-      <button mat-flat-button class="register-button" (click)="onRegister()">
-        Ainda não possui conta? Cadastre-se
-      </button>
     </div>
 </div>  

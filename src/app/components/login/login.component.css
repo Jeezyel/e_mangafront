@@ -3,13 +3,13 @@
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background-color: #FFF5E1;
+  background-color: #FFF;
   padding: 20px;
   box-sizing: border-box;
 }
 
 .login-box {
-  background: #fff;
+  background:  #FFF5E1;
   padding: 30px;
   border-radius:12px;
   box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.15);
@@ -37,17 +37,6 @@
   margin-top: 20px;
 }
 
-mat-form-field {
-  background-color: #F7F1E3; /* Rosa pastel suave inspirado no sidebar */
-  border-radius: 8px;
-  font-family: Arial, sans-serif;
-  width: 100%;
-}
-
-mat-form-field.mat-focused {
-  background-color: #FFE4C4; /* Laranja pastel para foco */
-}
-
 .login-button {
   width: 100%;
   padding: 10px;
@@ -57,10 +46,6 @@ mat-form-field.mat-focused {
   font-weight: bold;
   border-radius: 8px;
   transition: background-color 0.3s;
-}
-
-.login-button:hover {
-  background-color: #FFDAB9; /* Tom pastel laranja mais claro */
 }
 
 .login-button:disabled {
@@ -73,15 +58,26 @@ mat-form-field.mat-focused {
   padding: 12px;
   margin-top: 15px;
   font-size: 1rem;
-  font-weight: bold;
   border-radius: 8px;
-  background-color: #C5E1A5; /* Verde pastel */
+  background-color: #ffe4c4; /* Verde pastel */
   color: #333; /* Texto escuro */
   transition: background-color 0.3s;
 }
 
-.register-button:hover {
-  background-color: #ffe4c4; /* Laranja pastel no hover */
+mat-form-field {
+  border-radius: 8px;
+  font-family: Arial, sans-serif;
+  width: 100%;
+  border: none;
+}
+
+mat-form-field.mat-focused {
+  background:  #FFF5E1;
+}
+
+mat-flat-button{
+  background-color: #ddd; /* Cinza claro para estado desativado */
+  color: #aaa; /* Texto cinza */
 }
 
 .mat-error {
@@ -91,6 +87,7 @@ mat-form-field.mat-focused {
 
 @media (max-width: 600px) {
   .login-box {
+    background-color: #C5E1A5;
     padding: 20px;
     border-radius: 8px;
   }

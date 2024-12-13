@@ -17,7 +17,7 @@
   flex: 1;
   padding: 20px;
   background-color: #FFF;
-  box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.1);
+  box-shadow: px 5px 5px rgba(0, 0, 0, 0.1);
   color: #333;
   transition: background-color 0.3s ease;
 }
