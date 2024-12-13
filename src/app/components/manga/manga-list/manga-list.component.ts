@@ -7,6 +7,7 @@ import { MatTableModule } from '@angular/material/table';
 import { ActivatedRoute, Params, RouterModule } from '@angular/router';
 import { PageEvent } from '@angular/material/paginator';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { CurrencyPipe } from '@angular/common';
 
 import { Manga } from '../../../models/manga.model';
 import { MangaService } from '../../../services/manga.service';
@@ -15,7 +16,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 @Component({
   selector: 'app-manga-list',
   standalone: true,
-  imports: [MatPaginatorModule, NgFor, MatToolbarModule, MatIconModule, MatButtonModule, MatTableModule, RouterModule],
+  imports: [MatPaginatorModule, NgFor, MatToolbarModule, MatIconModule, MatButtonModule, MatTableModule, RouterModule, CurrencyPipe],
   templateUrl: './manga-list.component.html',
   styleUrls: ['./manga-list.component.css']
 })

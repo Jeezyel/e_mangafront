@@ -10,7 +10,7 @@
         </mat-card-content>
         <br/>
         <mat-card-content class="centered-text">
-            {{card.valor}}
+            {{card.valor | currency:'BRL':'symbol':'1.2-2'}}
         </mat-card-content>
 
         <mat-card-actions class="centered-text">

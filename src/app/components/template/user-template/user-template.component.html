@@ -2,6 +2,9 @@
   <app-header></app-header>
 </header>
 <div class="user-template__layout">
+  <aside class="admin-template__sidebar" *ngIf="exibirSidebar">
+    <app-sidebar></app-sidebar>
+  </aside>
   <main class="user-template__content">
     <router-outlet></router-outlet>
   </main>

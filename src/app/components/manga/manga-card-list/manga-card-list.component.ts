@@ -3,10 +3,11 @@ import { Component, OnInit, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardActions, MatCardContent, MatCardFooter, MatCardModule, MatCardTitle } from '@angular/material/card';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { CurrencyPipe } from '@angular/common';
 
 import { Manga } from '../../../models/manga.model';
 import { MangaService } from '../../../services/manga.service';
-//import { CarrinhoService } from '../../../services/carrinho.service';
+import { CarrinhoService } from '../../../services/carrinho.service';
 
 type Card = {
   idManga: number,
@@ -25,7 +26,7 @@ type Card = {
   selector: 'app-manga-card-list',
   standalone: true,
   imports: [MatCardModule, MatButtonModule, NgFor, 
-    MatCardActions, MatCardContent, MatCardTitle, MatCardFooter],
+    MatCardActions, MatCardContent, MatCardTitle, MatCardFooter, CurrencyPipe],
   templateUrl: './manga-card-list.component.html',
   styleUrl: './manga-card-list.component.css'
 })
