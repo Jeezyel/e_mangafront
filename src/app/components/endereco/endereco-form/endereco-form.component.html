@@ -46,7 +46,7 @@
                     </mat-error>
                 </mat-form-field>
 
-                <mat-form-field appearance="fill">
+                <mat-form-field appearance="fill" class="full-width-input">
                     <mat-label>Municipio</mat-label>
                     <mat-select formControlName="municipio">
                         @for (municipio of municipios; track municipio.idMunicipio) {
@@ -61,13 +61,11 @@
         </mat-card-content>
         <mat-card-actions>
             <button mat-raised-button 
-                routerLink="/enderecos">
+                routerLink="../">
                 Cancelar
             </button>
 
-            <button mat-raised-button 
-                (click)="salvar()"
-                routerLink="/enderecos">
+            <button mat-raised-button color="primary" (click)="salvar()">
                 Salvar
             </button>
         </mat-card-actions>

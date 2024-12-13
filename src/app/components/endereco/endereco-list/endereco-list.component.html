@@ -1,7 +1,7 @@
 <mat-toolbar color="primary">
     <div class="flex-container">
       <span class="toolbar-title">Controle de Endereços</span>
-      <button mat-fab color="accent" routerLink="/enderecos/new">
+      <button mat-fab color="accent" routerLink="./new">
         <mat-icon>add</mat-icon>
       </button>
     </div>
@@ -51,7 +51,7 @@
         <td mat-cell *matCellDef="let endereco"> 
         <button mat-icon-button 
                 color="primary"
-                routerLink="/enderecos/edit/{{endereco.idEndereco}}">
+                [routerLink]="['edit', endereco.idEndereco]">
                 <mat-icon>edit</mat-icon>
         </button>
         <button mat-icon-button 

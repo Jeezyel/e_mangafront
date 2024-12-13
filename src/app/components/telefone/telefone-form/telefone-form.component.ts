@@ -66,7 +66,7 @@ export class TelefoneFormComponent {
         operacao.subscribe({
             next: () => {
               this.telefoneService.findAll(page,size);
-              this.router.navigate(['/telefones'], { queryParams: { success: true } });
+              this.router.navigate(['/admin/telefones'], { queryParams: { success: true } });
             },
             error: (error: HttpErrorResponse) => {
                 console.log('Erro ao salvar: ', error);

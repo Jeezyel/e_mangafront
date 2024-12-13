@@ -1,5 +1,5 @@
-<mat-toolbar color="white">
-    <span class="toolbar-title" style="color: black;"> Novo Telefone </span>
+<mat-toolbar>
+    <span class="toolbar-title"> Novo Telefone </span>
 </mat-toolbar>
 <div class="form-container">
     <mat-card>
@@ -42,12 +42,10 @@
         </mat-card-content>
         <mat-card-actions>
             <button mat-raised-button  
-                    routerLink="/telefones"> 
+                    routerLink="../"> 
                 Cancelar 
             </button>
-            <button mat-raised-button  
-                    (click)="salvar()"
-                    routerLink="/telefones">
+            <button mat-raised-button color="primary" (click)="salvar()">
                 Salvar 
             </button>
         </mat-card-actions>

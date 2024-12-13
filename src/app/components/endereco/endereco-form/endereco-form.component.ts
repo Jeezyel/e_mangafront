@@ -116,7 +116,7 @@ export class EnderecoFormComponent implements OnInit {
         operacao.subscribe({
             next: () => {
                 this.enderecoService.findAll(page, size); // Atualiza a listagem
-                this.router.navigate(['/enderecos'], { queryParams: { success: true } });
+                this.router.navigate(['/admin/enderecos'], { queryParams: { success: true } });
             },
             error: (error: HttpErrorResponse) => {
                 console.log('Erro ao salvar: ', error);
