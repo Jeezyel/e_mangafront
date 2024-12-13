@@ -1,5 +1,11 @@
-<app-header class="header"></app-header>
-<div class="user-content">
-  <router-outlet></router-outlet>
+<header class="user-template__header">
+  <app-header></app-header>
+</header>
+<div class="user-template__layout">
+  <main class="user-template__content">
+    <router-outlet></router-outlet>
+  </main>
 </div>
-<app-footer class="footer"></app-footer>
+<footer class="user-template__footer">
+  <app-footer></app-footer>
+</footer>

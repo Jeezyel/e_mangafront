@@ -1,34 +1,36 @@
-.header {
-    background-color: #FFE4C4; /* Laranja pastel inspirado na manga */
-    color: #000;
-    padding: 15px;
-    font-family: Arial, sans-serif;
-  }
-  
-  .admin-layout {
-    display: flex;
-    flex-direction: row;
-    background-color: #FFF5E1; /* Fundo claro */
-    min-height: calc(100vh - 120px); /* Espaço dinâmico ajustado ao header e footer */
-  }
-  
-  .sidebar {
-    width: 250px;
-    background-color: #F7F1E3; /* Rosa pastel suave */
-    padding: 20px;
-    color: #333;
-  }
-  
-  .content {
-    flex: 1;
-    padding: 20px;
-    background-color: #FFF; /* Fundo branco para contraste */
-  }
-  
-  .footer {
-    background-color: #FFDAB9; /* Outro tom pastel laranja */
-    color: #333;
-    text-align: center;
-    padding: 10px;
-    font-size: 0.9rem;
-  }
+.admin-template__header {
+  background-color: #F7F1E3;
+  color: #333;
+  padding: 10px;
+  font-family: Arial, sans-serif;
+  box-shadow: 0 5px 5px rgba(0, 0, 0, 0.1);
+}
+
+.admin-template__layout {
+  display: flex;
+  flex-direction: row;
+  background-color: #FFF5E1;
+  min-height: calc(100vh - 120px);
+}
+
+.admin-template__content {
+  flex: 1;
+  padding: 20px;
+  background-color: #FFF;
+  box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.1);
+  color: #333;
+  transition: background-color 0.3s ease;
+}
+
+.admin-template__content:hover {
+  background-color: #FFF;
+}
+
+.admin-template__footer {
+  text-align: center;
+  background-color: #F7F1E3;
+  color: #333;
+  padding: 10px;
+  font-family: Arial, sans-serif;
+  box-shadow: 0 5px 5px rgba(0, 0, 0, 0.1);
+}

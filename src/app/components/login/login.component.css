@@ -41,6 +41,7 @@ mat-form-field {
   background-color: #F7F1E3; /* Rosa pastel suave inspirado no sidebar */
   border-radius: 8px;
   font-family: Arial, sans-serif;
+  width: 100%;
 }
 
 mat-form-field.mat-focused {
@@ -88,32 +89,18 @@ mat-form-field.mat-focused {
   font-size: 0.9rem;
 }
 
-.mat-form-field-appearance-outline .mat-form-field-outline {
-  width: 100%;
-  padding: 10px;
-  margin-top: 20px;
-  border-color: #ffe4c4; /* Bordas alinhadas à paleta */
-}
+@media (max-width: 600px) {
+  .login-box {
+    padding: 20px;
+    border-radius: 8px;
+  }
 
-.mat-form-field-appearance-outline .mat-form-field-outline-thick {
-  width: 100%;
-  padding: 10px;
-  margin-top: 20px;
-  border-color: #ffd9b2; /* Bordas de foco */
-}
+  .login-title {
+    font-size: 1.5rem;
+  }
 
-mat-card {
-  background-color: #FFF5E1; /* Fundo claro */
-}
-
-mat-card-title {
-  color: #333;
-  font-family: Arial, sans-serif;
-}
-
-mat-snack-bar-container {
-  background-color: #FFE4C4; /* Fundo laranja pastel */
-  color: #000; /* Texto preto */
-  text-align: center;
-  font-family: Arial, sans-serif;
+  .login-button,
+  .register-button {
+    font-size: 0.9rem;
+  }
 }

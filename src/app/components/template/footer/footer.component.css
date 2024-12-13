@@ -1,9 +1,19 @@
-.footer-title {
-    flex: 1;
-    text-align: center;
-    font-size: small;
-    background-color: #FFDAB9; /* Laranja pastel */
+.footer {
     color: #333;
-    padding: 20px;
-    border-top: 1px solid #FFA07A; /* Laranja mais escuro para contraste */
-}
+    text-align: center;
+    padding: 10px;
+    font-size: 0.9rem;
+  }
+  
+  .footer__toolbar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #F7F1E3;
+  }
+  
+  .footer__text {
+    color: #333;
+    font-size: 1rem;
+    font-family: Arial, sans-serif;
+  }
