@@ -1,5 +1,5 @@
 <mat-toolbar>
-    <div class="toolbar-title"> Cadastro de Manga</div>
+    <div class="toolbar-title">Cadastro de Manga</div>
 </mat-toolbar>
 <div class="form-container">
     <mat-card>
@@ -126,7 +126,7 @@
                     </mat-error>
                 </mat-form-field> 
                 
-            <mat-form-field appearance="outline" class="full-width-input">
+                <mat-form-field appearance="outline" class="full-width-input">
                     <mat-label>Imagem do Mangá</mat-label>
                     <input type="file" (change)="carregarImagemSelecionada($event)" hidden #fileInput>
                     <input matInput [value]="fileName" readonly>

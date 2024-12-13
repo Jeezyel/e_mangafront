@@ -49,6 +49,7 @@ export class MangaFormComponent implements OnInit {
   formatos: Formato [] = [];
   idiomas: Idioma [] = [];
   classificacaoIndicativas: ClassificacaoIndicativa[] = [];
+  
   fileName: string = '';
   selectedFile: File | null = null; 
   imagePreview: string | ArrayBuffer | null = null;
@@ -173,7 +174,7 @@ export class MangaFormComponent implements OnInit {
             : this.mangaService.update({ ...data, idManga: manga.idManga });
 
         operacao.subscribe({
-            next: () => {
+            next: (faixaCadastrada) => {
                 this.mangaService.findAll(page, size); // Atualiza a listagem
                 this.router.navigate(['/admin/mangas'], { queryParams: { success: true } });
             },
