@@ -56,4 +56,20 @@ export class MangaService {
   delete(idManga: number): Observable<any> {
     return this.httpClient.delete<any>(`${this.baseUrl}/delete/${idManga}`);
   }
+
+  //Método para mandar e baixar a imagem
+
+  // Não sei se esse Método funciona mas ta como o do professor
+  getUrlImage(nomeImagem: string): string {
+    return `${this.baseUrl}/image/download/${nomeImagem}`; 
+  }
+
+  uploadImage(id: number, nomeImagem: string, imagem: File): Observable<any> {
+    const formData: FormData = new FormData();
+    formData.append('id', id.toString());
+    formData.append('nomeImagem', imagem.name);
+    formData.append('imagem', imagem, imagem.name);
+    
+    return this.httpClient.patch<Manga>(`${this.baseUrl}/image/upload`, formData);
+  }
 }
