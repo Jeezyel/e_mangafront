@@ -1,0 +1,14 @@
+<header class="home-template__header">
+    <app-header></app-header>
+  </header>
+  <div class="home-template__layout">
+    <aside class="user-template__sidebar" *ngIf="exibirSidebar">
+      <app-sidebar></app-sidebar>
+    </aside>
+    <main class="home-template__content">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+  <footer class="home-template__footer">
+    <app-footer></app-footer>
+  </footer>

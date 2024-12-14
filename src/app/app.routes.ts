@@ -1,9 +1,11 @@
 import { Routes } from '@angular/router';
 import { Component } from '@angular/core';
 
+import { HomeTemplateComponent } from './components/template/home-template/home-template.component';
 import { AdminTemplateComponent } from './components/template/admin-template/admin-template.component';
 import { UserTemplateComponent } from './components/template/user-template/user-template.component';
 
+import { SelectProfileComponent } from './components/select-profile/select-profile.component';
 import { LoginComponent } from './components/login/login.component';
 
 import { UsuarioListComponent } from './components/usuario/usuario-list/usuario-list.component';
@@ -48,27 +50,37 @@ import { MangaFormComponent } from './components/manga/manga-form/manga-form.com
 import { mangaResolver } from './components/manga/resolver/manga-resolver';
 
 export const routes: Routes = [
+
     {
         path: '',
-        component: UserTemplateComponent,
-        title: 'e-manga commerce',
+        component: HomeTemplateComponent,
+        title: 'e-manga',
         children: [
-        
             {path: '', pathMatch: 'full', redirectTo: 'ecommerce'},
-            {path: 'ecommerce', component: MangaCardListComponent, title: 'Lista de Cards de Mangás'},
-    
+            {path: 'ecommerce', component: MangaCardListComponent, title: 'Lista de Cards de Mangás' },
+
+            {path: 'select-profile', component: SelectProfileComponent, title: 'Selecione o Perfil' },
+        ],
+    }, 
+    {
+        path: 'user',
+        component: UserTemplateComponent,
+        title: 'Perfil de Usuário',
+        children: [
+
+            {path: '', pathMatch: 'full', redirectTo: 'usuário'},
             {path: 'login', component: LoginComponent, title: 'Login'},
 
-            {path: 'usuarios',component: EstadoListComponent, title: 'Lista de Usuários'},
-            {path: 'usuarios/new',component: EstadoFormComponent, title: 'Novo Usuário'},
-            {path: 'usuarios/edit/:id', component: EstadoFormComponent, title:'Editar Usuário', resolve: {usuario: usuarioResolver}},
+            {path: 'usuario',component: EstadoListComponent, title: 'Lista de Usuários'},
+            {path: 'usuario/new',component: EstadoFormComponent, title: 'Novo Usuário'},
+            {path: 'usuario/edit/:id', component: EstadoFormComponent, title:'Editar Usuário', resolve: {usuario: usuarioResolver}},
         
         ],
     },
     {
         path: 'admin',
         component: AdminTemplateComponent,
-        title: 'Administração e-manga commerce',
+        title: 'Perfil de Administrativo',
         children: [
 
             {path: '', pathMatch: 'full', redirectTo: 'estados'},
@@ -111,6 +123,9 @@ export const routes: Routes = [
             {path: 'mangas/edit/:idManga', component: MangaFormComponent, title:'Editar Mangá', resolve: {manga: mangaResolver}}
             
         ]
-    }
+    },
+
+    // Rota coringa para páginas não encontradas
+    {path: '**', redirectTo: '/ecommerce', pathMatch: 'full' }
 
 ];

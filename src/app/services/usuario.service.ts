@@ -9,7 +9,7 @@ import { Perfil } from '../models/perfil.model';
 })
 export class UsuarioService {
     
-  private baseUrl = 'http://localhost:8080/usuarios';
+  private baseUrl = 'http://localhost:8080/usuario';
 
   constructor(private httpClient: HttpClient) { }
 

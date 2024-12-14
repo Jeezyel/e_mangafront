@@ -53,6 +53,28 @@ export class AuthService {
       );
     }
 
+    public loginUSER(username: string, senha: string): Observable<any> {
+        const params = {
+          login: username,
+          senha: senha,
+          perfil: 2 // USER
+        };
+      
+        return this.httpClient.post(`${this.baseUrl}`, params, { observe: 'response' }).pipe(
+          tap((res: any) => {
+            const authToken = res.headers.get('Authorization') ?? '';
+            if (authToken) {
+              this.setToken(authToken);
+              const usuarioLogado = res.body;
+              if (usuarioLogado) {
+                this.setUsuarioLogado(usuarioLogado);
+                this.usuarioLogadoSubject.next(usuarioLogado);
+              }
+            }
+          })
+        );
+    }
+
     /** Realiza o logout do usuário */
     public logout(): void {
         this.removeToken();

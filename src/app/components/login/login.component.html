@@ -1,35 +1,36 @@
 <div class="login-container">
-    <div class="login-box">
-      <img src="assets/icons/passkey.svg" alt="Ícone de login" class="login-icon" />
-      <h2 class="login-title">Bem-vindo ao e-manga</h2>
-      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-        <!-- Campo Username -->
-        <mat-form-field class="login-input" appearance="outline">
-          <mat-label>Usuário</mat-label>
-          <input matInput formControlName="username" placeholder="Digite seu usuário" required />
-          <mat-error *ngIf="loginForm.get('username')?.hasError('required')">
-            O nome de usuário é obrigatório.
-          </mat-error>
-        </mat-form-field>
-  
-        <!-- Campo Senha -->
-        <mat-form-field class="login-input" appearance="outline">
-          <mat-label>Senha</mat-label>
-          <input matInput type="password" formControlName="senha" placeholder="Digite sua senha" required />
-          <mat-error *ngIf="loginForm.get('senha')?.hasError('required')">
-            A senha é obrigatória.
-          </mat-error>
-        </mat-form-field>
-  
-        <!-- Botão Login -->
-        <button mat-raised-button class="login-button" type="submit" [disabled]="loginForm.invalid">
-          Entrar
-        </button>
-
-        <button mat-flat-button class="register-button" (click)="onRegister()">
-          Ainda não possui conta? Cadastre-se
-        </button>
+  <div class="login-box">
+    <img src="assets/icons/passkey.svg" alt="Ícone de login" class="login-icon" />
+    <h2 class="login-title">Bem-vindo ao e-manga</h2>
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
       
-      </form>
-    </div>
-</div>  
+      <!-- Campo Username -->
+      <mat-form-field class="login-input" appearance="outline">
+        <mat-label>Usuário</mat-label>
+        <input matInput formControlName="username" placeholder="Digite seu usuário" required />
+        <mat-error *ngIf="loginForm.get('username')?.hasError('required')">
+          O nome de usuário é obrigatório.
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Campo Senha -->
+      <mat-form-field class="login-input" appearance="outline">
+        <mat-label>Senha</mat-label>
+        <input matInput type="password" formControlName="senha" placeholder="Digite sua senha" required />
+        <mat-error *ngIf="loginForm.get('senha')?.hasError('required')">
+          A senha é obrigatória.
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Botão Login -->
+      <button mat-raised-button class="login-button" type="submit" [disabled]="loginForm.invalid">
+        Entrar
+      </button>
+
+      <!-- Botão Cadastro -->
+      <button mat-flat-button class="register-button" type="button" (click)="onRegister()">
+        Ainda não possui conta? Cadastre-se
+      </button>
+    </form>
+  </div>
+</div>
