@@ -1,4 +1,4 @@
-.admin-template__header {
+.user-template__header {
   background-color: #F7F1E3;
   color: #333;
   padding: 10px;
@@ -6,14 +6,14 @@
   box-shadow: 0 5px 5px rgba(0, 0, 0, 0.1);
 }
 
-.admin-template__layout {
+.user-template__layout {
   display: flex;
   flex-direction: row;
   background-color: #FFF5E1;
   min-height: calc(100vh - 120px);
 }
 
-.admin-template__content {
+.user-template__content {
   flex: 1;
   padding: 20px;
   background-color: #FFF;
@@ -22,11 +22,11 @@
   transition: background-color 0.3s ease;
 }
 
-.admin-template__content:hover {
+.user-template__content:hover {
   background-color: #FFF;
 }
 
-.admin-template__footer {
+.user-template__footer {
   text-align: center;
   background-color: #F7F1E3;
   color: #333;
