@@ -50,6 +50,7 @@ export class MangaFormComponent implements OnInit {
   formatos: Formato [] = [];
   idiomas: Idioma [] = [];
   classificacaoIndicativas: ClassificacaoIndicativa[] = [];
+  
   fileName: string = '';
   selectedFile: File | null = null; 
   imagePreview: string | ArrayBuffer | null = null;
