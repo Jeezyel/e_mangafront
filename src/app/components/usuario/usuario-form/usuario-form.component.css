@@ -1,0 +1,115 @@
+mat-toolbar {
+    color: #333;
+    padding: 10px;
+    background-color: #F7F1E3;
+    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    padding: 40px 40px;
+    margin-bottom: 20px;
+}
+
+.form-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+    background-color: #FFF;
+    border-radius: 8px;
+    box-shadow: 0px 2px 2px 2px rgba(0, 0, 0, 0.1);
+}
+
+.toolbar-title {
+    font-size: 1.5rem;
+    color: #333;
+    flex: 1;
+    text-align: center;
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+    margin-bottom: 0px;
+}
+
+.full-width-input {
+    width: 100%;
+    background-color: #F7F1E3;
+    border-radius: 8px;
+    padding: 0px;
+    font-family: Arial, sans-serif;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.full-width-input:focus {
+    background-color: #FFE4C4;
+    outline: none;
+    border: 2px solid #FFDAB9;
+}
+
+.button[mat-raised-button] {
+    width: 120px;
+    padding: 10px 15px;
+    background-color: #FFE4C4;
+    color: #000;
+    border-radius: 8px;
+    font-weight: bold;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+  
+.button:hover {
+    background-color: #FFDAB9;
+}
+
+button[mat-raised-button]:not(:last-child) {
+    margin-right: 1rem;
+}
+
+mat-card {
+    max-width: 800px;
+    margin: 2rem auto;
+    background-color: #FFF;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+mat-card-actions {
+    display: flex;
+    justify-content: flex-end;
+}
+
+@media (max-width: 600px) {
+    .form-container {
+      padding: 10px;
+    }
+  
+    .toolbar-title {
+      font-size: 1.2rem;
+    }
+  
+    .button {
+      font-size: 0.9rem;
+    }
+}
+
+img {
+    width: 100%;
+    height: 240px;
+    object-fit: cover;
+}
+
+.centered-text {
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.container {
+    padding: 20px;
+}
+
+.responsive-grid {
+    display: grid;
+    /* grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); */
+    gap: 20px;
+}

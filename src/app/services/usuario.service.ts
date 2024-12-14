@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, tap } from 'rxjs';
 import { Usuario } from '../models/usuario.model';
+import { Perfil } from '../models/perfil.model';
 
 @Injectable({
   providedIn: 'root'
@@ -11,6 +12,11 @@ export class UsuarioService {
   private baseUrl = 'http://localhost:8080/usuarios';
 
   constructor(private httpClient: HttpClient) { }
+
+  // Método para buscar classificações indicativas
+  findPerfil(): Observable<Perfil[]> {
+    return this.httpClient.get<Perfil[]>(`${this.baseUrl}/perfil`);
+  }
 
   // Método para buscar todos os mangás com paginação
   findAll(page?: number, size?: number): Observable<Usuario[]> {

@@ -1,1 +1,93 @@
-<p>usuario-list works!</p>
+<mat-toolbar>
+    <div class="flex-container">
+        <span class="toolbar-title">Controle de Mangás</span>
+        <button mat-fab color="accent" routerLink="./new">
+            <mat-icon>add</mat-icon>
+        </button>
+    </div>
+</mat-toolbar>
+
+<table mat-table [dataSource]="mangas" class="mat-elevation-z8">
+
+    <!-- Id Column -->
+    <ng-container matColumnDef="idManga">
+        <th mat-header-cell *matHeaderCellDef> No. </th>
+        <td mat-cell *matCellDef="let manga"> {{manga.idManga}} </td>
+    </ng-container>
+
+    <!-- Nome Column -->
+    <ng-container matColumnDef="nome">
+        <th mat-header-cell *matHeaderCellDef> Nome </th>
+        <td mat-cell *matCellDef="let manga"> {{manga.nome}} </td>
+    </ng-container>
+
+    <!-- Valor Column -->
+    <ng-container matColumnDef="valor">
+        <th mat-header-cell *matHeaderCellDef> Preço </th>
+        <td mat-cell *matCellDef="let manga"> {{manga.valor | currency:'BRL':'symbol':'1.2-2'}} </td>
+    </ng-container>
+    
+    <!-- Editora Column -->
+    <ng-container matColumnDef="editora">
+        <th mat-header-cell *matHeaderCellDef> Editora </th>
+        <td mat-cell *matCellDef="let manga"> {{manga.editora}} </td>
+    </ng-container>
+
+    <!-- Genero Column -->
+    <ng-container matColumnDef="genero">
+        <th mat-header-cell *matHeaderCellDef> Genero </th>
+        <td mat-cell *matCellDef="let manga"> {{manga.genero}} </td>
+    </ng-container>
+    
+    <!-- Formato Column -->
+    <ng-container matColumnDef="formato">
+        <th mat-header-cell *matHeaderCellDef> Formato </th>
+        <td mat-cell *matCellDef="let manga"> {{manga.formato}} </td>
+    </ng-container>
+
+    <!-- Idioma Column -->
+    <ng-container matColumnDef="idioma">
+        <th mat-header-cell *matHeaderCellDef> Idioma </th>
+        <td mat-cell *matCellDef="let manga"> {{manga.idioma}} </td>
+    </ng-container>
+
+    <!-- Classificacao Indicativa Column -->
+    <ng-container matColumnDef="classificacaoIndicativa">
+        <th mat-header-cell *matHeaderCellDef> Classificação indicativa </th>
+        <td mat-cell *matCellDef="let manga"> {{manga.classificacaoIndicativa}} </td>
+    </ng-container>
+    
+    <!-- Estoque Column -->
+    <ng-container matColumnDef="estoque">
+        <th mat-header-cell *matHeaderCellDef> Estoque </th>
+        <td mat-cell *matCellDef="let manga"> {{manga.estoque}} </td>
+    </ng-container>
+    
+    <!-- Acao Column -->
+    <ng-container matColumnDef="acao">
+        <th mat-header-cell *matHeaderCellDef> Ação </th>
+        <td mat-cell *matCellDef="let manga"> 
+            <button mat-icon-button
+                color="primary"
+                [routerLink]="['edit', manga.idManga]">
+                <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button
+                color="warn"
+                (click)="deletar(manga.idManga)">
+                <mat-icon>delete</mat-icon>
+            </button>
+        </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>
+
+<mat-paginator 
+    [pageSizeOptions]="[5, 10, 15, 20]"
+    [pageSize]="size"
+    [length]="totalRecords"
+    (page)="paginar($event)">
+</mat-paginator>
+

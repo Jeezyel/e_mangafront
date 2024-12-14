@@ -1,1 +1,130 @@
-<p>usuario-form works!</p>
+<mat-toolbar>
+    <div class="toolbar-title">Cadastro de Usuário</div>
+</mat-toolbar>
+<div class="form-container">
+    <mat-card>
+        <mat-card-content>
+            <form [formGroup]="formGroup">
+
+                <mat-form-field appearance="fill" class="full-width-input">
+                    <mat-label>Nome Completo</mat-label>
+                    <input matInput type="text" formControlName="nome" #inputNome>
+                    <mat-error *ngIf="formGroup.get('nome') 
+                                   && formGroup.get('nome')?.invalid
+                                   && formGroup.get('nome')?.touched">
+                        <!-- erros do front-end -->
+                        {{getErrorMessage('nome', formGroup.get('nome')?.errors)}}
+                        <!-- erros do back-end -->
+                        @if(formGroup.get('nome')?.hasError('apiError')) {
+                           <span>{{formGroup.get('nome')?.getError('apiError')}}</span> 
+                        }
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="fill" class="full-width-input">
+                    <mat-label>E-mail</mat-label>
+                    <input matInput type="text" formControlName="email" #inputemail>
+                    <mat-error *ngIf="formGroup.get('email') 
+                                   && formGroup.get('email')?.invalid
+                                   && formGroup.get('email')?.touched">
+                        <!-- erros do front-end -->
+                        {{getErrorMessage('email', formGroup.get('email')?.errors)}}
+                        <!-- erros do back-end -->
+                        @if(formGroup.get('email')?.hasError('apiError')) {
+                           <span>{{formGroup.get('email')?.getError('apiError')}}</span> 
+                        }
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="fill" class="full-width-input">
+                    <mat-label>Telefone</mat-label>
+                    <input matInput type="text" formControlName="telefone" #inputtelefone>
+                    <mat-error *ngIf="formGroup.get('telefone') 
+                                   && formGroup.get('telefone')?.invalid
+                                   && formGroup.get('telefone')?.touched">
+                        <!-- erros do front-end -->
+                        {{getErrorMessage('telefone', formGroup.get('telefone')?.errors)}}
+                        <!-- erros do back-end -->
+                        @if(formGroup.get('telefone')?.hasError('apiError')) {
+                           <span>{{formGroup.get('telefone')?.getError('apiError')}}</span> 
+                        }
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="fill" class="full-width-input">
+                    <mat-label>Endereco</mat-label>
+                    <input matInput type="text" formControlName="endereco" #inputendereco>
+                    <mat-error *ngIf="formGroup.get('endereco') 
+                                   && formGroup.get('endereco')?.invalid
+                                   && formGroup.get('endereco')?.touched">
+                        <!-- erros do front-end -->
+                        {{getErrorMessage('endereco', formGroup.get('endereco')?.errors)}}
+                        <!-- erros do back-end -->
+                        @if(formGroup.get('endereco')?.hasError('apiError')) {
+                           <span>{{formGroup.get('endereco')?.getError('apiError')}}</span> 
+                        }
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="fill" class="full-width-input">
+                    <mat-label>Perfil</mat-label>
+                    <mat-select formControlName="perfil">
+                        @for (perfil of perfils; track perfil.id) {
+                        <mat-option [value]="perfil">
+                            {{perfil.label}}
+                        </mat-option>
+                        }
+                    </mat-select>
+                    <mat-error *ngIf="formGroup.get('perfil')?.hasError('required')">
+                        Classificação é obrigatória.
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="fill" class="full-width-input">
+                    <mat-label>Username</mat-label>
+                    <input matInput type="text" formControlName="username" #inputUsername>
+                    <mat-error *ngIf="formGroup.get('username') 
+                                   && formGroup.get('username')?.invalid
+                                   && formGroup.get('username')?.touched">
+                        <!-- erros do front-end -->
+                        {{getErrorMessage('username', formGroup.get('username')?.errors)}}
+                        <!-- erros do back-end -->
+                        @if(formGroup.get('username')?.hasError('apiError')) {
+                           <span>{{formGroup.get('username')?.getError('apiError')}}</span> 
+                        }
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="fill" class="full-width-input">
+                    <mat-label>Senha Completo</mat-label>
+                    <input matInput type="text" formControlName="senha" #inputSenha>
+                    <mat-error *ngIf="formGroup.get('senha') 
+                                   && formGroup.get('senha')?.invalid
+                                   && formGroup.get('senha')?.touched">
+                        <!-- erros do front-end -->
+                        {{getErrorMessage('senha', formGroup.get('senha')?.errors)}}
+                        <!-- erros do back-end -->
+                        @if(formGroup.get('senha')?.hasError('apiError')) {
+                           <span>{{formGroup.get('senha')?.getError('apiError')}}</span> 
+                        }
+                    </mat-error>
+                </mat-form-field>
+            
+            </form>
+        </mat-card-content>
+        <mat-card-actions>    
+            <button mat-raised-button routerLink="../">
+                Cancelar
+            </button>
+
+            <button mat-raised-button *ngIf="formGroup?.get('id')?.value" color="warn" (click)="excluir()"
+                [disabled]="formGroup.invalid">
+                Excluir
+            </button>
+
+            <button mat-raised-button color="primary" (click)="salvar()" >
+                Salvar
+            </button>
+        </mat-card-actions>    
+    </mat-card>        
+</div>

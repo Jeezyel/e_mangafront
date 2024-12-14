@@ -3,7 +3,12 @@ import { Component } from '@angular/core';
 
 import { AdminTemplateComponent } from './components/template/admin-template/admin-template.component';
 import { UserTemplateComponent } from './components/template/user-template/user-template.component';
+
 import { LoginComponent } from './components/login/login.component';
+
+import { UsuarioListComponent } from './components/usuario/usuario-list/usuario-list.component';
+import { UsuarioFormComponent } from './components/usuario/usuario-form/usuario-form.component';
+import { usuarioResolver } from './components/usuario/resolver/usuario-resolver';
 
 import { EstadoListComponent } from './components/estado/estado-list/estado-list.component';
 import { EstadoFormComponent } from './components/estado/estado-form/estado-form.component';
@@ -48,8 +53,16 @@ export const routes: Routes = [
         component: UserTemplateComponent,
         title: 'e-manga commerce',
         children: [
+        
             {path: '', pathMatch: 'full', redirectTo: 'ecommerce'},
             {path: 'ecommerce', component: MangaCardListComponent, title: 'Lista de Cards de Mangás'},
+    
+            {path: 'login', component: LoginComponent, title: 'Login'},
+
+            {path: 'usuarios',component: EstadoListComponent, title: 'Lista de Usuários'},
+            {path: 'usuarios/new',component: EstadoFormComponent, title: 'Novo Usuário'},
+            {path: 'usuarios/edit/:id', component: EstadoFormComponent, title:'Editar Usuário', resolve: {usuario: usuarioResolver}},
+        
         ],
     },
     {
