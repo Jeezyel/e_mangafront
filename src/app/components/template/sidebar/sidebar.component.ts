@@ -19,14 +19,15 @@ export class SidebarComponent implements OnInit {
   ];
 
   userRoutes = [
+    { path: 'ecommerce', label: 'Catálogo', icon: 'shopping_cart' },
     { path: 'usuario', label: 'Usuário', icon: 'person' },
   ];
 
   adminRoutes = [
     { path: 'estados', label: 'Estados', icon: 'map' },
     { path: 'municipios', label: 'Municípios', icon: 'location_city' },
-    { path: 'enderecos', label: 'Endereços', icon: 'place' },
-    { path: 'telefones', label: 'Telefones', icon: 'phone' },
+    //{ path: 'enderecos', label: 'Endereços', icon: 'place' },
+    //{ path: 'telefones', label: 'Telefones', icon: 'phone' },
     { path: 'editoras', label: 'Editoras', icon: 'library_books' },
     { path: 'formatos', label: 'Formatos', icon: 'view_module' },
     { path: 'generos', label: 'Gêneros', icon: 'category' },

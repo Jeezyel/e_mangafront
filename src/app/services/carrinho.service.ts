@@ -28,6 +28,7 @@ export class CarrinhoService {
       carrinhoAtual.push(itemCarrinho);
     }
 
+    console.log('Carrinho atualizado:', carrinhoAtual);
     this.carrinhoSubject.next(carrinhoAtual);
     this.atualizarArmazenamentoLocal();
   }

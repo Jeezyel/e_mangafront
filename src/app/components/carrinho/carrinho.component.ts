@@ -5,6 +5,7 @@ import { NgFor, NgIf, CommonModule } from '@angular/common';
 import { ItemCarrinho } from '../../models/item-carrinho.model';
 import { CarrinhoService } from '../../services/carrinho.service';
 import { AuthService } from '../../services/auth.service';
+import { MangaService } from '../../services/manga.service';
 
 @Component({
   selector: 'app-carrinho',
@@ -19,6 +20,7 @@ export class CarrinhoComponent implements OnInit {
 
   constructor(
     private carrinhoService: CarrinhoService,
+    public mangaService: MangaService,
     private authService: AuthService,
     private router: Router )
   {  }

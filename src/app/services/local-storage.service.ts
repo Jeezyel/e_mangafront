@@ -9,10 +9,11 @@ export class LocalStorageService {
 
     getItem(key: string): any {
         const item = localStorage.getItem(key);
-        return item ? JSON.parse(item) : null; 
+        return item ? JSON.parse(item) : null;
     }
 
     setItem(key: string, value: any): void {
+        console.log(`Armazenando no localStorage [${key}]:`, value); // Diagnóstico
         localStorage.setItem(key, JSON.stringify(value));
     }
 

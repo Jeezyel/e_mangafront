@@ -55,8 +55,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   onLogout(): void {
     localStorage.removeItem('token'); // Remove o token de autenticação
     this.authService.logout(); // Chama o logout no AuthService
-    this.router.navigate(['/admin/login']).then(() => {
-      console.log('Redirecionado para /admin/login');
+    this.router.navigate(['/select-profile']).then(() => {
+      console.log('Redirecionado para /select-profile');
     }).catch((err) => {
       console.error('Erro no redirecionamento:', err);
     });

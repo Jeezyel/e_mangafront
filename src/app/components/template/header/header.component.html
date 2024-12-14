@@ -14,11 +14,17 @@
     <mat-icon>shopping_cart</mat-icon>
   </button>
 
+  <!-- Botão para o perfil do usuário -->
+  <button *ngIf="usuarioLogado" mat-icon-button routerLink="/user" aria-label="Ir para o perfil do usuário">
+    <mat-icon>person</mat-icon>
+  </button>
+  
+  <!-- Nome do usuário logado -->
+  <span class="username">{{ usuarioLogado?.username }}</span>  
+
   <!-- Botão de logout -->
   <button mat-icon-button (click)="onLogout()">
     <mat-icon>exit_to_app</mat-icon>
   </button>
 
-  <!-- Nome do usuário logado -->
-  <span class="username">{{ usuarioLogado?.username }}</span>
 </mat-toolbar>

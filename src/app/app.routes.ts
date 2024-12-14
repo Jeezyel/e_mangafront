@@ -74,6 +74,8 @@ export const routes: Routes = [
             {path: '', pathMatch: 'full', redirectTo: 'usuário'},
             {path: 'login', component: LoginComponent, title: 'Login'},
 
+            {path: 'ecommerce', component: MangaCardListComponent, title: 'Lista de Cards de Mangás' },
+
             {path: 'usuario',component: UsuarioListComponent, title: 'Lista de Usuários'},
             {path: 'usuario/new',component: UsuarioFormComponent, title: 'Novo Usuário'},
             {path: 'usuario/edit/:id', component: UsuarioFormComponent, title:'Editar Usuário', resolve: {usuario: usuarioResolver}},

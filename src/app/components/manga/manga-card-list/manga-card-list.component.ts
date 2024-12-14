@@ -77,7 +77,8 @@ export class MangaCardListComponent implements OnInit {
       id: card.idManga,
       nome: card.nome,
       preco: card.valor,
-      quantidade: 1
+      quantidade: 1,
+      nomeImagem: card.imageUrl
     });
   }
 
