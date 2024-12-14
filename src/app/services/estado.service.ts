@@ -13,7 +13,16 @@ export class EstadoService {
 
   //A paginação fica aqui
   findAll(page: number, size: number): Observable<Estado[]> {
-    return this.httpClient.get<Estado[]>(`${this.baseUrl}?page=${page}&size=${size}`);
+    let params = {};
+        if (page !== undefined && size !== undefined) {
+          params = {
+            page: page.toString(),
+            size: size.toString()
+          };
+        }
+    
+        console.log(params);
+        return this.httpClient.get<Estado[]>(this.baseUrl, { params });
   }
 
   findById(id: number): Observable<Estado> {

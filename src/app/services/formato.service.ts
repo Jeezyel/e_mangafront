@@ -13,7 +13,16 @@ export class FormatoService {
 
   //A paginação fica aqui
   findAll(page: number, size: number): Observable<Formato[]> {
-    return this.httpClient.get<Formato[]>(`${this.baseUrl}?page=${page}&size=${size}`);
+    let params = {};
+            if (page !== undefined && size !== undefined) {
+              params = {
+                page: page.toString(),
+                size: size.toString()
+              };
+            }
+        
+            console.log(params);
+            return this.httpClient.get<Formato[]>(this.baseUrl, { params });
   }
 
   findById(idFormato: number): Observable<Formato> {

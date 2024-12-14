@@ -8,6 +8,8 @@ import { MatTableModule } from '@angular/material/table';
 import { RouterModule } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 
+import { PageEvent } from '@angular/material/paginator';
+import { MatPaginatorModule } from '@angular/material/paginator';
 import { Idioma } from '../../../models/idioma.model';
 import { IdiomaService } from '../../../services/idioma.service';
 
@@ -15,6 +17,7 @@ import { IdiomaService } from '../../../services/idioma.service';
   selector: 'app-idioma-list',
   standalone: true,
   imports: [
+    MatPaginatorModule,
     NgFor, 
     MatToolbarModule, 
     MatIconModule, 
@@ -32,8 +35,8 @@ export class IdiomaListComponent implements OnInit {
 
   // Variáveis para paginação
   totalRecords = 0;
-  page: number = 0; // página atual
-  size: number = 50; // número de itens por página
+  size = 10;
+  page = 0;
 
   constructor(private idiomaService: IdiomaService, private route: ActivatedRoute) {}
 
@@ -45,6 +48,9 @@ export class IdiomaListComponent implements OnInit {
       }
     });
     this.loadIdiomas(this.page, this.size);
+    this.idiomaService.count().subscribe(
+      data => { this.totalRecords = data }
+    );
   }
 
   loadIdiomas(page: number, size: number): void {
@@ -65,5 +71,11 @@ export class IdiomaListComponent implements OnInit {
       });
     }
   }
+
+  paginar(event: PageEvent): void {
+    this.page = event.pageIndex;
+    this.size = event.pageSize;
+    this.ngOnInit();
+  } 
 }
 

@@ -40,6 +40,8 @@ export class MangaService {
         size: size.toString()
       };
     }
+
+    console.log(params);
     return this.httpClient.get<Manga[]>(this.baseUrl, { params });
   }
 

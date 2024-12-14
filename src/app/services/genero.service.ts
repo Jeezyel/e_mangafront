@@ -14,7 +14,16 @@ export class GeneroService {
 
   //A paginação fica aqui
   findAll(page: number, size: number): Observable<Genero[]> {
-    return this.httpClient.get<Genero[]>(`${this.baseUrl}?page=${page}&size=${size}`);
+    let params = {};
+            if (page !== undefined && size !== undefined) {
+              params = {
+                page: page.toString(),
+                size: size.toString()
+              };
+            }
+        
+            console.log(params);
+            return this.httpClient.get<Genero[]>(this.baseUrl, { params });
   }
 
   findById(idMangaGenero: number): Observable<Genero> {
