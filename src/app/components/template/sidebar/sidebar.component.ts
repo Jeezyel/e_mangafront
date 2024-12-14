@@ -24,6 +24,7 @@ export class SidebarComponent implements OnInit {
   ];
 
   adminRoutes = [
+    { path: 'ecommerce', label: 'Catálogo', icon: 'shopping_cart' },
     { path: 'estados', label: 'Estados', icon: 'map' },
     { path: 'municipios', label: 'Municípios', icon: 'location_city' },
     //{ path: 'enderecos', label: 'Endereços', icon: 'place' },

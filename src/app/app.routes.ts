@@ -91,6 +91,8 @@ export const routes: Routes = [
             {path: '', pathMatch: 'full', redirectTo: 'estados'},
             {path: 'login', component: LoginComponent, title: 'Login'},
 
+            {path: 'ecommerce', component: MangaCardListComponent, title: 'Lista de Cards de Mangás' },
+
             {path: 'estados',component: EstadoListComponent, title: 'Lista de Estados'},
             {path: 'estados/new',component: EstadoFormComponent, title: 'Novo Estado'},
             {path: 'estados/edit/:id', component: EstadoFormComponent, title:'Editar Estado', resolve: {estado: estadoResolver}},

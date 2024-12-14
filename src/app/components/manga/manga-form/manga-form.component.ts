@@ -181,7 +181,7 @@ export class MangaFormComponent implements OnInit {
             next: () => {
                 this.uploadImage(data.id);
                 this.mangaService.findAll(page, size); // Atualiza a listagem
-                this.router.navigate(['/admin/mangas'], { queryParams: { success: true } });
+                this.router.navigate(['/admin/ecommerce'], { queryParams: { success: true } });
             },
             error: (error: HttpErrorResponse) => {
                 console.error('Erro ao salvar:', error);

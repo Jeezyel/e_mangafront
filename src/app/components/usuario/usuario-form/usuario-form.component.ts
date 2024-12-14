@@ -90,11 +90,11 @@ export class UsuarioFormComponent implements OnInit {
       if (this.idUsuario) {
         usuario.id = this.idUsuario;
         this.usuarioService.update(usuario).subscribe(() => {
-          this.router.navigate(['/usuarios']);
+          this.router.navigate(['/usuario']);
         });
       } else {
         this.usuarioService.create(usuario).subscribe(() => {
-          this.router.navigate(['/usuarios']);
+          this.router.navigate(['/usuario']);
         });
       }
     }
@@ -103,7 +103,7 @@ export class UsuarioFormComponent implements OnInit {
   excluir(): void {
     if (this.idUsuario) {
       this.usuarioService.delete(this.idUsuario).subscribe(() => {
-        this.router.navigate(['/usuarios']);
+        this.router.navigate(['/usuario']);
       });
     }
   }

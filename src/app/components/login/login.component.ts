@@ -68,7 +68,7 @@ export class LoginComponent implements OnInit {
   }
   
   onRegister() {
-    this.router.navigate(['/usuário']);
+    this.router.navigate(['/user/usuario/new']);
   }
 
   showSnackbarTopPosition(content: string) {
