@@ -8,7 +8,7 @@ export class Usuario {
     email!: string;
     telefone!: Telefone;
     endereco!: Endereco;
-    perfil!: Perfil; 
+    perfil!: Perfil[]; 
     username!: string;
-    senha!: number;
+    senha!: string;
 }

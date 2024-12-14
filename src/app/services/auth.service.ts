@@ -4,7 +4,6 @@ import { BehaviorSubject, Observable, tap } from "rxjs";
 import { Usuario } from "../models/usuario.model";
 import { LocalStorageService } from "./local-storage.service";
 import { JwtHelperService } from "@auth0/angular-jwt";
-
 @Injectable({
     providedIn: 'root'
 })
@@ -119,5 +118,17 @@ export class AuthService {
             return true;
         }
     }
+
+  // Novo método: Verifica se o usuário logado é admin
+  isAdmin(): boolean {
+    const usuario = this.usuarioLogadoSubject.value;
+    return usuario ? usuario.perfil.some((perfil) => perfil.id === 1) : false;
+  }
+
+  // Novo método: Obtém o ID do usuário logado
+  getLoggedUserId(): number | null {
+    const usuario = this.usuarioLogadoSubject.value;
+    return usuario ? usuario.id : null;
+  }
 
 }

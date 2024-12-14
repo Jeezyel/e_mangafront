@@ -1,237 +1,110 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
-import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { MatSelectModule } from '@angular/material/select';
-import { Location, NgFor, NgIf } from '@angular/common';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UsuarioService } from '../../../services/usuario.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatCardModule } from '@angular/material/card';
-import { HttpErrorResponse } from '@angular/common/http';
-import { MatIconModule } from '@angular/material/icon';
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 import { Usuario } from '../../../models/usuario.model';
-import { UsuarioService } from '../../../services/usuario.service';
-import { Endereco } from '../../../models/endereco.model';
-import { EnderecoService } from '../../../services/endereco.service';
-import { Telefone } from '../../../models/telefone.model';
-import { TelefoneService } from '../../../services/telefone.service';
-import { Perfil } from '../../../models/perfil.model';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-usuario-form',
   standalone: true,
   imports: [
-    NgIf, 
-    ReactiveFormsModule, 
-    MatFormFieldModule,
-    MatInputModule, 
-    MatButtonModule, 
-    MatCardModule, 
+    BrowserModule,
+    BrowserAnimationsModule,
+    FormsModule,
+    ReactiveFormsModule,
     MatToolbarModule,
-    RouterModule, 
-    MatSelectModule, 
-    MatIconModule
+    MatCardModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatTableModule,
+    MatPaginatorModule
   ],
   templateUrl: './usuario-form.component.html',
   styleUrls: ['./usuario-form.component.css']
 })
 export class UsuarioFormComponent implements OnInit {
-  
-  id: number = 0;
-  formGroup: FormGroup;
+  formGroup!: FormGroup;
+  idUsuario?: number;
+  isAdmin: boolean = false;
 
-  telefones: Telefone [] = [];
-  enderecos: Endereco [] = [];
-  perfils: Perfil[] = [];
-  
-  constructor( 
-    private formBuilder: FormBuilder,
-
+  constructor(
+    private fb: FormBuilder,
     private usuarioService: UsuarioService,
-    private telefoneService: TelefoneService,
-    private enderecoService: EnderecoService,
-    
+    private authService: AuthService,
     private router: Router,
-    private activatedRoute: ActivatedRoute,
-    private location: Location
-  ) {
-    const usuario: Usuario = activatedRoute.snapshot.data['usuario'];
-    const editora: Telefone = activatedRoute.snapshot.data['telefone'];
-    const genero: Endereco = activatedRoute.snapshot.data['endereco'];
-    const perfil: Perfil = activatedRoute.snapshot.data['perfil'];
-    
-    this.formGroup = this.formBuilder.group({
-      id: [usuario?.id || null],
-      nome: [usuario?.nome || null, [Validators.required]],
-      email: [usuario?.email || null, [Validators.required]],
-      telefone: [Array.isArray(usuario?.telefone) 
-        ? usuario.telefone.map((t: Telefone) => t.idTelefone) 
-        : [usuario?.telefone?.idTelefone],[Validators.required]],
-      endereco: [Array.isArray(usuario?.endereco) 
-        ? usuario.endereco.map((e: Endereco) => e.idEndereco) 
-        : [usuario?.endereco?.idEndereco],[Validators.required]],  
-      perfil: [usuario?.perfil?.label || null, [Validators.required]],
-      username: [usuario?.username || null, [Validators.required]],
-      senha: [usuario?.senha || null, [Validators.required]]
-  });
-  }
+    private route: ActivatedRoute
+  ) {}
 
   ngOnInit(): void {
-    this.getTelefoneForSelect(),
-    this.getEnderecoForSelect(),
-    this.usuarioService.findPerfil().subscribe(data => {
-      this.perfils = data;
+    this.initForm();
+    this.idUsuario = this.route.snapshot.params['id'];
+    this.isAdmin = this.authService.isAdmin();
+
+    if (this.idUsuario) {
+      this.usuarioService.findById(this.idUsuario).subscribe((usuario) => {
+        this.populateForm(usuario);
+      });
+    }
+  }
+
+  initForm(): void {
+    this.formGroup = this.fb.group({
+      nome: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      username: ['', Validators.required],
+      senha: ['', Validators.required]
     });
   }
 
-  getTelefoneForSelect(): void{
-    this.telefoneService.findAll(0, 100).subscribe({
-      next: (data) => {
-        console.log('Telefones carregados:', data); // Verifica os estados carregados.
-        this.telefones = data;
-      },
-      error: (error: HttpErrorResponse) => {
-        console.error('Erro ao carregar telefones:', error);
-      }
-    });
-  }
-
-  getEnderecoForSelect(): void{
-    this.enderecoService.findAll(0, 100).subscribe({
-      next: (data) => {
-        console.log('Enderecos carregados:', data); // Verifica os estados carregados.
-        this.enderecos = data;
-      },
-      error: (error: HttpErrorResponse) => {
-        console.error('Erro ao carregar generos:', error);
-      }
+  populateForm(usuario: Usuario): void {
+    this.formGroup.patchValue({
+      nome: usuario.nome,
+      email: usuario.email,
+      username: usuario.username,
+      senha: '' // Senha não preenchida ao editar
     });
   }
 
   salvar(): void {
-
-    const page = 0; // Página inicial
-    const size = 10; // Número de itens por página
-    
-    this.formGroup.markAllAsTouched();
-    if (this.formGroup.valid) {
-        const usuario = this.formGroup.value;
-
-        const data = {
-            id: usuario.id || null,
-            nome: usuario.nome,
-            email: usuario.email,
-            telefone: Array.isArray(usuario.telefone) 
-              ? usuario.telefone.map((t: any)=>t.idTelefone) 
-              : [usuario.telefone?.idTelefone], // Telefone como array
-            endereco: Array.isArray(usuario.endereco) 
-              ? usuario.endereco.map((e: any)=>e.idEndereco) 
-              : [usuario.endereco?.idEndereco], // Endereco como array
-            perfil: usuario.perfil?.label, // ID da classificação indicativa
-            username: usuario.username,
-            senha: usuario.senha
-        };
-
-        console.log('Payload enviado:', data);
-
-        const operacao = usuario.id == null
-            ? this.usuarioService.create(data)
-            : this.usuarioService.update({ ...data, id: usuario.id });
-
-        operacao.subscribe({
-            next: () => {
-                this.usuarioService.findAll(page, size); // Atualiza a listagem
-                this.router.navigate(['/admin/usuarios'], { queryParams: { success: true } });
-            },
-            error: (error: HttpErrorResponse) => {
-                console.error('Erro ao salvar:', error);
-                this.tratarErros(error);
-            }
-        });
-    }
-  }
-  
-  voltarPagina() {
-    this.location.back();
-  }
-
-  tratarErros(error: HttpErrorResponse): void {
-    if (error.status === 400 && error.error?.errors) {
-      error.error.errors.forEach((validationError: any) => {
-        const formControl = this.formGroup.get(validationError.fieldName);
-        if (formControl) {
-          formControl.setErrors({ apiError: validationError.message });
-        }
-      });
-    } else if (error.status < 400) {
-      alert(error.error?.message || 'Erro genérico no envio do formulário.');
-    } else if (error.status >= 500) {
-      alert('Erro interno do servidor. Por favor, tente novamente mais tarde.');
-    }
-  }
-
-  excluir() {
     if (this.formGroup.valid) {
       const usuario = this.formGroup.value;
-      if (usuario.id != null) {
-        this.usuarioService.delete(usuario).subscribe({
-          next: () => {
-            this.router.navigateByUrl('/usuarios');
-          },
-          error: (err) => {
-            console.log('Erro ao Excluir' + JSON.stringify(err));
-          }
+
+      if (!this.isAdmin) {
+        usuario.perfis = [{ id: 2, label: 'USER' }]; // Perfil USER
+      }
+
+      if (this.idUsuario) {
+        usuario.id = this.idUsuario;
+        this.usuarioService.update(usuario).subscribe(() => {
+          this.router.navigate(['/usuarios']);
+        });
+      } else {
+        this.usuarioService.create(usuario).subscribe(() => {
+          this.router.navigate(['/usuarios']);
         });
       }
     }
   }
 
-  errorMessages: { [controlName: string]: { [errorName: string]: string } } = {
-    nome: {
-      required: 'O nome deve ser informado.',
-      minlength: 'O nome deve conter ao menos 2 letras.',
-      maxlength: 'O nome deve conter no máximo 10 letras.',
-      apiError: ' '
-    },
-    email: {
-      required: 'A descricao deve ser informada.',
-      apiError: ' '
-    },
-    telefone: {
-      required: 'A descricao deve ser informada.',
-      apiError: ' '
-    },
-    endereco: {
-      required: 'A descricao deve ser informada.',
-      apiError: ' '
-    },
-    perfil: {
-      required: 'A descricao deve ser informada.',
-      apiError: ' '
-    },
-    username: {
-      required: 'O estoque deve ser informado.',
-      apiError: ' '
-    },
-    senha: {
-      required: 'A descricao deve ser informada.',
-      apiError: ' '
+  excluir(): void {
+    if (this.idUsuario) {
+      this.usuarioService.delete(this.idUsuario).subscribe(() => {
+        this.router.navigate(['/usuarios']);
+      });
     }
   }
-
-  getErrorMessage(controlName: string, errors: ValidationErrors | null | undefined): string {
-    if (!errors) {
-      return '';
-    }
-    for (const errorName in errors) {
-      if (errors.hasOwnProperty(errorName) && this.errorMessages[controlName][errorName]) {
-        return this.errorMessages[controlName][errorName];
-      }
-    }
-
-    return 'invalid field';
-  }
-
 }
