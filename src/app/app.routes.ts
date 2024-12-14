@@ -71,9 +71,9 @@ export const routes: Routes = [
             {path: '', pathMatch: 'full', redirectTo: 'usuário'},
             {path: 'login', component: LoginComponent, title: 'Login'},
 
-            {path: 'usuario',component: EstadoListComponent, title: 'Lista de Usuários'},
-            {path: 'usuario/new',component: EstadoFormComponent, title: 'Novo Usuário'},
-            {path: 'usuario/edit/:id', component: EstadoFormComponent, title:'Editar Usuário', resolve: {usuario: usuarioResolver}},
+            {path: 'usuario',component: UsuarioListComponent, title: 'Lista de Usuários'},
+            {path: 'usuario/new',component: UsuarioFormComponent, title: 'Novo Usuário'},
+            {path: 'usuario/edit/:id', component: UsuarioFormComponent, title:'Editar Usuário', resolve: {usuario: usuarioResolver}},
         
         ],
     },

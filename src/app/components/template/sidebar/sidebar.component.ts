@@ -14,6 +14,14 @@ export class SidebarComponent implements OnInit {
 
   isSidebarVisible: boolean = true; // Estado inicial da sidebar
   
+  homeRoutes = [
+    { path: 'ecommerce', label: 'Catálogo', icon: 'shopping_cart' },
+  ];
+
+  userRoutes = [
+    { path: 'usuario', label: 'Usuário', icon: 'person' },
+  ];
+
   adminRoutes = [
     { path: 'estados', label: 'Estados', icon: 'map' },
     { path: 'municipios', label: 'Municípios', icon: 'location_city' },
@@ -26,26 +34,32 @@ export class SidebarComponent implements OnInit {
     { path: 'mangas', label: 'Mangás', icon: 'menu_book' },
   ];
 
-  userRoutes = [
-    { path: 'ecommerce', label: 'Catálogo', icon: 'shopping_cart' },
-  ];
-
   routesToDisplay: { path: string; label: string; icon: string }[] = [];
   
   constructor(private router: Router, private sidebarService: SidebarService) {}
 
   ngOnInit(): void {
-    const isAdminRoute = this.router.url.startsWith('/admin');
-    this.routesToDisplay = isAdminRoute ? this.adminRoutes : this.userRoutes;
+    this.updateRoutes();
+
     // Escuta as alterações de estado do SidebarService
     this.sidebarService.sideNavToggle$.subscribe(() => {
       this.isSidebarVisible = !this.isSidebarVisible;
     });
+
+    // Atualiza as rotas ao mudar de template
+    this.router.events.subscribe(() => {
+      this.updateRoutes();
+    });
   }
 
   updateRoutes(): void {
-    const isAdminRoute = this.router.url.startsWith('/admin');
-    this.routesToDisplay = isAdminRoute ? this.filterAdminRoutes() : this.userRoutes;
+    if (this.router.url.startsWith('/admin')) {
+      this.routesToDisplay = this.filterAdminRoutes();
+    } else if (this.router.url.startsWith('/user')) {
+      this.routesToDisplay = this.userRoutes;
+    } else {
+      this.routesToDisplay = this.homeRoutes;
+    }
   }
 
   filterAdminRoutes(): { path: string; label: string; icon: string }[] {
@@ -53,4 +67,5 @@ export class SidebarComponent implements OnInit {
       route => !route.path.includes('/new') && !route.path.includes('/edit')
     );
   }
+
 }
