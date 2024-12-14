@@ -131,4 +131,9 @@ export class AuthService {
     return usuario ? usuario.id : null;
   }
 
+  isLoggedIn(): boolean {
+    const token = this.getToken();
+    return token !== null && !this.isTokenExpired();
+  }
+  
 }

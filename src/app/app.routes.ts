@@ -49,6 +49,8 @@ import { MangaListComponent } from './components/manga/manga-list/manga-list.com
 import { MangaFormComponent } from './components/manga/manga-form/manga-form.component';
 import { mangaResolver } from './components/manga/resolver/manga-resolver';
 
+import { CarrinhoComponent } from './components/carrinho/carrinho.component';
+
 export const routes: Routes = [
 
     {
@@ -60,6 +62,7 @@ export const routes: Routes = [
             {path: 'ecommerce', component: MangaCardListComponent, title: 'Lista de Cards de Mangás' },
 
             {path: 'select-profile', component: SelectProfileComponent, title: 'Selecione o Perfil' },
+            {path: 'carrinho', component: CarrinhoComponent, title: 'Carrinho'},
         ],
     }, 
     {

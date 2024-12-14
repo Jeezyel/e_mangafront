@@ -28,14 +28,14 @@ type Card = {
   imports: [MatCardModule, MatButtonModule, NgFor, 
     MatCardActions, MatCardContent, MatCardTitle, MatCardFooter, CurrencyPipe],
   templateUrl: './manga-card-list.component.html',
-  styleUrl: './manga-card-list.component.css'
+  styleUrls: ['./manga-card-list.component.css']
 })
 export class MangaCardListComponent implements OnInit {
   mangas: Manga[] = [];
   cards = signal<Card[]>([]);
 
   constructor(private mangaService: MangaService,
-              //private carrinhoService: CarrinhoService,
+              private carrinhoService: CarrinhoService,
               private snackBar: MatSnackBar
   ) {
 
@@ -71,15 +71,15 @@ export class MangaCardListComponent implements OnInit {
     this.cards.set(cards);
   }
 
-  //adicionarAoCarrinho(card: Card) {
-    //this.showSnackbarTopPosition('Produto adicionado ao carrinho');
-    //this.carrinhoService.adicionar({
-      //id: card.idManga,
-      //nome: card.titulo,
-      //preco: card.preco,
-      //quantidade: 1
-    //});
-  //}
+  adicionarAoCarrinho(card: Card) {
+    this.showSnackbarTopPosition('Produto adicionado ao carrinho');
+    this.carrinhoService.adicionar({
+      id: card.idManga,
+      nome: card.nome,
+      preco: card.valor,
+      quantidade: 1
+    });
+  }
 
   showSnackbarTopPosition(content: any) {
     this.snackBar.open(content, 'fechar', {

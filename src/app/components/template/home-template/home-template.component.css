@@ -34,4 +34,28 @@
     font-family: Arial, sans-serif;
     box-shadow: 0 5px 5px rgba(0, 0, 0, 0.1);
 }
+
+.cart-icon-container {
+    position: relative;
+    display: inline-block;
+    right: 20px;
+    top: 15px;
+}
+
+.cart-icon-container button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.cart-icon-container mat-icon {
+    font-size: 24px;
+    color: #333;
+    transition: color 0.3s;
+}
+
+.cart-icon-container mat-icon:hover {
+    color: #ff5722; /* Cor de destaque ao passar o mouse */
+}
+
   

@@ -1,14 +1,18 @@
 <mat-toolbar color="primary">
-  
-  <mat-toolbar color="primary">
-    <!-- O botão de menu só será exibido se exibirSidebar for verdadeiro -->
-    <button *ngIf="exibirSidebar" mat-icon-button (click)="clickMenu()">
-      <mat-icon>menu</mat-icon>
-    </button>
-    <span class="header-title">e-manga</span>
-  </mat-toolbar>
+  <!-- Botão de menu -->
+  <button *ngIf="exibirSidebar" mat-icon-button (click)="clickMenu()">
+    <mat-icon>menu</mat-icon>
+  </button>
+
+  <!-- Título do sistema -->
+  <span class="header-title">e-manga</span>
 
   <span class="faixa-spacer"></span>
+
+  <!-- Botão do Carrinho -->
+  <button mat-icon-button routerLink="/carrinho" aria-label="Ir para o carrinho">
+    <mat-icon>shopping_cart</mat-icon>
+  </button>
 
   <!-- Botão de logout -->
   <button mat-icon-button (click)="onLogout()">
@@ -16,6 +20,5 @@
   </button>
 
   <!-- Nome do usuário logado -->
-  <span class="username">{{usuarioLogado?.username}}</span>
-
+  <span class="username">{{ usuarioLogado?.username }}</span>
 </mat-toolbar>

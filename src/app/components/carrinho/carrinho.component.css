@@ -1,0 +1,112 @@
+/* Estilo para o container principal do carrinho */
+.carrinho-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
+    margin: 20px auto;
+}
+
+/* Estilo para cada item do carrinho */
+.carrinho-item {
+    display: flex;
+    align-items: center;
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.carrinho-item:hover {
+    transform: scale(1.02);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Imagem do item */
+.item-imagem {
+    width: 80px;
+    height: 80px;
+    border-radius: 8px;
+    margin-right: 15px;
+    object-fit: cover;
+}
+
+/* Informações do item */
+.carrinho-info {
+    flex: 1;
+    font-family: 'Roboto', sans-serif;
+    color: #333;
+}
+
+.carrinho-info h3 {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin: 0 0 5px;
+    color: #444;
+}
+
+.carrinho-info p {
+    margin: 0;
+    font-size: 0.9rem;
+}
+
+/* Botão de remover item */
+.carrinho-actions button {
+    padding: 8px 12px;
+    background-color: #ff6f61;
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.carrinho-actions button:hover {
+    background-color: #ff4a3c;
+    transform: scale(1.05);
+}
+
+/* Resumo do carrinho */
+.carrinho-resumo {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.carrinho-total {
+    font-size: 1.3rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+/* Botão de finalizar compra */
+.finalizar-compra-btn {
+    padding: 12px 20px;
+    background-color: #28a745;
+    color: white;
+    font-size: 1rem;
+    font-weight: bold;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.finalizar-compra-btn:hover {
+    background-color: #218838;
+    transform: scale(1.05);
+}
+
+/* Estilo para o carrinho vazio */
+.carrinho-vazio {
+    text-align: center;
+    font-size: 1.2rem;
+    color: #666;
+    font-family: 'Roboto', sans-serif;
+    padding: 20px;
+}

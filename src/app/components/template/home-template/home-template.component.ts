@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule, NavigationEnd } from '@angular/router';
+import { MatIconModule } from '@angular/material/icon'; // Para usar o ícone do Angular Material
+import { MatButtonModule } from '@angular/material/button'; // Para o botão do ícone
+
 import { HeaderComponent } from '../header/header.component';
 import { SidebarComponent } from '../sidebar/sidebar.component';
 import { FooterComponent } from '../footer/footer.component';
@@ -13,7 +16,9 @@ import { FooterComponent } from '../footer/footer.component';
     RouterModule,
     HeaderComponent,
     SidebarComponent,
-    FooterComponent
+    FooterComponent,
+    MatIconModule,
+    MatButtonModule // Import necessário para o botão do ícone
   ],
   templateUrl: './home-template.component.html',
   styleUrls: ['./home-template.component.css']

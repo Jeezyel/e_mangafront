@@ -8,11 +8,11 @@ import { SidebarService } from '../../../services/sidebar.service';
 import { AuthService } from '../../../services/auth.service';
 import { Usuario } from '../../../models/usuario.model';
 import { Subscription } from 'rxjs';
-
+import { RouterModule } from '@angular/router';
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule, MatToolbar, MatIcon, MatIconButton],
+  imports: [CommonModule, MatToolbar, MatIcon, MatIconButton, RouterModule],
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })

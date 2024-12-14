@@ -1,23 +1,26 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { NgFor, NgIf } from '@angular/common';
+import { NgFor, NgIf, CommonModule } from '@angular/common';
 
 import { ItemCarrinho } from '../../models/item-carrinho.model';
 import { CarrinhoService } from '../../services/carrinho.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-carrinho',
   standalone: true,
-  imports: [NgIf, NgFor],
+  imports: [NgIf, NgFor, CommonModule],
   templateUrl: './carrinho.component.html',
-  styleUrl: './carrinho.component.css'
+  styleUrls: ['./carrinho.component.css']
 })
 export class CarrinhoComponent implements OnInit {
   
   carrinhoItens: ItemCarrinho[] = [];
 
-  constructor(private carrinhoService: CarrinhoService,
-              private router: Router )
+  constructor(
+    private carrinhoService: CarrinhoService,
+    private authService: AuthService,
+    private router: Router )
   {  }
   
   ngOnInit(): void {
@@ -35,11 +38,18 @@ export class CarrinhoComponent implements OnInit {
   }
 
   finalizarCompra() {
+    // Verifica se o usuário está logado
+    if (!this.authService.isLoggedIn()) {
+      alert('Você precisa estar logado para finalizar a compra.');
+      this.router.navigate(['/user/login']); // Redireciona para a página de login
+      return;
+    }
 
-    // verifidcar se estah logado
-
-    // 
-
+    // Lógica para finalizar a compra (envio dos dados, redirecionamento, etc.)
+    alert('Compra finalizada com sucesso!');
+    this.carrinhoService.limparCarrinho(); // Limpa o carrinho após a compra
+    this.router.navigate(['/']); // Redireciona para a página inicial
+  
   }
 
 }
