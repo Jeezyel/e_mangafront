@@ -14,7 +14,16 @@ export class MunicipioService {
   }
 
   findAll(page: number, size: number): Observable<Municipio[]> {
-    return this.httpClient.get<Municipio[]>(`${this.baseUrl}?page=${page}&size=${size}`); 
+    let params = {};
+            if (page !== undefined && size !== undefined) {
+              params = {
+                page: page.toString(),
+                size: size.toString()
+              };
+            }
+        
+            console.log(params);
+            return this.httpClient.get<Municipio[]>(this.baseUrl, { params });
   }
 
   findById(id: number): Observable<Municipio> {

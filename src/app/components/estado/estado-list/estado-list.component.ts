@@ -8,6 +8,8 @@ import { MatTableModule } from '@angular/material/table';
 import { RouterModule } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 
+import { PageEvent } from '@angular/material/paginator';
+import { MatPaginatorModule } from '@angular/material/paginator';
 import { Estado } from '../../../models/estado.model';
 import { EstadoService } from '../../../services/estado.service';
 
@@ -15,6 +17,7 @@ import { EstadoService } from '../../../services/estado.service';
   selector: 'app-estado-list',
   standalone: true,
   imports: [
+    MatPaginatorModule,
     NgFor, 
     MatToolbarModule, 
     MatIconModule, 
@@ -32,19 +35,22 @@ export class EstadoListComponent implements OnInit {
 
   // Variáveis para paginação
   totalRecords = 0;
-  page: number = 0; // página atual
-  size: number = 10; // número de itens por página
+  size = 10;
+  page = 0;
 
   constructor(private estadoService: EstadoService, private route: ActivatedRoute) {}
 
   ngOnInit(): void {
-    // Verificar se a operação foi bem-sucedida
+
     this.route.queryParams.subscribe((params: Params) => {
       if (params['success']) {
         this.loadEstados(this.page, this.size);
       }
     });
     this.loadEstados(this.page, this.size);
+    this.estadoService.count().subscribe(
+      data => { this.totalRecords = data }
+    );
   }
 
   loadEstados(page: number, size: number): void {
@@ -57,13 +63,19 @@ export class EstadoListComponent implements OnInit {
   deletar(id: number): void {
     if (confirm('Tem certeza que deseja excluir este estado?')) {
       this.estadoService.delete(id).subscribe({
-        next: () => this.loadEstados(this.page, this.size), // Recarrega a lista após a exclusão
+        next: () => this.loadEstados(this.page, this.size ), // Recarrega a lista após a exclusão
         error: (error: HttpErrorResponse) => {
           console.error('Erro ao excluir estado', error);
           alert('Erro ao excluir estado: ' + error.message);
         }
       });
     }
+  }
+
+  paginar(event: PageEvent): void {
+    this.page = event.pageIndex;
+    this.size  = event.pageSize;
+    this.ngOnInit();
   }
 }
 

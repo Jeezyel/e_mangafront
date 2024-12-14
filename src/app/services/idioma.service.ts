@@ -13,7 +13,16 @@ export class IdiomaService {
 
   //A paginação fica aqui
   findAll(page: number, size: number): Observable<Idioma[]> {
-    return this.httpClient.get<Idioma[]>(`${this.baseUrl}?page=${page}&size=${size}`);
+    let params = {};
+            if (page !== undefined && size !== undefined) {
+              params = {
+                page: page.toString(),
+                size: size.toString()
+              };
+            }
+        
+            console.log(params);
+            return this.httpClient.get<Idioma[]>(this.baseUrl, { params });
   }
 
   findById(idIdioma: number): Observable<Idioma> {

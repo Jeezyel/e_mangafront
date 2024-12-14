@@ -8,6 +8,8 @@ import { MatTableModule } from '@angular/material/table';
 import { RouterModule } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 
+import { PageEvent } from '@angular/material/paginator';
+import { MatPaginatorModule } from '@angular/material/paginator';
 import { Telefone } from '../../../models/telefone.model';
 import { TelefoneService } from '../../../services/telefone.service';
 
@@ -15,6 +17,7 @@ import { TelefoneService } from '../../../services/telefone.service';
   selector: 'app-telefone-list',
   standalone: true,
   imports: [
+    MatPaginatorModule,
     NgFor, 
     MatToolbarModule, 
     MatIconModule, 
@@ -31,8 +34,9 @@ export class TelefoneListComponent implements OnInit {
   displayedColumns: string[] = ['idTelefone', 'codegoDeArea', 'numero', 'acao'];
 
   // Variáveis para paginação
-  page: number = 0; // página atual
-  size: number = 10; // número de itens por página
+  totalRecords = 0;
+  size = 10;
+  page = 0;
 
   constructor(private telefoneService: TelefoneService, private route: ActivatedRoute) {}
 
@@ -44,6 +48,9 @@ export class TelefoneListComponent implements OnInit {
       }
     });
     this.loadTelefones(this.page, this.size);
+    this.telefoneService.count().subscribe(
+      data => { this.totalRecords = data }
+    );
   }
 
   loadTelefones(page: number, size: number): void {
@@ -64,4 +71,10 @@ export class TelefoneListComponent implements OnInit {
       });
     }
   }
+
+  paginar(event: PageEvent): void {
+    this.page = event.pageIndex;
+    this.size = event.pageSize;
+    this.ngOnInit();
+  } 
 }

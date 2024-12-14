@@ -7,6 +7,8 @@ import { MatTableModule } from '@angular/material/table';
 import { ActivatedRoute, Params, RouterModule } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 
+import { PageEvent } from '@angular/material/paginator';
+import { MatPaginatorModule } from '@angular/material/paginator';
 import { Endereco } from '../../../models/endereco.model';
 import { EnderecoService } from '../../../services/endereco.service';
 
@@ -14,6 +16,7 @@ import { EnderecoService } from '../../../services/endereco.service';
   selector: 'app-endereco-list',
   standalone: true,
   imports: [
+    MatPaginatorModule,
     NgFor, 
     MatToolbarModule, 
     MatIconModule, 
@@ -30,8 +33,9 @@ export class EnderecoListComponent implements OnInit {
   displayedColumns: string[] = ['idEndereco', 'cep', 'logradouro','complemento','bairro','idMunicipio', 'acao'];
 
   // Variáveis para paginação
-  page: number = 0; // página atual
-  size: number = 100; // número de itens por página
+  totalRecords = 0;
+  size = 10;
+  page = 0;
 
   constructor(private enderecoService: EnderecoService, private route: ActivatedRoute) {}
 
@@ -42,6 +46,9 @@ export class EnderecoListComponent implements OnInit {
       }
     });
     this.loadEnderecos(this.page, this.size);
+    this.enderecoService.count().subscribe(
+      data => { this.totalRecords = data }
+    );
   }
 
   loadEnderecos(page:number, size:number): void {
@@ -61,5 +68,11 @@ export class EnderecoListComponent implements OnInit {
         }
       });
     }
+  }
+
+  paginar(event: PageEvent): void {
+    this.page = event.pageIndex;
+    this.size = event.pageSize;
+    this.ngOnInit();
   }
 }

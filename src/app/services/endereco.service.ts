@@ -14,7 +14,16 @@ export class EnderecoService {
   }
 
   findAll(page: number, size: number): Observable<Endereco[]> {
-    return this.httpClient.get<Endereco[]>(`${this.baseUrl}?page=${page}&size=${size}`); 
+    let params = {};
+            if (page !== undefined && size !== undefined) {
+              params = {
+                page: page.toString(),
+                size: size.toString()
+              };
+            }
+        
+            console.log(params);
+            return this.httpClient.get<Endereco[]>(this.baseUrl, { params });
   }
 
   findById(id: number): Observable<Endereco> {

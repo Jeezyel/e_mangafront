@@ -5,10 +5,10 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTableModule } from '@angular/material/table';
 import { ActivatedRoute, Params, RouterModule } from '@angular/router';
-import { PageEvent } from '@angular/material/paginator';
-import { MatPaginatorModule } from '@angular/material/paginator';
 import { CurrencyPipe } from '@angular/common';
 
+import { PageEvent } from '@angular/material/paginator';
+import { MatPaginatorModule } from '@angular/material/paginator';
 import { Manga } from '../../../models/manga.model';
 import { MangaService } from '../../../services/manga.service';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -50,6 +50,9 @@ export class MangaListComponent implements OnInit {
       }
     });
     this.loadMangas(this.page, this.size);
+    this.mangaService.count().subscribe(
+      data => { this.totalRecords = data }
+    );
   }
 
   loadMangas(page:number, size:number): void {
@@ -74,8 +77,6 @@ export class MangaListComponent implements OnInit {
   paginar(event: PageEvent): void {
     this.page = event.pageIndex;
     this.size = event.pageSize;
-    this.mangaService.findAll(this.page, this.size).subscribe(
-      data => { this.mangas = data; }
-    );
+    this.ngOnInit();
   }  
 }

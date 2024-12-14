@@ -7,15 +7,16 @@ import { MatTableModule } from '@angular/material/table';
 import { ActivatedRoute, Params, RouterModule } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 
+import { PageEvent } from '@angular/material/paginator';
+import { MatPaginatorModule } from '@angular/material/paginator';
 import { Municipio } from '../../../models/municipio.model';
 import { MunicipioService } from '../../../services/municipio.service';
-import { EstadoService } from '../../../services/estado.service';
-import { Estado } from '../../../models/estado.model';
 
 @Component({
   selector: 'app-municipio-list',
   standalone: true,
   imports: [
+    MatPaginatorModule,
     NgFor, 
     MatToolbarModule, 
     MatIconModule, 
@@ -33,8 +34,8 @@ export class MunicipioListComponent implements OnInit {
 
   // Variáveis para paginação
   totalRecords = 0;
-  page: number = 0; // página atual
-  size: number = 100; // número de itens por página
+  size = 10;
+  page = 0;
 
   constructor(private municipioService: MunicipioService, private route: ActivatedRoute) {}
 
@@ -45,6 +46,9 @@ export class MunicipioListComponent implements OnInit {
       }
     });
     this.loadMunicipios(this.page, this.size);
+    this.municipioService.count().subscribe(
+      data => { this.totalRecords = data }
+    );
   }
 
   loadMunicipios(page:number, size:number): void {
@@ -65,4 +69,10 @@ export class MunicipioListComponent implements OnInit {
       });
     }
   }
+
+  paginar(event: PageEvent): void {
+      this.page = event.pageIndex;
+      this.size = event.pageSize;
+      this.ngOnInit();
+    } 
 }

@@ -8,6 +8,8 @@ import { MatTableModule } from '@angular/material/table';
 import { RouterModule } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 
+import { PageEvent } from '@angular/material/paginator';
+import { MatPaginatorModule } from '@angular/material/paginator';
 import { Genero } from '../../../models/genero.model';
 import { GeneroService } from '../../../services/genero.service';
 
@@ -15,6 +17,7 @@ import { GeneroService } from '../../../services/genero.service';
   selector: 'app-genero-list',
   standalone: true,
   imports: [
+    MatPaginatorModule,
     NgFor, 
     MatToolbarModule, 
     MatIconModule, 
@@ -32,8 +35,8 @@ export class GeneroListComponent implements OnInit {
 
   // Variáveis para paginação
   totalRecords = 0;
-  page: number = 0; // página atual
-  size: number = 15; // número de itens por página
+  size = 10;
+  page = 0;
 
   constructor(private generoService: GeneroService, private route: ActivatedRoute) {}
 
@@ -45,6 +48,9 @@ export class GeneroListComponent implements OnInit {
       }
     });
     this.loadGeneros(this.page, this.size);
+    this.generoService.count().subscribe(
+      data => { this.totalRecords = data }
+    );
   }
 
   loadGeneros(page: number, size: number): void {
@@ -65,5 +71,11 @@ export class GeneroListComponent implements OnInit {
       });
     }
   }
+
+  paginar(event: PageEvent): void {
+    this.page = event.pageIndex;
+    this.size = event.pageSize;
+    this.ngOnInit();
+  } 
 }
 
