@@ -8,15 +8,7 @@ export class AuthInterceptor implements HttpInterceptor {
 
   constructor(private authService: AuthService) { }
 
-
-  
-
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-
-    // Evitar adicionar token em requisições de login
-    if (request.url.includes('/auth/login') || request.url.includes('/select-profile')) {
-      return next.handle(request);
-    }
 
     // Obtém o token jwt
     const authToken = this.authService.getToken();
@@ -32,6 +24,7 @@ export class AuthInterceptor implements HttpInterceptor {
     }
 
     // Se não houver token, apenas passa a solicitação sem modificação
+    console.log("request do interceptor - ", request)
     return next.handle(request);
   }
 

@@ -7,7 +7,10 @@ import { UserTemplateComponent } from './components/template/user-template/user-
 
 import { SelectProfileComponent } from './components/select-profile/select-profile.component';
 import { LoginComponent } from './components/login/login.component';
-import { authGuard } from './components/guard/auth.guard';
+
+import { LoginSelectionGuard } from './components/guard/home-auth.guard';
+import { userAuthGuard } from './components/guard/user-auth.guard';
+import { adminAuthGuard } from './components/guard/admin-auth.guard';
 
 import { UsuarioListComponent } from './components/usuario/usuario-list/usuario-list.component';
 import { UsuarioFormComponent } from './components/usuario/usuario-form/usuario-form.component';
@@ -63,6 +66,8 @@ export const routes: Routes = [
             {path: 'ecommerce', component: MangaCardListComponent, title: 'Lista de Cards de Mangás' },
 
             {path: 'select-profile', component: SelectProfileComponent, title: 'Selecione o Perfil' },
+            {path: 'login', component: LoginComponent, title: 'Login', canActivate:[LoginSelectionGuard]},
+
             {path: 'usuario/new',component: UsuarioFormComponent, title: 'Novo Usuário'},
             {path: 'carrinho', component: CarrinhoComponent, title: 'Carrinho'},
         ],
@@ -71,11 +76,10 @@ export const routes: Routes = [
         path: 'user',
         component: UserTemplateComponent,
         title: 'Perfil de Usuário',
-        canActivate: [authGuard],
+        canActivate: [userAuthGuard],
         children: [
 
             {path: '', pathMatch: 'full', redirectTo: 'usuário'},
-            {path: 'login', component: LoginComponent, title: 'Login', canActivate:[]},
             {path: 'ecommerce', component: MangaCardListComponent, title: 'Lista de Cards de Mangás' },
 
             {path: 'usuario',component: UsuarioListComponent, title: 'Lista de Usuários'},
@@ -86,12 +90,11 @@ export const routes: Routes = [
     {
         path: 'admin',
         component: AdminTemplateComponent,
-        title: 'Perfil de Administrativo',
-        canActivate: [authGuard],
+        title: 'Perfil Administrativo',
+        canActivate: [adminAuthGuard],
         children: [
 
             {path: '', pathMatch: 'full', redirectTo: 'estados'},
-            {path: 'login', component: LoginComponent, title: 'Login', canActivate:[]},
 
             {path: 'ecommerce', component: MangaCardListComponent, title: 'Lista de Cards de Mangás' },
 

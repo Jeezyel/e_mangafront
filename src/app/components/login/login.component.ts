@@ -11,6 +11,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { NgIf } from '@angular/common';
 import { AuthService } from '../../services/auth.service';
 import { Perfil } from '../../models/perfil.model';
+import { CarrinhoService } from '../../services/carrinho.service';
 
 @Component({
   selector: 'app-login',
@@ -24,39 +25,51 @@ import { Perfil } from '../../models/perfil.model';
 export class LoginComponent implements OnInit {
 
   loginForm!: FormGroup;
-  perfil: string = ' ';
+  perfil: string = 'USER';
 
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
     private router: Router,
     private snackBar: MatSnackBar,
-    private route: ActivatedRoute 
+    private activattedRoute: ActivatedRoute,
+    private carrinhoService: CarrinhoService 
   ) { }
 
   ngOnInit(): void {
-    // Obter o perfil da URL
-    this.route.queryParams.subscribe((params: Params) => {
-      this.perfil = params['perfil'] || 'USER';
-    });
+    // limpar carrinho
+    this.carrinhoService.removerTudo();
+
+    // deslogar
+    this.authService.removeToken();
+    this.authService.removeUsuarioLogado();
 
     this.loginForm = this.formBuilder.group({
       username: ['', Validators.required],
       senha: ['', Validators.required]
     });
+
+    // pegar do login-selection
+    const state = history.state;
+    if (state && state.perfil) {
+      this.perfil = state.perfil;
+    }
   }
 
   onSubmit() {
+
     if (this.loginForm.valid) {
+
       const username = this.loginForm.get('username')?.value;
-      const password = this.loginForm.get('senha')?.value;
+      const senha = this.loginForm.get('senha')?.value;
   
-      const loginMethod = this.perfil === 'ADMIN' ? 'loginADM' : 'loginUSER';
-  
-      this.authService[loginMethod](username, password).subscribe({
-        next: () => {
-          const redirectRoute = this.perfil === 'ADMIN' ? '/admin' : '/user';
-          this.router.navigateByUrl(redirectRoute);
+      this.authService.login(username, senha, this.perfil).subscribe({
+        next: (resp) => {
+          if(this.perfil === 'ADMIN') {
+            this.router.navigateByUrl('/admin');
+          } else if (this.perfil === 'USER') {
+            this.router.navigateByUrl('/user');
+          }
         },
         error: (err) => {
           if (err.status === 404) {

@@ -15,7 +15,6 @@ export class AuthService {
   private usuarioLogadoSubject = new BehaviorSubject<Usuario|null>(null);
 
   constructor(
-
     private httpClient: HttpClient,
     private localStorageService: LocalStorageService,
     private jwtHelper: JwtHelperService
@@ -23,61 +22,31 @@ export class AuthService {
   ) { this.initUsuarioLogado(); }
 
   private initUsuarioLogado():void {
-    const usuarioJson = this.localStorageService.getItem(this.usuarioLogadoKey);
-    if (usuarioJson) {
-      try {
-        const usuarioLogado = JSON.parse(usuarioJson);
-        this.usuarioLogadoSubject.next(usuarioLogado);
-      } catch (error) {
-        console.error('Erro ao desserializar usuário logado:', error);
-        this.usuarioLogadoSubject.next(null);
+    const usuario = this.localStorageService.getItem(this.usuarioLogadoKey);
+    if (usuario) {
+      // const usuarioLogado = JSON.parse(usuario);
+      this.usuarioLogadoSubject.next(usuario);
+    }
+  }
+
+  public login(username: string, senha: string, perfil: string): Observable<any> {
+    const params = { username: username, senha: senha, perfil: perfil };
+
+    return this.httpClient.post(`${this.baseUrl}`, params, { observe: 'response' }).pipe(
+      tap((res: any) => {
+        console.log('Resposta completa do backend:', res); // Log da resposta
+        const authToken = res.headers.get('Authorization') ?? '';
+        console.log('Token recebido:', authToken); // Loga o token recebido        
+        if (authToken) {
+          this.setToken(authToken);
+          const usuarioLogado = res.body;
+          console.log('Usuário logado:', usuarioLogado);
+        if (usuarioLogado) {
+          this.setUsuarioLogado(usuarioLogado);
+          this.usuarioLogadoSubject.next(usuarioLogado);
+        }
       }
-    }
-  }
-
-  public loginADM(username: string, senha: string): Observable<any> {
-    const params = {
-        username: username,
-        senha: senha,
-        perfil: 1 // ADM
-    }
-
-    return this.httpClient.post(`${this.baseUrl}`, params, { observe: 'response' }).pipe(
-      tap((res: any) => {
-        console.log('Resposta completa do backend:', res); // Log da resposta
-        const authToken = res.headers.get('Authorization');
-        console.log('Token recebido:', authToken); // Loga o token recebido
-        
-        if (authToken) {
-          this.setToken(authToken);
-          console.log('Token armazenado com sucesso:', authToken);
-        } else {
-          console.error('Token ausente na resposta do backend.');
-        }
-      })
-    );
-  }
-
-  public loginUSER(username: string, senha: string): Observable<any> {
-    const params = {
-      login: username,
-      senha: senha,
-      perfil: 2 // USER
-    };
-      
-    return this.httpClient.post(`${this.baseUrl}`, params, { observe: 'response' }).pipe(
-      tap((res: any) => {
-        console.log('Resposta completa do backend:', res); // Log da resposta
-        const authToken = res.headers.get('Authorization');
-        console.log('Token recebido:', authToken); // Loga o token recebido
-        
-        if (authToken) {
-          this.setToken(authToken);
-          console.log('Token armazenado com sucesso:', authToken);
-        } else {
-          console.error('Token ausente na resposta do backend.');
-        }
-      })
+    })
     );
   }
 
@@ -96,8 +65,12 @@ export class AuthService {
     this.localStorageService.setItem(this.tokenKey, token);
   }
 
-  getUsuarioLogado() {
+  getUsuarioLogado(): Observable<Usuario | null> {
     return this.usuarioLogadoSubject.asObservable();
+  }
+
+  getUsuarioLogadoValue(): Usuario | null {
+    return this.usuarioLogadoSubject.value;
   }
 
   public getToken(): string | null {
