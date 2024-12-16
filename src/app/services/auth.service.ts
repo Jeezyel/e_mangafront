@@ -37,7 +37,7 @@ export class AuthService {
 
   public loginADM(username: string, senha: string): Observable<any> {
     const params = {
-        login: username,
+        username: username,
         senha: senha,
         perfil: 1 // ADM
     }
