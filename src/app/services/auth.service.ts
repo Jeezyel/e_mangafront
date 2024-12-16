@@ -42,19 +42,17 @@ export class AuthService {
         perfil: 1 // ADM
     }
 
-    return this.httpClient.post(`${this.baseUrl}`, params, {observe: 'response'}).pipe(
+    return this.httpClient.post(`${this.baseUrl}`, params, { observe: 'response' }).pipe(
       tap((res: any) => {
+        console.log('Resposta completa do backend:', res); // Log da resposta
         const authToken = res.headers.get('Authorization');
+        console.log('Token recebido:', authToken); // Loga o token recebido
+        
         if (authToken) {
           this.setToken(authToken);
-          const usuarioLogado = res.body;
-          console.log(usuarioLogado);
-          if (usuarioLogado) {
-            this.setUsuarioLogado(usuarioLogado);
-            this.usuarioLogadoSubject.next(usuarioLogado);
-          }
+          console.log('Token armazenado com sucesso:', authToken);
         } else {
-          console.error('Token ausente na resposta do login.');
+          console.error('Token ausente na resposta do backend.');
         }
       })
     );
@@ -69,17 +67,15 @@ export class AuthService {
       
     return this.httpClient.post(`${this.baseUrl}`, params, { observe: 'response' }).pipe(
       tap((res: any) => {
+        console.log('Resposta completa do backend:', res); // Log da resposta
         const authToken = res.headers.get('Authorization');
+        console.log('Token recebido:', authToken); // Loga o token recebido
+        
         if (authToken) {
           this.setToken(authToken);
-          const usuarioLogado = res.body;
-          console.log(usuarioLogado);
-          if (usuarioLogado) {
-            this.setUsuarioLogado(usuarioLogado);
-            this.usuarioLogadoSubject.next(usuarioLogado);
-          }
+          console.log('Token armazenado com sucesso:', authToken);
         } else {
-          console.error('Token ausente na resposta do login.');
+          console.error('Token ausente na resposta do backend.');
         }
       })
     );
@@ -104,13 +100,8 @@ export class AuthService {
     return this.usuarioLogadoSubject.asObservable();
   }
 
-  getToken(): string | null {
-    const token = this.localStorageService.getItem(this.tokenKey);
-    if (token && !this.isTokenExpired()) {
-        return token;
-    }
-    this.removeToken(); // Remove o token inválido ou expirado
-    return null;
+  public getToken(): string | null {
+    return this.localStorageService.getItem(this.tokenKey);
   }
 
   removeToken(): void {
@@ -123,17 +114,26 @@ export class AuthService {
   }
 
   isTokenExpired(): boolean {
-    const token = this.getToken();
-    if (!token) {
-      return true;
+    const token = this.getToken(); // Recupera o token salvo
+  
+    // Debug: Exibe o token armazenado no console
+    console.log('Token armazenado:', token);
+  
+    if (token) {
+      try {
+        const decodedToken = this.jwtHelper.decodeToken(token); // Decodifica o token
+        console.log('Token decodificado:', decodedToken); // Exibe o token decodificado
+        return this.jwtHelper.isTokenExpired(token); // Verifica se está expirado
+      } catch (error) {
+        console.error('Erro ao decodificar o token:', error);
+        return true; // Em caso de erro, considera expirado
+      }
     }
-    try {
-      return this.jwtHelper.isTokenExpired(token);
-    } catch (error) {
-      console.error('Token invalido', error);
-      return true;
-    }
+  
+    console.warn('Nenhum token encontrado.');
+    return true; // Se o token não existir, considera expirado
   }
+  
 
   // Novo método: Verifica se o usuário logado é admin
   isAdmin(): boolean {
