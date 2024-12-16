@@ -37,38 +37,53 @@ export class LoginComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    // limpar carrinho
-    this.carrinhoService.removerTudo();
 
+    const state = history.state;
+    this.perfil = state.perfil || localStorage.getItem('perfilSelecionado'); // Recupera do localStorage se não estiver no estado
+    if (!this.perfil){
+      this.router.navigate(['/select-profile']);  
+    }
+
+    // limpar carrinho
+    // this.carrinhoService.removerTudo();
     // deslogar
-    this.authService.removeToken();
-    this.authService.removeUsuarioLogado();
+    // this.authService.removeToken();
+    // this.authService.removeUsuarioLogado();
 
     this.loginForm = this.formBuilder.group({
       username: ['', Validators.required],
       senha: ['', Validators.required]
     });
 
-    // pegar do login-selection
-    const state = history.state;
-    if (state && state.perfil) {
-      this.perfil = state.perfil;
-    }
   }
 
   onSubmit() {
-
     if (this.loginForm.valid) {
-
       const username = this.loginForm.get('username')?.value;
       const senha = this.loginForm.get('senha')?.value;
+
+      console.log(`Autenticando como ${username} com perfil ${this.perfil}`);
   
       this.authService.login(username, senha, this.perfil).subscribe({
-        next: (resp) => {
-          if(this.perfil === 'ADMIN') {
-            this.router.navigateByUrl('/admin');
-          } else if (this.perfil === 'USER') {
-            this.router.navigateByUrl('/user');
+        next: () => {
+          const usuarioLogado = this.authService.getUsuarioLogado(); // Obter o usuário do backend
+
+          if (!usuarioLogado) {
+            // Caso improvável, mas necessário validar se o usuário não está no localStorage
+            this.showSnackbarTopPosition('Erro: Usuário não encontrado no localStorage.');
+            return;
+          }
+
+          switch (usuarioLogado.perfil.label) {
+            case 'ADMIN':
+              this.router.navigateByUrl('/admin');
+              break;
+            case 'USER':
+              this.router.navigateByUrl('/user');
+              break;
+            default:
+              this.router.navigateByUrl('/');
+              break;
           }
         },
         error: (err) => {
@@ -82,8 +97,7 @@ export class LoginComponent implements OnInit {
                 verticalPosition: "top",
                 horizontalPosition: "center",
               }
-            );
-  
+            ); 
             // Redireciona para a tela de cadastro ao clicar no botão 'Cadastrar'
             snackBarRef.onAction().subscribe(() => {
               this.onRegister();

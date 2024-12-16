@@ -9,7 +9,7 @@ export class LoginSelectionGuard implements CanActivate {
 
   private hasSelectedPerfil = false; // Controle interno para verificar a seleção
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private authService: AuthService) {}
 
   // Método para definir se o perfil foi selecionado
   setPerfilSelected(value: boolean): void {
@@ -19,9 +19,9 @@ export class LoginSelectionGuard implements CanActivate {
   }
 
   canActivate(): boolean {
-    console.log(this.hasSelectedPerfil);
-    if (!this.hasSelectedPerfil) {
-      this.router.navigate(['/login']); // Redireciona caso não tenha selecionado o perfil
+    const perfilSelecionado = localStorage.getItem('perfilSelecionado');
+    if (!perfilSelecionado) {
+      this.router.navigate(['/select-profile']); // Redireciona caso não tenha selecionado o perfil
       return false;
     }
     return true;

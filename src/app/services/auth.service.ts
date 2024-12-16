@@ -65,8 +65,9 @@ export class AuthService {
     this.localStorageService.setItem(this.tokenKey, token);
   }
 
-  getUsuarioLogado(): Observable<Usuario | null> {
-    return this.usuarioLogadoSubject.asObservable();
+  getUsuarioLogado(): Usuario | null {
+    const usuario = localStorage.getItem('usuario_logado');
+    return usuario ? JSON.parse(usuario) : null;
   }
 
   getUsuarioLogadoValue(): Usuario | null {
