@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
-import { UsuarioService } from '../../../services/usuario.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -14,9 +13,8 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatIconModule } from '@angular/material/icon';
 import { CommonModule, NgIf } from '@angular/common';
 
-import { Usuario } from '../../../models/usuario.model';
+import { UsuarioService } from '../../../services/usuario.service';
 import { AuthService } from '../../../services/auth.service';
-
 
 @Component({
   selector: 'app-usuario-form',
