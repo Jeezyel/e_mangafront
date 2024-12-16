@@ -24,8 +24,8 @@ export class AuthService {
   private initUsuarioLogado():void {
     const usuario = this.localStorageService.getItem(this.usuarioLogadoKey);
     if (usuario) {
-      // const usuarioLogado = JSON.parse(usuario);
-      this.usuarioLogadoSubject.next(usuario);
+      const parsedUsuario = JSON.parse(usuario);
+      this.usuarioLogadoSubject.next(parsedUsuario);
     }
   }
 
@@ -66,8 +66,21 @@ export class AuthService {
   }
 
   getUsuarioLogado(): Usuario | null {
-    const usuario = localStorage.getItem('usuario_logado');
-    return usuario ? JSON.parse(usuario) : null;
+    const usuario = this.localStorageService.getItem(this.usuarioLogadoKey);
+    if (usuario) {
+      const parsedUsuario = JSON.parse(usuario);
+  
+      // Adaptar o perfil retornado para o modelo esperado
+      if (typeof parsedUsuario.perfil === 'string') {
+        parsedUsuario.perfil = {
+          id: parsedUsuario.perfil === 'ADMIN' ? 1 : 2,
+          label: parsedUsuario.perfil
+        };
+      }
+  
+      return parsedUsuario;
+    }
+    return null;
   }
 
   getUsuarioLogadoValue(): Usuario | null {

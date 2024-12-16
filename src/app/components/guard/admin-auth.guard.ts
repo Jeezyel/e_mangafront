@@ -8,9 +8,7 @@ export const adminAuthGuard: CanActivateFn = (route, state) => {
     const router = inject(Router);
   
     if (authService.isTokenExpired()) {
-  
       // Token inválido
-  
       authService.removeToken();
       authService.removeUsuarioLogado();
       router.navigate(['/select-profile']);
@@ -19,7 +17,7 @@ export const adminAuthGuard: CanActivateFn = (route, state) => {
     
     const userLogado = authService.getUsuarioLogadoValue(); 
   
-    if (userLogado?.perfil?.id === 2) {
+    if (!userLogado || userLogado.perfil.id !== 1) {
       router.navigate(['/login']);
       return false;
     }

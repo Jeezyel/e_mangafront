@@ -36,7 +36,7 @@ export class AdminTemplateComponent implements OnInit {
   }
 
   private atualizarExibicaoSidebar(url: string): void {
-    this.exibirSidebar = !url.includes('/admin/login'); // Esconde o Sidebar na rota de login
+    this.exibirSidebar = !url.includes('/login'); // Esconde o Sidebar na rota de login
     console.log(`URL atual: ${url}, exibirSidebar: ${this.exibirSidebar}`);
   }
 }
