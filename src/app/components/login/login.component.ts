@@ -50,16 +50,35 @@ export class LoginComponent implements OnInit {
     if (this.loginForm.valid) {
       const username = this.loginForm.get('username')?.value;
       const password = this.loginForm.get('senha')?.value;
-
+  
       const loginMethod = this.perfil === 'ADMIN' ? 'loginADM' : 'loginUSER';
-
+  
       this.authService[loginMethod](username, password).subscribe({
         next: () => {
           const redirectRoute = this.perfil === 'ADMIN' ? '/admin' : '/user';
           this.router.navigateByUrl(redirectRoute);
         },
-        error: () => {
-          this.showSnackbarTopPosition("Username ou senha inválido");
+        error: (err) => {
+          if (err.status === 404) {
+            // Username não encontrado
+            const snackBarRef = this.snackBar.open(
+              "Usuário não encontrado. Deseja se cadastrar?",
+              "Cadastrar",
+              {
+                duration: 5000,
+                verticalPosition: "top",
+                horizontalPosition: "center",
+              }
+            );
+  
+            // Redireciona para a tela de cadastro ao clicar no botão 'Cadastrar'
+            snackBarRef.onAction().subscribe(() => {
+              this.onRegister();
+            });
+          } else {
+            // Outros erros, como senha inválida
+            this.showSnackbarTopPosition("Username ou senha inválido");
+          }
         }
       });
     } else {
@@ -68,9 +87,9 @@ export class LoginComponent implements OnInit {
   }
   
   onRegister() {
-    this.router.navigate(['/user/usuario/new']);
+    this.router.navigate(['/usuario/new']);
   }
-
+  
   showSnackbarTopPosition(content: string) {
     this.snackBar.open(content, 'fechar', {
       duration: 3000,
@@ -78,5 +97,5 @@ export class LoginComponent implements OnInit {
       horizontalPosition: "center"
     });
   }
-
+  
 }

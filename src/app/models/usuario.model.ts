@@ -6,9 +6,9 @@ export class Usuario {
     id!: number;
     nome!: string;
     email!: string;
-    telefone!: Telefone;
-    endereco!: Endereco;
-    perfil!: Perfil[]; 
+    telefone!: Telefone[];
+    endereco!: Endereco[];
     username!: string;
     senha!: string;
+    perfil!: Perfil; 
 }

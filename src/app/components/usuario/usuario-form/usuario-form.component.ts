@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { UsuarioService } from '../../../services/usuario.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -13,16 +11,17 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatIconModule } from '@angular/material/icon';
+import { CommonModule, NgIf } from '@angular/common';
 
 import { Usuario } from '../../../models/usuario.model';
 import { AuthService } from '../../../services/auth.service';
+
 
 @Component({
   selector: 'app-usuario-form',
   standalone: true,
   imports: [
-    BrowserModule,
-    BrowserAnimationsModule,
     FormsModule,
     ReactiveFormsModule,
     MatToolbarModule,
@@ -31,18 +30,19 @@ import { AuthService } from '../../../services/auth.service';
     MatInputModule,
     MatButtonModule,
     MatTableModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatIconModule,
+    CommonModule
   ],
   templateUrl: './usuario-form.component.html',
   styleUrls: ['./usuario-form.component.css']
 })
 export class UsuarioFormComponent implements OnInit {
+
   formGroup!: FormGroup;
-  idUsuario?: number;
-  isAdmin: boolean = false;
 
   constructor(
-    private fb: FormBuilder,
+    private formBuilder: FormBuilder,
     private usuarioService: UsuarioService,
     private authService: AuthService,
     private router: Router,
@@ -50,61 +50,64 @@ export class UsuarioFormComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.initForm();
-    this.idUsuario = this.route.snapshot.params['id'];
-    this.isAdmin = this.authService.isAdmin();
-
-    if (this.idUsuario) {
-      this.usuarioService.findById(this.idUsuario).subscribe((usuario) => {
-        this.populateForm(usuario);
-      });
-    }
-  }
-
-  initForm(): void {
-    this.formGroup = this.fb.group({
-      nome: ['', Validators.required],
+    this.formGroup = this.formBuilder.group({
+      nome: ['', [Validators.required]],
       email: ['', [Validators.required, Validators.email]],
-      username: ['', Validators.required],
-      senha: ['', Validators.required]
+      username: ['', [Validators.required]],
+      senha: ['', [Validators.required, Validators.minLength(3)]],
+      telefone: this.formBuilder.array([]),
+      endereco: this.formBuilder.array([])
     });
   }
 
-  populateForm(usuario: Usuario): void {
-    this.formGroup.patchValue({
-      nome: usuario.nome,
-      email: usuario.email,
-      username: usuario.username,
-      senha: '' // Senha não preenchida ao editar
-    });
+
+  get telefoneArray(): FormArray {
+    return this.formGroup.get('telefone') as FormArray;
   }
 
-  salvar(): void {
+  get enderecoArray(): FormArray {
+    return this.formGroup.get('endereco') as FormArray;
+  }
+
+  addTelefone(): void {
+    this.telefoneArray.push(this.formBuilder.control('', Validators.required));
+  }
+
+  removeTelefone(index: number): void {
+    this.telefoneArray.removeAt(index);
+  }
+
+  addEndereco(): void {
+    this.enderecoArray.push(this.formBuilder.control('', Validators.required));
+  }
+
+  removeEndereco(index: number): void {
+    this.enderecoArray.removeAt(index);
+  }
+
+  onSubmit(): void {
     if (this.formGroup.valid) {
-      const usuario = this.formGroup.value;
-
-      if (!this.isAdmin) {
-        usuario.perfis = [{ id: 2, label: 'USER' }]; // Perfil USER
+      const token = this.authService.getToken();
+      if(!token){
+        alert('Erro: Token de autenticação ausente.');
+        this.router.navigate(['/login']);
+        return;
       }
-
-      if (this.idUsuario) {
-        usuario.id = this.idUsuario;
-        this.usuarioService.update(usuario).subscribe(() => {
+      this.usuarioService.createUsuario(this.formGroup.value, token).subscribe(
+        () => {
+          alert('Usuário criado com sucesso!');
           this.router.navigate(['/usuario']);
-        });
-      } else {
-        this.usuarioService.create(usuario).subscribe(() => {
-          this.router.navigate(['/usuario']);
-        });
-      }
+        },
+        (error) => {
+          console.error('Erro ao criar usuário', error);
+          alert('Erro ao criar usuário. Tente novamente.');
+        }
+      );
     }
   }
 
-  excluir(): void {
-    if (this.idUsuario) {
-      this.usuarioService.delete(this.idUsuario).subscribe(() => {
-        this.router.navigate(['/usuario']);
-      });
-    }
+  cancelar(): void {
+    this.router.navigate(['/usuario']); // Redireciona para a página de usuários
   }
+
 }
