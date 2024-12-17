@@ -47,7 +47,7 @@ export class PedidoComponent implements OnInit {
     // Carregar formas de pagamento
     this.carregarFormasDePagamento();
   }
-
+  /*
   carregarPedidos() {
     this.pedidoService.findByUser(this.usuario.id).subscribe(
       (data) =>{
@@ -56,7 +56,7 @@ export class PedidoComponent implements OnInit {
       (err) => console.error('Erro ao carregar pedidos:', err)
     );
   }
-
+  */
   carregarFormasDePagamento() {
     this.pedidoService.findFormaDePagamento().subscribe(
       (data) => (this.formasDePagamento = data),
