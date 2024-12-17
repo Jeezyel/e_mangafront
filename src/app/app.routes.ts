@@ -80,7 +80,7 @@ export const routes: Routes = [
 
             {path: '', pathMatch: 'full', redirectTo: 'usuário'},
 
-            {path: 'usuario',component: UsuarioListComponent, title: 'Lista de Usuários'},
+            {path: 'usuario',component: UsuarioListComponent, title: 'Minha conta'},
             {path: 'usuario/edit/:id', component: UsuarioFormComponent, title:'Editar Usuário', resolve: {usuario: usuarioResolver}},
         
         ],
@@ -94,7 +94,7 @@ export const routes: Routes = [
 
             {path: '', pathMatch: 'full', redirectTo: 'estados'},
 
-            {path: 'usuario',component: UsuarioListComponent, title: 'Lista de Usuários'},
+            {path: 'usuario',component: UsuarioListComponent, title: 'Minha conta'},
             {path: 'usuario/edit/:id', component: UsuarioFormComponent, title:'Editar Usuário', resolve: {usuario: usuarioResolver}},
 
             {path: 'estados',component: EstadoListComponent, title: 'Lista de Estados'},

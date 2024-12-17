@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./select-profile.component.css']
 })
 export class SelectProfileComponent {
+  
   constructor(private router: Router) {}
 
   selectProfile(profile: string): void {

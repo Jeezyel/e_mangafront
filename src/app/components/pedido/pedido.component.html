@@ -1,0 +1,17 @@
+<h2>Dados do Pedido</h2>
+<form>
+  <label>Nome:</label>
+  <input type="text" [(ngModel)]="usuario.nome" disabled />
+
+  <label>Email:</label>
+  <input type="email" [(ngModel)]="usuario.email" disabled />
+
+  <label>Endereço:</label>
+  <input type="text" [(ngModel)]="usuario.endereco" />
+
+  <label>Telefone:</label>
+  <input type="text" [(ngModel)]="usuario.telefone" />
+
+  <button type="button" (click)="atualizarDados()">Atualizar Dados</button>
+  <button type="button" (click)="confirmarPedido()">Confirmar Pedido</button>
+</form>

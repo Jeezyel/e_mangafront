@@ -20,11 +20,14 @@ export class SidebarComponent implements OnInit {
 
   userRoutes = [
     { path: 'ecommerce', label: 'Catálogo', icon: 'shopping_cart' },
-    { path: 'usuario', label: 'Usuário', icon: 'person' },
+    { path: 'usuario', label: 'Minha Conta', icon: 'person' },
+    { path: 'pedidos', label: 'Meus Pedidos', icon: 'assignment'},
+    { path: 'historico', label: 'Histórico de Pedidos', icon: 'history'}
   ];
 
   adminRoutes = [
     { path: 'ecommerce', label: 'Catálogo', icon: 'shopping_cart' },
+    { path: 'usuario', label: 'Minha Conta', icon: 'person' },
     { path: 'estados', label: 'Estados', icon: 'map' },
     { path: 'municipios', label: 'Municípios', icon: 'location_city' },
     //{ path: 'enderecos', label: 'Endereços', icon: 'place' },

@@ -6,6 +6,7 @@ import { ItemCarrinho } from '../../models/item-carrinho.model';
 import { CarrinhoService } from '../../services/carrinho.service';
 import { AuthService } from '../../services/auth.service';
 import { MangaService } from '../../services/manga.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-carrinho',
@@ -22,8 +23,9 @@ export class CarrinhoComponent implements OnInit {
     private carrinhoService: CarrinhoService,
     public mangaService: MangaService,
     private authService: AuthService,
-    private router: Router )
-  {  }
+    private snackBar: MatSnackBar,
+    private router: Router 
+  ){}
   
   ngOnInit(): void {
     this.carrinhoService.carrinho$.subscribe(itens => { 
@@ -40,18 +42,45 @@ export class CarrinhoComponent implements OnInit {
   }
 
   finalizarCompra() {
+
     // Verifica se o usuário está logado
     if (!this.authService.isLoggedIn()) {
       alert('Você precisa estar logado para finalizar a compra.');
-      this.router.navigate(['/user/login']); // Redireciona para a página de login
+      this.router.navigate(['/login'], { queryParams: { perfil: 'USER' } }); // Redireciona para a página de login
       return;
     }
 
+    // Obtém os dados do usuário logado
+    const usuarioLogado = this.authService['usuarioLogadoSubject'].value;
+    
+    if (!usuarioLogado) {
+      alert('Erro ao buscar os dados do usuário!');
+      return;
+    }
+    
+    // Verifica o perfil do usuário
+    const perfil = usuarioLogado.perfil;
+    if (perfil === 'ADMIN') {
+      alert('Você está logado como ADMIN. Faça login com um perfil de usuário para finalizar a compra.');
+      this.authService.logout();
+      this.router.navigate(['/login'], { queryParams: { perfil: 'USER' } });
+      return;
+    }
+
+    if (perfil !== 'USER') {
+      alert('Perfil inválido. Faça login como usuário.');
+      this.authService.logout();
+      this.router.navigate(['/user/login']);
+      return;
+    }
+
+    // Redireciona para a página de pedido com dados pré-preenchidos
+    this.router.navigate(['/user/pedido'], { state: { usuario: usuarioLogado } });
+    
     // Lógica para finalizar a compra (envio dos dados, redirecionamento, etc.)
     alert('Compra finalizada com sucesso!');
     this.carrinhoService.limparCarrinho(); // Limpa o carrinho após a compra
     this.router.navigate(['/']); // Redireciona para a página inicial
-  
   }
 
 }

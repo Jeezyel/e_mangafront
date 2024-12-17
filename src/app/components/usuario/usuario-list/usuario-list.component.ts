@@ -31,6 +31,7 @@ import { Usuario } from '../../../models/usuario.model';
   styleUrls: ['./usuario-list.component.css']
 })
 export class UsuarioListComponent implements OnInit {
+  
   usuarioLogado!: Usuario;
   displayedColumns: string[] = ['id', 'nome', 'email', 'username', 'perfil', 'acao'];
   perfilFormatado: string = '';

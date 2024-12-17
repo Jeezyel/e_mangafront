@@ -10,7 +10,6 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatSelectModule } from '@angular/material/select';
 import { NgIf } from '@angular/common';
 import { AuthService } from '../../services/auth.service';
-import { Perfil } from '../../models/perfil.model';
 
 @Component({
   selector: 'app-login',
