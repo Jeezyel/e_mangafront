@@ -1,59 +1,59 @@
-<mat-toolbar>
-    <div class="toolbar-title">Cadastro de Usuário</div>
-</mat-toolbar>
-<div class="form-container">
-    <mat-card>
-        <mat-card-content>
-            <form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
+<form [formGroup]="usuarioForm" (ngSubmit)="onSubmit()">
+  <!-- Campos Principais -->
+  <label>Nome:</label>
+  <input formControlName="nome" />
 
-                <mat-form-field appearance="fill" class="full-width-input">
-                    <mat-label>Nome Completo</mat-label>
-                    <input matInput type="text" formControlName="nome">
-                </mat-form-field>
+  <label>Email:</label>
+  <input formControlName="email" />
 
-                <mat-form-field appearance="fill" class="full-width-input">
-                    <mat-label>E-mail</mat-label>
-                    <input matInput type="email" formControlName="email">
-                </mat-form-field>
+  <label>Username:</label>
+  <input formControlName="username" />
 
-                <mat-form-field appearance="fill" class="full-width-input">
-                    <mat-label>Username</mat-label>
-                    <input matInput type="text" formControlName="username">
-                </mat-form-field>
+  <label>Senha:</label>
+  <input type="password" formControlName="senha" />
 
-                <mat-form-field appearance="fill" class="full-width-input">
-                    <mat-label>Senha</mat-label>
-                    <input matInput type="password" formControlName="senha">
-                </mat-form-field>
+  <!-- Seção de Telefone -->
+  <div class="section-container">
+    <div class="section-title">Telefones</div>
+    <div formArrayName="telefone" class="section-content">
+      <div *ngFor="let t of telefones.controls; let i = index" [formGroupName]="i">
+        <label>Telefone {{ i + 1 }}</label>
+        <input placeholder="Código de Área" formControlName="codigoDeArea" />
+        <input placeholder="Número" formControlName="numero" />
+      </div>
+    </div>
+    <button type="button" (click)="adicionarTelefone()">Adicionar Telefone</button>
+  </div>
 
-                <div formArrayName="telefone" *ngFor="let telefone of telefoneArray.controls; let i = index">
-                    <mat-form-field appearance="fill" class="full-width-input">
-                        <mat-label>Telefone {{ i + 1 }}</mat-label>
-                        <input matInput [formControlName]="i">
-                    </mat-form-field>
-                    <button mat-icon-button (click)="removeTelefone(i)">
-                        <mat-icon>delete</mat-icon>
-                    </button>
-                </div>
-                <button mat-raised-button color="primary" (click)="addTelefone()">Adicionar Telefone</button>
+  <!-- Seção de Endereço -->
+  <div class="section-container">
+    <div class="section-title">Endereços</div>
+    <div formArrayName="endereco" class="section-content">
+      <div *ngFor="let e of enderecos.controls; let i = index" [formGroupName]="i">
+        <label>CEP:</label>
+        <input formControlName="cep" />
+        <label>Logradouro:</label>
+        <input formControlName="logradouro" />
+        <label>Bairro:</label>
+        <input formControlName="bairro" />
+        <label>Complemento:</label>
+        <input formControlName="complemento" />
 
-                <div formArrayName="endereco" *ngFor="let endereco of enderecoArray.controls; let i = index">
-                    <mat-form-field appearance="fill" class="full-width-input">
-                        <mat-label>Endereço {{ i + 1 }}</mat-label>
-                        <textarea matInput [formControlName]="i"></textarea>
-                    </mat-form-field>
-                    <button mat-icon-button (click)="removeEndereco(i)">
-                        <mat-icon>delete</mat-icon>
-                    </button>
-                </div>
-                <button mat-raised-button color="primary" (click)="addEndereco()">Adicionar Endereço</button>
-                
-                <div class="button-container">
-                    <button mat-raised-button color="accent" type="submit" [disabled]="formGroup.invalid">Salvar</button>
-                    <button mat-raised-button color="warn" type="button" (click)="cancelar()">Cancelar</button>
-                </div>
-            
-            </form>
-        </mat-card-content>
-    </mat-card>
-</div>
+        <!-- Município e Estado -->
+        <div formGroupName="municipio">
+          <label>Município:</label>
+          <input formControlName="nome" />
+          <div formGroupName="estado">
+            <label>Estado:</label>
+            <input placeholder="Nome" formControlName="nome" />
+            <input placeholder="Sigla" formControlName="sigla" />
+          </div>
+        </div>
+      </div>
+    </div>
+    <button type="button" (click)="adicionarEndereco()">Adicionar Endereço</button>
+  </div>
+
+  <!-- Botão Salvar -->
+  <button type="submit" (click)="onSubmit()">Salvar</button> 
+</form>

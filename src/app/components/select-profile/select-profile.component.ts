@@ -1,7 +1,5 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { LoginSelectionGuard } from '../guard/home-auth.guard';
-import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-select-profile',
@@ -11,15 +9,13 @@ import { AuthService } from '../../services/auth.service';
   styleUrls: ['./select-profile.component.css']
 })
 export class SelectProfileComponent {
-  constructor(
-    private router: Router,
-    private loginSelectionGuard: LoginSelectionGuard,
-    private authService: AuthService
-  ) {}
+  constructor(private router: Router) {}
 
   selectProfile(profile: string): void {
-    localStorage.setItem('perfilSelecionado', profile); // Salva o perfil no localStorage
-    this.router.navigate(['/login'], { state: { perfil: profile } });
+    if (profile === 'ADMIN') {
+      this.router.navigate(['/login'], { queryParams: { perfil: 'ADMIN' } });
+    } else if (profile === 'USER') {
+      this.router.navigate(['/login'], { queryParams: { perfil: 'USER' } });
+    }
   }
-
 }

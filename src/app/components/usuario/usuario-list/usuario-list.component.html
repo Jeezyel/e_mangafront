@@ -1,29 +1,37 @@
 <mat-toolbar>
-    <div class="toolbar-title">Minha Conta</div>
-</mat-toolbar>
+    <div class="flex-container">
+      <span class="toolbar-title">Informações do Usuário</span>
+    </div>
+  </mat-toolbar>
   
-<div *ngIf="usuarioLogado" class="user-details">
-    <div class="user-field">
-      <strong>ID:</strong> <span>{{ usuarioLogado.id }}</span>
-    </div>
-    <div class="user-field">
-      <strong>Nome:</strong> <span>{{ usuarioLogado.nome }}</span>
-    </div>
-    <div class="user-field">
-      <strong>Email:</strong> <span>{{ usuarioLogado.email }}</span>
-    </div>
-    <div class="user-field">
-      <strong>Username:</strong> <span>{{ usuarioLogado.username }}</span>
-    </div>
-    <div class="user-field">
-      <strong>Perfil:</strong> <span>{{ usuarioLogado.perfil.label }}</span>
-    </div>
-    <div class="user-actions">
-      <button mat-raised-button color="primary" [routerLink]="['/usuario/edit', usuarioLogado.id]">Editar</button>
-      <button mat-raised-button color="warn" (click)="deletar(usuarioLogado.id)">Excluir Conta</button>
-    </div>
-</div>
+  <div *ngIf="usuarioLogado">
+    <table mat-table [dataSource]="[usuarioLogado]" class="mat-elevation-z8">
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef> No. </th>
+        <td mat-cell *matCellDef="let usuario"> {{usuario?.id}} </td>
+      </ng-container>
   
-<div *ngIf="!usuarioLogado" class="no-user">
+      <ng-container matColumnDef="nome">
+        <th mat-header-cell *matHeaderCellDef> Nome </th>
+        <td mat-cell *matCellDef="let usuario"> {{usuario?.nome}} </td>
+      </ng-container>
+  
+      <ng-container matColumnDef="email">
+        <th mat-header-cell *matHeaderCellDef> Email </th>
+        <td mat-cell *matCellDef="let usuario"> {{usuario?.email}} </td>
+      </ng-container>
+  
+      <ng-container matColumnDef="perfil">
+        <th mat-header-cell *matHeaderCellDef> Perfil </th>
+        <td mat-cell *matCellDef="let usuario"> {{perfilFormatado}} </td>
+      </ng-container>
+  
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </div>
+  
+  <div *ngIf="!usuarioLogado">
     <p>Nenhum usuário logado encontrado.</p>
-</div>  
+  </div>
+  

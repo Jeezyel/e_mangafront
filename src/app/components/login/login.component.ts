@@ -11,7 +11,6 @@ import { MatSelectModule } from '@angular/material/select';
 import { NgIf } from '@angular/common';
 import { AuthService } from '../../services/auth.service';
 import { Perfil } from '../../models/perfil.model';
-import { CarrinhoService } from '../../services/carrinho.service';
 
 @Component({
   selector: 'app-login',
@@ -32,80 +31,52 @@ export class LoginComponent implements OnInit {
     private authService: AuthService,
     private router: Router,
     private snackBar: MatSnackBar,
-    private activattedRoute: ActivatedRoute,
-    private carrinhoService: CarrinhoService 
+    private route: ActivatedRoute 
   ) { }
 
   ngOnInit(): void {
-
-    const state = history.state;
-    this.perfil = state.perfil || localStorage.getItem('perfilSelecionado'); // Recupera do localStorage se não estiver no estado
-    if (!this.perfil){
-      this.router.navigate(['/select-profile']);  
-    }
-
-    // limpar carrinho
-    // this.carrinhoService.removerTudo();
-    // deslogar
-    // this.authService.removeToken();
-    // this.authService.removeUsuarioLogado();
+    // Obter o perfil da URL
+    this.route.queryParams.subscribe((params: Params) => {
+      this.perfil = params['perfil'] || 'USER';
+    });
 
     this.loginForm = this.formBuilder.group({
       username: ['', Validators.required],
       senha: ['', Validators.required]
     });
-
   }
 
   onSubmit() {
     if (this.loginForm.valid) {
+      
       const username = this.loginForm.get('username')?.value;
       const senha = this.loginForm.get('senha')?.value;
 
-      console.log(`Autenticando como ${username} com perfil ${this.perfil}`);
-  
-      this.authService.login(username, senha, this.perfil).subscribe({
+      const login = this.perfil === 'ADMIN' ? 'loginADM' : 'loginUSER';
+
+      this.authService[login](username, senha).subscribe({
         next: () => {
-          const usuarioLogado = this.authService.getUsuarioLogado(); // Obter o usuário do backend
+
+          // Buscar o usuário logado do AuthService
+          const usuarioLogado = this.authService['usuarioLogadoSubject'].value;
+          console.log("Usuário logado no login.component:", usuarioLogado);
 
           if (!usuarioLogado) {
-            // Caso improvável, mas necessário validar se o usuário não está no localStorage
-            this.showSnackbarTopPosition('Erro: Usuário não encontrado no localStorage.');
+            this.showSnackbarTopPosition('Erro ao buscar dados do usuário.');
             return;
           }
-
-          switch (usuarioLogado.perfil.label) {
-            case 'ADMIN':
-              this.router.navigateByUrl('/admin');
-              break;
-            case 'USER':
-              this.router.navigateByUrl('/user');
-              break;
-            default:
-              this.router.navigateByUrl('/');
-              break;
+          // Redirecionamento baseado no perfil
+          const perfil = usuarioLogado.perfil;
+          if (perfil === 'ADMIN') {
+            this.router.navigateByUrl('/admin');
+          } else if (perfil === 'USER') {
+            this.router.navigateByUrl('/user');
+          } else {
+          this.showSnackbarTopPosition('Perfil inválido. Entre em contato com o suporte.');
           }
         },
-        error: (err) => {
-          if (err.status === 404) {
-            // Username não encontrado
-            const snackBarRef = this.snackBar.open(
-              "Usuário não encontrado. Deseja se cadastrar?",
-              "Cadastrar",
-              {
-                duration: 5000,
-                verticalPosition: "top",
-                horizontalPosition: "center",
-              }
-            ); 
-            // Redireciona para a tela de cadastro ao clicar no botão 'Cadastrar'
-            snackBarRef.onAction().subscribe(() => {
-              this.onRegister();
-            });
-          } else {
-            // Outros erros, como senha inválida
-            this.showSnackbarTopPosition("Username ou senha inválido");
-          }
+        error: () => {
+          this.showSnackbarTopPosition("Username ou senha inválido");
         }
       });
     } else {
@@ -116,7 +87,7 @@ export class LoginComponent implements OnInit {
   onRegister() {
     this.router.navigate(['/usuario/new']);
   }
-  
+
   showSnackbarTopPosition(content: string) {
     this.snackBar.open(content, 'fechar', {
       duration: 3000,
@@ -124,5 +95,5 @@ export class LoginComponent implements OnInit {
       horizontalPosition: "center"
     });
   }
-  
+
 }

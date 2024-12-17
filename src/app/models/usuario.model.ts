@@ -1,14 +1,27 @@
-import { Perfil } from "./perfil.model";
-import { Endereco } from "./endereco.model";
-import { Telefone } from "./telefone.model";
+import { Estado } from "./estado.model";
+import { Municipio } from "./municipio.model";
+
+export interface Telefone {
+    codigoDeArea: string;
+    numero: string;
+}
+
+export interface Endereco {
+    cep: string;
+    logradouro: string;
+    complemento: string;
+    bairro: string;
+    municipio: Municipio;
+    estado: Estado;
+}
 
 export class Usuario {
     id!: number;
     nome!: string;
     email!: string;
-    telefone!: Telefone[];
-    endereco!: Endereco[];
+    perfil!: string; 
     username!: string;
     senha!: string;
-    perfil!: Perfil; 
+    telefone!: Telefone[];
+    endereco!: Endereco[];
 }

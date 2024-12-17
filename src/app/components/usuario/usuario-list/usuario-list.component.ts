@@ -1,76 +1,64 @@
 import { Component, OnInit } from '@angular/core';
-import { UsuarioService } from '../../../services/usuario.service';
-import { AuthService } from '../../../services/auth.service';
-import { Usuario } from '../../../models/usuario.model';
-import { HttpErrorResponse } from '@angular/common/http';
-import { RouterModule } from '@angular/router';
+
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTableModule } from '@angular/material/table';
+import { MatButtonModule } from '@angular/material/button';
+import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
-import { CommonModule } from '@angular/common';
+import { MatSelectModule } from '@angular/material/select';
+
+import { UsuarioService } from '../../../services/usuario.service';
+import { Usuario } from '../../../models/usuario.model';
+
 
 @Component({
   selector: 'app-usuario-list',
   standalone: true,
   imports: [
-    RouterModule,
+    CommonModule,
+    ReactiveFormsModule,
+    FormsModule,
     MatToolbarModule,
     MatTableModule,
+    MatButtonModule,
+    MatInputModule,
     MatIconModule,
-    CommonModule
+    MatSelectModule
   ],
   templateUrl: './usuario-list.component.html',
   styleUrls: ['./usuario-list.component.css']
 })
 export class UsuarioListComponent implements OnInit {
-  usuarioLogado?: Usuario;
+  usuarioLogado!: Usuario;
+  displayedColumns: string[] = ['id', 'nome', 'email', 'username', 'perfil', 'acao'];
+  perfilFormatado: string = '';
 
-  constructor(
-    private usuarioService: UsuarioService,
-    private authService: AuthService
-  ) {}
+  constructor(private usuarioService: UsuarioService) {}
 
   ngOnInit(): void {
-    const userId = this.authService.getLoggedUserId();
-    const token = this.authService.getToken();
-    if (userId && token) {
-      this.usuarioService.getUsuarioById(userId, token).subscribe({
-        next: (usuario) => {
-          if (usuario) {
-            this.usuarioLogado = usuario;
-          } else {
-            console.error('Nenhum usuário retornado.');
-          }
-        },
-        error: (error: HttpErrorResponse) => {
-          console.error('Erro ao carregar usuário:', error);
-        }
-      });
-    }
+    this.carregarUsuarioLogado();
   }
 
-  deletar(id: number | undefined): void {
-    if (!id) {
-      alert('Usuário inválido para exclusão.');
-      return;
-    }
-    const token = this.authService.getToken();
-    if (!token) {
-      alert('Erro: Token de autenticação ausente.');
-      return;
-    }
-    if (confirm('Tem certeza que deseja excluir sua conta?')) {
-      this.usuarioService.deleteUsuario(id, token).subscribe({
-        next: () => {
-          alert('Conta excluída com sucesso!');
-          this.usuarioLogado = undefined;
-        },
-        error: (error: HttpErrorResponse) => {
-          console.error('Erro ao excluir conta:', error);
-          alert('Erro ao excluir conta: ' + error.message);
-        }
-      });
-    }
+  carregarUsuarioLogado(): void {
+    this.usuarioService.buscarUsuarioLogado().subscribe({
+      next: (usuario) => {
+        this.usuarioLogado = usuario;
+        this.perfilFormatado = this.formatarPerfil(usuario.perfil);
+      },
+      error: (err) => console.error('Erro ao buscar usuário logado', err)
+    });
   }
 
+  formatarPerfil(perfil: string): string {
+    return perfil === 'ADMIN' ? 'Administrador' : 'Usuário';
+  }
+
+  deletar(id: number): void {
+    if (confirm('Tem certeza que deseja deletar sua conta?')) {
+      console.log('Implementar lógica de exclusão de conta', id);
+      // Implemente a chamada para o serviço de exclusão se necessário
+    }
+  }
 }
