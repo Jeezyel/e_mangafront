@@ -11,6 +11,6 @@ export class Pedido {
     itens!: ItemCarrinho[];
     valorTotal!: number;
     formaDePagamento!: string;
-    quantidadeDeParcelas!: number;
+    quantidadeDeParcelas?: number;
     status!: string;
 }
