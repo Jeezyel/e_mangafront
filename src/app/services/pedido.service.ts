@@ -15,7 +15,13 @@ import { ItemCarrinho } from '../models/item-carrinho.model';
 export class PedidoService {
     
     private baseUrl = 'http://localhost:8080/pedidos';
-    private itensCarrinho: ItemCarrinho[] = [];
+    private itensCarrinho: { 
+        produtoId: number; 
+        quantidade: number; 
+        valor: number; 
+        nome: string; 
+        nomeImagem: string 
+    }[] = [];
     
     constructor(
         private http: HttpClient, 
@@ -39,21 +45,20 @@ export class PedidoService {
         return this.http.get<Pedido>(`${this.baseUrl}/user/${usuario}`);
     }
 
-    criarPedido(pedido: { endereco: string; formaDePagamento: FormaDePagamento; itens: ItemCarrinho[] }): Observable<Pedido> {
+    criarPedido(pedido: { endereco: string; formaDePagamento: FormaDePagamento; itens: any[] }): Observable<Pedido> {
         return this.http.post<Pedido>(this.baseUrl, pedido);
     }
 
-    getCarrinhoItens(): { produtoId: number; quantidade: number; valor: number }[] {
-        return this.localStorageService.getItem('carrinho');
+    getCarrinhoItens(): { produtoId: number; quantidade: number; valor: number; nome: string; nomeImagem: string }[] {
+        return this.itensCarrinho;
     }
 
-    setCarrinhoItens(itens: ItemCarrinho[]): void {
+    setCarrinhoItens(itens: { produtoId: number; quantidade: number; valor: number; nome: string; nomeImagem: string }[]): void {
         this.itensCarrinho = itens;
     }
 
     calcularTotalCarrinho(): number {
-        const itens = this.getCarrinhoItens();
-        return itens.reduce((total, item) => total + item.quantidade * item.valor, 0);
+        return this.itensCarrinho.reduce((total, item) => total + item.quantidade * item.valor, 0);
     }
 
     // Método para buscar perfil

@@ -53,6 +53,7 @@ import { MangaFormComponent } from './components/manga/manga-form/manga-form.com
 import { mangaResolver } from './components/manga/resolver/manga-resolver';
 
 import { CarrinhoComponent } from './components/carrinho/carrinho.component';
+import { PedidoFormComponent } from './components/pedido/pedido-form/pedido-form.component';
 
 export const routes: Routes = [
 
@@ -80,8 +81,11 @@ export const routes: Routes = [
 
             {path: '', pathMatch: 'full', redirectTo: 'usuário'},
 
-            {path: 'usuario',component: UsuarioListComponent, title: 'Minha conta'},
+            {path: 'usuario', component: UsuarioListComponent, title: 'Minha conta'},
             {path: 'usuario/edit/:id', component: UsuarioFormComponent, title:'Editar Usuário', resolve: {usuario: usuarioResolver}},
+            
+            //{path: 'pedidos', component: PedidoListComponent, title: 'Meus pedidos'},
+            {path: 'pedidos', component: PedidoFormComponent, title: 'Meus pedidos'}
         
         ],
     },
