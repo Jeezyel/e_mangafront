@@ -46,8 +46,10 @@ export class CarrinhoComponent implements OnInit {
     // Verifica se o usuário está logado
     if (!this.authService.isLoggedIn()) {
       alert('Você precisa estar logado para finalizar a compra.');
-      this.router.navigate(['/login'], { queryParams: { perfil: 'USER' } }); // Redireciona para a página de login
+      this.router.navigate(['/login'], { queryParams: { perfil: 'USER' },});
       return;
+    } else {
+      this.router.navigate(['user/pedidos/new']);
     }
 
     // Obtém os dados do usuário logado

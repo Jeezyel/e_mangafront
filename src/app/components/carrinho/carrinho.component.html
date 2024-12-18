@@ -1,7 +1,6 @@
 <ng-container *ngIf="carrinhoItens.length > 0; else carrinhoVazio">
   <div class="carrinho-container">
     <div *ngFor="let item of carrinhoItens" class="carrinho-item">
-      <p>{{ item.nomeImagem }}</p>
       <img [src]="item.nomeImagem" alt="{{ item.nome }}" class="item-imagem">
       <div class="carrinho-info">
         <h3>{{ item.nome }}</h3>
