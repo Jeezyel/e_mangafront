@@ -30,6 +30,24 @@ export class UsuarioService {
     return this.httpClient.post<Usuario>(`${this.baseUrl}/insert`, data);
   }
 
+  create2(usuario: Usuario): Observable<Usuario> {
+
+    let params = {};
+        if (usuario.email !== undefined && usuario.nome !== undefined && usuario.senha !== undefined && usuario.username !== undefined) {
+          params = {
+            nome: usuario.nome.toString(),
+            email: usuario.email.toString(),
+            username: usuario.username.toString(),
+            senha: usuario.senha.toString(),
+          };
+        }
+    
+        console.log(params);
+
+
+    return this.httpClient.post<Usuario>(`${this.baseUrl}/insertnologin`, params);
+  }
+
   // Método para atualizar um usuario existente
   update(data: any): Observable<Usuario> {
     return this.httpClient.put<Usuario>(`${this.baseUrl}/update/${data.id}`, data);

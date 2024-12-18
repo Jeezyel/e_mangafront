@@ -42,16 +42,21 @@ export class UsuarioFormComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    console.log("iniciando a pagina")
     this.verificarPerfilAdmin();
     this.inicializarFormulario();
   }
 
   verificarPerfilAdmin(): void {
+    console.log("fazendo a validação")
+
     const usuarioLogado = JSON.parse(localStorage.getItem('usuario_logado') || '{}');
     this.isAdmin = usuarioLogado.perfil === 'ADMIN';
   }
 
   inicializarFormulario(): void {
+    console.log("iniciando o forme")
+
     this.usuarioForm = this.fb.group({
       nome: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
@@ -107,7 +112,27 @@ export class UsuarioFormComponent implements OnInit {
       const usuario = this.usuarioForm.getRawValue();
       usuario.perfil = this.isAdmin ? usuario.perfil : 'USER';
 
-      this.usuarioService.create(usuario).subscribe({
+      this.usuarioService.create2(usuario).subscribe({
+        next: () => {
+          alert('Usuário salvo com sucesso!');
+          this.router.navigate(['/']);
+        },
+        error: (err) => {
+          console.error('Erro ao salvar usuário:', err);
+          alert('Falha ao cadastrar usuário.');
+        }
+      });
+    }
+  }
+  salvar(): void{
+    console.log("salva")
+
+    if (true) {
+      console.log("if")
+      const usuario = this.usuarioForm.getRawValue();
+      usuario.perfil = this.isAdmin ? usuario.perfil : 'USER';
+
+      this.usuarioService.create2(usuario).subscribe({
         next: () => {
           alert('Usuário salvo com sucesso!');
           this.router.navigate(['/']);
