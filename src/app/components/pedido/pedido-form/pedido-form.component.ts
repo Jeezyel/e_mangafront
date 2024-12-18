@@ -133,15 +133,17 @@ export class PedidoFormComponent implements OnInit {
       }
   
       // Ajusta o endereço para corresponder ao tipo esperado
-      const enderecoFormatado: Endereco = {
+      const endereco = {
         idEndereco: 0, // Defina como 0 ou deixe o backend preencher
         cep: this.enderecos.getRawValue()[0].cep,
         logradouro: this.enderecos.getRawValue()[0].logradouro,
         complemento: this.enderecos.getRawValue()[0].complemento,
         bairro: this.enderecos.getRawValue()[0].bairro,
         municipio: {
+          idMunicipio: 0,
           nome: this.enderecos.getRawValue()[0].municipio.nome,
           estado: {
+            id: 0,
             nome: this.enderecos.getRawValue()[0].municipio.estado.nome,
             sigla: this.enderecos.getRawValue()[0].municipio.estado.sigla,
           },
@@ -149,19 +151,19 @@ export class PedidoFormComponent implements OnInit {
       };
   
       // Construindo o objeto 'pedido' com todas as propriedades obrigatórias
-      const pedido = {
+      const novoPedido = {
         id: 0, // Inicialize como 0 ou deixe que o backend gere
         usuario: usuarioLogado, // Usa o objeto do usuário
-        endereco: enderecoFormatado,
+        endereco: endereco,
         telefone: this.telefones.getRawValue()[0], // Converte para o tipo Telefone
         itens: this.itensCarrinho,
-        formaDePagamento: this.formaDePagamento!,
-        quantidadeDeParcelas: this.formaDePagamento?.label === 'CARTAO' ? 1 : 0, // Comparação usando string (ajuste se for enum)
+        formaDePagamento: this.formaDePagamento?.label || '', // Comparação usando string (ajuste se for enum)
+        quantidadeDeParcelas: this.formaDePagamento?.label === 'CARTAO' ? 1 : undefined,
         valorTotal: this.total,
         status: 'PENDENTE', // Status inicial do pedido
       };
   
-      this.pedidoService.criarPedido(pedido).subscribe(
+      this.pedidoService.criarPedido(novoPedido).subscribe(
         (response: any) => {
           this.router.navigate(['/user/pedidos/new']);
         },

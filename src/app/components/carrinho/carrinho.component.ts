@@ -66,10 +66,6 @@ export class CarrinhoComponent implements OnInit {
       }
     });
     
-    // Lógica para finalizar a compra (envio dos dados, redirecionamento, etc.)
-    alert('Compra finalizada com sucesso!');
-    this.carrinhoService.limparCarrinho(); // Limpa o carrinho após a compra
-    this.router.navigate(['/']); // Redireciona para a página inicial
   }
 
 }
