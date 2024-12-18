@@ -1,18 +1,21 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+
 import { Pedido } from '../models/pedido.model';
 import { LocalStorageService } from './local-storage.service';
 import { CarrinhoService } from './carrinho.service';
 import { FormaDePagamento } from '../models/formaDePagamento.model';
 import { Status } from '../models/status.model';
+import { ItemCarrinho } from '../models/item-carrinho.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PedidoService {
     
-    private baseUrl = 'http://localhost:8080/api/pedidos';
+    private baseUrl = 'http://localhost:8080/pedidos';
+    private itensCarrinho: ItemCarrinho[] = [];
     
     constructor(
         private http: HttpClient, 
@@ -36,12 +39,16 @@ export class PedidoService {
         return this.http.get<Pedido>(`${this.baseUrl}/user/${usuario}`);
     }
 
-    create(pedido: Pedido): Observable<Pedido> {
-        return this.http.post<Pedido>(`${this.baseUrl}/insert`, pedido);
+    criarPedido(pedido: { endereco: string; formaDePagamento: FormaDePagamento; itens: ItemCarrinho[] }): Observable<Pedido> {
+        return this.http.post<Pedido>(this.baseUrl, pedido);
     }
 
     getCarrinhoItens(): { produtoId: number; quantidade: number; valor: number }[] {
         return this.localStorageService.getItem('carrinho');
+    }
+
+    setCarrinhoItens(itens: ItemCarrinho[]): void {
+        this.itensCarrinho = itens;
     }
 
     calcularTotalCarrinho(): number {

@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+
 import { PedidoService } from '../../services/pedido.service';
 import { AuthService } from '../../services/auth.service';
-import { Router } from '@angular/router';
 import { UsuarioService } from '../../services/usuario.service';
 import { FormaDePagamento } from '../../models/formaDePagamento.model';
 
@@ -11,11 +12,10 @@ import { FormaDePagamento } from '../../models/formaDePagamento.model';
   styleUrls: ['./pedido.component.css']
 })
 export class PedidoComponent implements OnInit {
-  
-  usuario: any = {};
-  novoPedido: any = { endereco: '', telefone: '', itens: [] };
-  formasDePagamento: FormaDePagamento[] = [];
-  statusPedido: string = '';
+
+  endereco: string = '';
+  formaDePagamento: FormaDePagamento | null = null;
+  errorMessage: string = '';
 
   constructor(
     private pedidoService: PedidoService,
@@ -24,80 +24,52 @@ export class PedidoComponent implements OnInit {
     private router: Router
   ) {}
 
-  ngOnInit() {
-    // Verificar se o usuario esta logado
+  ngOnInit(): void {
     if (!this.authService.isLoggedIn()) {
-      alert('Voce precisa estar logado para acessar seus pedidos.');
-      this.router.navigate(['/user/login']);
-      return;
+      this.router.navigate(['/login'], { queryParams: { perfil: 'USER' } });
     }
 
-    // Obter dados do usuario logado
-    this.usuario = this.authService.getUsuarioLogado();
-    if (this.usuario.perfil !== 'USER') {
-      alert('Apenas usuarios com perfil USER podem acessar esta pagina.');
-      this.authService.logout();
-      this.router.navigate(['/user/login']);
-      return;
-    }
-
-    // Carregar pedidos do usuario
-    this.carregarPedidos();
-
-    // Carregar formas de pagamento
-    this.carregarFormasDePagamento();
-  }
-  /*
-  carregarPedidos() {
-    this.pedidoService.findByUser(this.usuario.id).subscribe(
-      (data) =>{
-        this.atualizarStatusPedido();
-      }, 
-      (err) => console.error('Erro ao carregar pedidos:', err)
-    );
-  }
-  */
-  carregarFormasDePagamento() {
-    this.pedidoService.findFormaDePagamento().subscribe(
-      (data) => (this.formasDePagamento = data),
-      (err) => console.error('Erro ao carregar formas de pagamento:', err)
-    );
-  }
-
-  atualizarDados() {
-    // Atualizar dados de usuario
-    this.usuarioService.update(this.usuario).subscribe(
-      () => alert('Dados atualizados com sucesso!'),
-      (err) => console.error('Erro ao atualizar dados:', err)
-    );
-  }
-  /*
-  atualizarStatusPedido() {
-    this.pedidos.forEach((pedido) => {
-      this.pedidoService.getStatus(pedido.id).subscribe(
-        (status: string) => (pedido.status = status),
-        (err: any) => console.error(`Erro ao atualizar status do pedido #${pedido.id}:`, err)
-      );
-    });
-  }
-  */
-  demonstrarPagamento() {
-    alert('Pagamento realizado com sucesso! (Simulação demonstrativa)');
-  }
-
-  criarPedido() {
-    this.novoPedido.itens = this.pedidoService.getCarrinhoItens();
-    this.novoPedido.endereco = this.usuario.endereco;
-    this.novoPedido.telefone = this.usuario.telefone;
-    this.novoPedido.formaDePagamento = this.novoPedido.FormaDePagamento;
-
-    this.pedidoService.create(this.novoPedido).subscribe(
-      () => {
-        alert('Pedido criado com sucesso!');
-        this.carregarPedidos();
+    this.usuarioService.buscarUsuarioLogado().subscribe(
+      (usuario: Usuario) => {
+        this.endereco = usuario.endereco && usuario.endereco[0] ? usuario.endereco[0] : '';
       },
-      (err) => console.error('Erro ao criar pedido:', err)
+      (error: any) => {
+        this.errorMessage = 'Erro ao carregar os dados do usuário.';
+      }
     );
   }
 
+  finalizarPedido(): void {
+    if (!this.endereco || !this.formaDePagamento) {
+      this.errorMessage = 'Por favor, preencha todos os dados antes de finalizar o pedido.';
+      return;
+    }
+
+    const itensCarrinho = this.pedidoService.getCarrinhoItens().map(item => ({
+      id: item.produtoId,
+      nome: item.nome || '',
+      preco: item.valor,
+      quantidade: item.quantidade,
+      nomeImagem: item.nomeImagem || ''
+    }));
+
+    const pedido = {
+      endereco: this.endereco,
+      formaDePagamento: this.formaDePagamento,
+      itens: itensCarrinho,
+    };
+
+    this.pedidoService.criarPedido(pedido).subscribe(
+      (response: any) => {
+        this.router.navigate(['/pedido/sucesso']);
+      },
+      (error: any) => {
+        this.errorMessage = 'Erro ao finalizar o pedido.';
+      }
+    );
+  }
+
+  selecionarFormaDePagamento(forma: FormaDePagamento): void {
+    this.formaDePagamento = forma;
+  }
 }
