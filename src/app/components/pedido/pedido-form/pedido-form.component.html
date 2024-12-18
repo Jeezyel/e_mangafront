@@ -1,19 +1,33 @@
-<h2>Dados do Pedido</h2>
-<form>
-
+<form [formGroup]="pedidoForm" (ngSubmit)="onSubmit()">
+  <!-- Campos Principais do Pedido -->
   <label>Nome:</label>
-  <input type="text" [(ngModel)]="usuario.nome" disabled />
+  <input formControlName="nome" />
 
   <label>Email:</label>
-  <input type="email" [(ngModel)]="usuario.email" disabled />
+  <input formControlName="email" />
 
   <label>Endereço:</label>
-  <input type="text" [(ngModel)]="usuario.endereco" />
+  <input formControlName="endereco" />
 
   <label>Telefone:</label>
-  <input type="text" [(ngModel)]="usuario.telefone" />
+  <input formControlName="telefone" />
 
-  <button type="button" (click)="atualizarDados()">Atualizar Dados</button>
-  <button type="button" (click)="confirmarPedido()">Confirmar Pedido</button>
+  <!-- Seção de Pagamento -->
+  <div class="section-container">
+    <div class="section-title">Forma de Pagamento</div>
+    <div>
+      <label>
+        <input type="radio" formControlName="formaPagamento" value="Pix" /> Pix
+      </label>
+      <label>
+        <input type="radio" formControlName="formaPagamento" value="Cartão" /> Cartão
+      </label>
+    </div>
+  </div>
 
+  <!-- Botões de Ação -->
+  <div class="action-buttons">
+    <button type="submit" class="primary">Confirmar Pedido</button>
+    <button type="button" class="secondary" (click)="cancelarPedido()">Cancelar</button>
+  </div>
 </form>

@@ -85,7 +85,7 @@ export const routes: Routes = [
             {path: 'usuario/edit/:id', component: UsuarioFormComponent, title:'Editar Usuário', resolve: {usuario: usuarioResolver}},
             
             //{path: 'pedidos', component: PedidoListComponent, title: 'Meus pedidos'},
-            {path: 'pedidos', component: PedidoFormComponent, title: 'Meus pedidos'}
+            {path: 'pedidos/new', component: PedidoFormComponent, title: 'Novo Pedido'}
         
         ],
     },

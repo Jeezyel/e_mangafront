@@ -70,12 +70,12 @@ export class CarrinhoComponent implements OnInit {
     if (perfil !== 'USER') {
       alert('Perfil inválido. Faça login como usuário.');
       this.authService.logout();
-      this.router.navigate(['/user/login']);
+      this.router.navigate(['/login'], { queryParams: { perfil: 'USER' } });
       return;
     }
 
     // Redireciona para a página de pedido com dados pré-preenchidos
-    this.router.navigate(['/user/pedido'], { state: { usuario: usuarioLogado } });
+    this.router.navigate(['/user/pedidos/new'], { state: { usuario: usuarioLogado } });
     
     // Lógica para finalizar a compra (envio dos dados, redirecionamento, etc.)
     alert('Compra finalizada com sucesso!');
