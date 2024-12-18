@@ -15,13 +15,6 @@ import { ItemCarrinho } from '../models/item-carrinho.model';
 export class PedidoService {
     
     private baseUrl = 'http://localhost:8080/pedidos';
-    private itensCarrinho: { 
-        produtoId: number; 
-        quantidade: number; 
-        valor: number; 
-        nome: string; 
-        nomeImagem: string 
-    }[] = [];
     
     constructor(
         private http: HttpClient, 
@@ -45,20 +38,28 @@ export class PedidoService {
         return this.http.get<Pedido>(`${this.baseUrl}/user/${usuario}`);
     }
 
-    criarPedido(pedido: { endereco: string; formaDePagamento: FormaDePagamento; itens: any[] }): Observable<Pedido> {
+    criarPedido(pedido: Pedido): Observable<Pedido> {
+        // Validação básica para evitar erros no envio de dados
+        if (!pedido.endereco || !pedido.telefone || !pedido.formaDePagamento || !pedido.itens || pedido.itens.length === 0) {
+            throw new Error('Pedido incompleto. Certifique-se de preencher todos os campos e incluir itens no carrinho.');
+        }
         return this.http.post<Pedido>(this.baseUrl, pedido);
     }
 
-    getCarrinhoItens(): { produtoId: number; quantidade: number; valor: number; nome: string; nomeImagem: string }[] {
-        return this.itensCarrinho;
+    getCarrinhoItens(): ItemCarrinho[] {
+        // Recupera os itens do Local Storage
+        const itens = this.localStorageService.getItem('carrinho');
+        return itens ? JSON.parse(itens) : [];
     }
 
-    setCarrinhoItens(itens: { produtoId: number; quantidade: number; valor: number; nome: string; nomeImagem: string }[]): void {
-        this.itensCarrinho = itens;
+    setCarrinhoItens(itens: ItemCarrinho[]): void {
+        // Salva os itens no Local Storage
+        this.localStorageService.setItem('carrinho', JSON.stringify(itens));
     }
 
     calcularTotalCarrinho(): number {
-        return this.itensCarrinho.reduce((total, item) => total + item.quantidade * item.valor, 0);
+        const itens = this.getCarrinhoItens();
+        return itens.reduce((total, item) => total + item.quantidade * item.preco, 0);
     }
 
     // Método para buscar perfil

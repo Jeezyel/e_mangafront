@@ -6,11 +6,47 @@
   <label>Email:</label>
   <input formControlName="email" />
 
-  <label>Endereço:</label>
-  <input formControlName="endereco" />
+  <!-- Seção de Telefone -->
+  <div class="section-container">
+    <div class="section-title">Telefones</div>
+    <div formArrayName="telefone" class="section-content">
+      <div *ngFor="let t of telefones.controls; let i = index" [formGroupName]="i">
+        <label>Telefone {{ i + 1 }}</label>
+        <input placeholder="Código de Área" formControlName="codigoDeArea" />
+        <input placeholder="Número" formControlName="numero" />
+      </div>
+    </div>
+    <button type="button" (click)="adicionarTelefone()">Adicionar Telefone</button>
+  </div>
 
-  <label>Telefone:</label>
-  <input formControlName="telefone" />
+  <!-- Seção de Endereço -->
+  <div class="section-container">
+    <div class="section-title">Endereços</div>
+    <div formArrayName="endereco" class="section-content">
+      <div *ngFor="let e of enderecos.controls; let i = index" [formGroupName]="i">
+        <label>CEP:</label>
+        <input formControlName="cep" />
+        <label>Logradouro:</label>
+        <input formControlName="logradouro" />
+        <label>Bairro:</label>
+        <input formControlName="bairro" />
+        <label>Complemento:</label>
+        <input formControlName="complemento" />
+
+        <!-- Município e Estado -->
+        <div formGroupName="municipio">
+          <label>Município:</label>
+          <input formControlName="nome" />
+          <div formGroupName="estado">
+            <label>Estado:</label>
+            <input placeholder="Nome" formControlName="nome" />
+            <input placeholder="Sigla" formControlName="sigla" />
+          </div>
+        </div>
+      </div>
+    </div>
+    <button type="button" (click)="adicionarEndereco()">Adicionar Endereço</button>
+  </div>
 
   <!-- Seção de Pagamento -->
   <div class="section-container">

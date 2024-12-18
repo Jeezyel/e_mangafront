@@ -4,7 +4,7 @@ export class Endereco {
     idEndereco!: number;
     cep!: string;
     logradouro!: string;
-    complemento!: string;
+    complemento?: string;
     bairro!: string;
     municipio!: Municipio;
 }

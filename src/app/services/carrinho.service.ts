@@ -33,6 +33,23 @@ export class CarrinhoService {
     this.atualizarArmazenamentoLocal();
   }
 
+  // Garante que o usuário está logado antes de finalizar
+  finalizarCompra(): boolean {
+    const usuarioLogado = this.localStorageService.getItem('usuarioLogado');
+    if (!usuarioLogado) {
+        alert('É necessário estar logado para finalizar a compra.');
+        return false;
+    }
+
+    const carrinho = this.carrinhoSubject.value;
+    if (carrinho.length === 0) {
+        alert('Seu carrinho está vazio!');
+        return false;
+    }
+
+    return true;
+  }
+
   removerTudo(): void {
     this.localStorageService.removeItem('carrinho');
     window.location.reload(); // reload na pagina

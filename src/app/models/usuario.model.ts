@@ -22,6 +22,6 @@ export class Usuario {
     perfil!: string; 
     username!: string;
     senha!: string;
-    telefone!: Telefone[];
-    endereco!: Endereco[];
+    telefone: Telefone[] = [];
+    endereco: Endereco[] = [];
 }

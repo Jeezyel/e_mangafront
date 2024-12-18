@@ -48,36 +48,23 @@ export class CarrinhoComponent implements OnInit {
       alert('Você precisa estar logado para finalizar a compra.');
       this.router.navigate(['/login'], { queryParams: { perfil: 'USER' },});
       return;
-    } else {
-      this.router.navigate(['user/pedidos/new']);
-    }
+    } 
 
     // Obtém os dados do usuário logado
     const usuarioLogado = this.authService['usuarioLogadoSubject'].value;
-    
-    if (!usuarioLogado) {
-      alert('Erro ao buscar os dados do usuário!');
-      return;
-    }
-    
-    // Verifica o perfil do usuário
-    const perfil = usuarioLogado.perfil;
-    if (perfil === 'ADMIN') {
-      alert('Você está logado como ADMIN. Faça login com um perfil de usuário para finalizar a compra.');
+    if (!usuarioLogado || usuarioLogado.perfil !== 'USER') {
+      alert('Faça login como usuário para finalizar a compra!');
       this.authService.logout();
       this.router.navigate(['/login'], { queryParams: { perfil: 'USER' } });
       return;
-    }
+    } 
 
-    if (perfil !== 'USER') {
-      alert('Perfil inválido. Faça login como usuário.');
-      this.authService.logout();
-      this.router.navigate(['/login'], { queryParams: { perfil: 'USER' } });
-      return;
-    }
-
-    // Redireciona para a página de pedido com dados pré-preenchidos
-    this.router.navigate(['/user/pedidos/new'], { state: { usuario: usuarioLogado } });
+    this.router.navigate(['/user/pedidos/new'], {
+      state: {
+        carrinhoItens: this.carrinhoItens,
+        total: this.calcularTotal()
+      }
+    });
     
     // Lógica para finalizar a compra (envio dos dados, redirecionamento, etc.)
     alert('Compra finalizada com sucesso!');

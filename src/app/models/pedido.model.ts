@@ -4,13 +4,13 @@ import { Telefone } from "./telefone.model";
 import { Usuario } from "./usuario.model";
 
 export class Pedido {
-    id?: number;
+    id!: number;
     usuario!: Usuario;
     endereco!: Endereco;
     telefone!: Telefone;
     itens!: ItemCarrinho[];
-    valorTotal?: number;
+    valorTotal!: number;
     formaDePagamento!: string;
     quantidadeDeParcelas!: number;
-    status?: string;
+    status!: string;
 }

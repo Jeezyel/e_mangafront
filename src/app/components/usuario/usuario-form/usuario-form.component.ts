@@ -56,55 +56,13 @@ export class UsuarioFormComponent implements OnInit {
 
   inicializarFormulario(): void {
     console.log("iniciando o forme")
-
     this.usuarioForm = this.fb.group({
       nome: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       username: ['', Validators.required],
       senha: ['', [Validators.required, Validators.minLength(6)]],
       perfil: [{ value: 'USER', disabled: !this.isAdmin }, Validators.required],
-      telefone: this.fb.array([this.criarTelefone()]),
-      endereco: this.fb.array([this.criarEndereco()])
     });
-  }
-
-  criarTelefone(): FormGroup {
-    return this.fb.group({
-      codigoDeArea: ['', Validators.required],
-      numero: ['', Validators.required]
-    });
-  }
-
-  criarEndereco(): FormGroup {
-    return this.fb.group({
-      cep: ['', Validators.required],
-      logradouro: ['', Validators.required],
-      complemento: [''],
-      bairro: ['', Validators.required],
-      municipio: this.fb.group({
-        nome: ['', Validators.required],
-        estado: this.fb.group({
-          nome: ['', Validators.required],
-          sigla: ['', Validators.required]
-        })
-      })
-    });
-  }
-
-  get telefones(): FormArray {
-    return this.usuarioForm.get('telefone') as FormArray;
-  }
-
-  get enderecos(): FormArray {
-    return this.usuarioForm.get('endereco') as FormArray;
-  }
-
-  adicionarTelefone(): void {
-    this.telefones.push(this.criarTelefone());
-  }
-
-  adicionarEndereco(): void {
-    this.enderecos.push(this.criarEndereco());
   }
 
   onSubmit(): void {
@@ -112,7 +70,7 @@ export class UsuarioFormComponent implements OnInit {
       const usuario = this.usuarioForm.getRawValue();
       usuario.perfil = this.isAdmin ? usuario.perfil : 'USER';
 
-      this.usuarioService.create2(usuario).subscribe({
+      this.usuarioService.create(usuario).subscribe({
         next: () => {
           alert('Usuário salvo com sucesso!');
           this.router.navigate(['/']);
@@ -132,7 +90,7 @@ export class UsuarioFormComponent implements OnInit {
       const usuario = this.usuarioForm.getRawValue();
       usuario.perfil = this.isAdmin ? usuario.perfil : 'USER';
 
-      this.usuarioService.create2(usuario).subscribe({
+      this.usuarioService.create(usuario).subscribe({
         next: () => {
           alert('Usuário salvo com sucesso!');
           this.router.navigate(['/']);
