@@ -6,10 +6,10 @@
   <label>Email:</label>
   <input formControlName="email" />
 
-  <!-- Seção de Telefone -->
+  <!-- Telefones -->
   <div class="section-container">
     <div class="section-title">Telefones</div>
-    <div formArrayName="telefone" class="section-content">
+    <div formArrayName="telefone">
       <div *ngFor="let t of telefones.controls; let i = index" [formGroupName]="i">
         <label>Telefone {{ i + 1 }}</label>
         <input placeholder="Código de Área" formControlName="codigoDeArea" />
@@ -19,10 +19,10 @@
     <button type="button" (click)="adicionarTelefone()">Adicionar Telefone</button>
   </div>
 
-  <!-- Seção de Endereço -->
+  <!-- Endereços -->
   <div class="section-container">
     <div class="section-title">Endereços</div>
-    <div formArrayName="endereco" class="section-content">
+    <div formArrayName="endereco">
       <div *ngFor="let e of enderecos.controls; let i = index" [formGroupName]="i">
         <label>CEP:</label>
         <input formControlName="cep" />

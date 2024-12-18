@@ -6,11 +6,12 @@ import { AuthService } from '../../../services/auth.service';
 import { UsuarioService } from '../../../services/usuario.service';
 import { FormaDePagamento } from '../../../models/formaDePagamento.model';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators, FormArray } from '@angular/forms';
+import { CommonModule } from '@angular/common'; // Importação necessária para *ngFor e *ngIf
 
 @Component({
   selector: 'app-pedido',
   standalone: true,
-  imports: [FormsModule, ReactiveFormsModule],
+  imports: [FormsModule, ReactiveFormsModule, CommonModule],
   templateUrl: './pedido-form.component.html',
   styleUrls: ['./pedido-form.component.css']
 })
