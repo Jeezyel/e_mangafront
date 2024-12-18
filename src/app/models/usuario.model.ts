@@ -9,7 +9,7 @@ export interface Telefone {
 export interface Endereco {
     cep: string;
     logradouro: string;
-    complemento: string;
+    complemento?: string;
     bairro: string;
     municipio: Municipio;
     estado: Estado;
@@ -22,6 +22,6 @@ export class Usuario {
     perfil!: string; 
     username!: string;
     senha!: string;
-    telefone: Telefone[] = [];
-    endereco: Endereco[] = [];
+    telefone?: Telefone[] = [];
+    endereco?: Endereco[] = [];
 }

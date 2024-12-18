@@ -26,7 +26,7 @@ export class UsuarioService {
   }
 
   // Método para criar um novo usuario
-  create(usuario: Usuario): Observable<Usuario> {
+  createADMIN(usuario: Usuario): Observable<Usuario> {
     // Garante que telefone e endereço estão definidos como listas vazias
     if (!usuario.telefone) {
       usuario.telefone = [];
@@ -35,6 +35,18 @@ export class UsuarioService {
         usuario.endereco = [];
     }  
     return this.httpClient.post<Usuario>(`${this.baseUrl}/insert`, usuario);
+  }
+
+  // Método para criar um novo usuario
+  createUSER(usuario: Usuario): Observable<Usuario> {
+      // Garante que telefone e endereço estão definidos como listas vazias
+      if (!usuario.telefone) {
+        usuario.telefone = [];
+      }
+      if (!usuario.endereco) {
+          usuario.endereco = [];
+      }  
+      return this.httpClient.post<Usuario>(`${this.baseUrl}/insertnologin`, usuario);
   }
 
   // Método para atualizar um usuario existente

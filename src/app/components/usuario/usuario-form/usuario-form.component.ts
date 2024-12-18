@@ -70,7 +70,7 @@ export class UsuarioFormComponent implements OnInit {
       const usuario = this.usuarioForm.getRawValue();
       usuario.perfil = this.isAdmin ? usuario.perfil : 'USER';
 
-      this.usuarioService.create(usuario).subscribe({
+      this.usuarioService.createUSER(usuario).subscribe({
         next: () => {
           alert('Usuário salvo com sucesso!');
           this.router.navigate(['/']);
@@ -90,7 +90,7 @@ export class UsuarioFormComponent implements OnInit {
       const usuario = this.usuarioForm.getRawValue();
       usuario.perfil = this.isAdmin ? usuario.perfil : 'USER';
 
-      this.usuarioService.create(usuario).subscribe({
+      this.usuarioService.createUSER(usuario).subscribe({
         next: () => {
           alert('Usuário salvo com sucesso!');
           this.router.navigate(['/']);
