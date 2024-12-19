@@ -14,7 +14,7 @@ import { ItemCarrinho } from '../models/item-carrinho.model';
 })
 export class PedidoService {
     
-    private baseUrl = 'http://localhost:8080/pedidos';
+    private baseUrl = 'http://localhost:8080/pedido';
     
     constructor(
         private http: HttpClient, 
@@ -46,7 +46,8 @@ export class PedidoService {
         if (!pedido.endereco || !pedido.telefone || !pedido.formaDePagamento || !pedido.produto || pedido.produto.length === 0) {
             throw new Error('Pedido incompleto. Certifique-se de preencher todos os campos e incluir itens no carrinho.');
         }
-        return this.http.post<Pedido>(this.baseUrl, pedido);
+        return this.http.post<Pedido>(`${this.baseUrl}/insert/`, pedido);
+        
     }
 
     // recupera itens do carrinho armazenados no local storage

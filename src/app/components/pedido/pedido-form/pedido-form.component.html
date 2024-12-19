@@ -34,16 +34,12 @@
     <input id = 'complemento' formControlName="complemento" />
   
     <!-- Município -->
-    <label for="municipio">Município</label>
-    <select id="municipio" formControlName="municipio" (change)="onMunicipioChange($event)">
-      <option *ngFor="let municipio of municipios" [value]="municipio.idMunicipio">
-        {{ municipio.nome }} 
-      </option>
-    </select>
+    <label for="municipio">Município:</label>
+    <input id="municipio" formControlName="municipio" />
 
-    <!-- Estado -->    
-    <label for="nomeEstado">Estado</label>
-    <input id="nomeEstado" type="text" [value]="pedidoForm.get('endereco.nomeEstado')?.value" readonly />
+    <!-- Estado -->
+    <label for="nomeEstado">Estado:</label>
+    <input id="nomeEstado" formControlName="nomeEstado" />
   
   </div>
   <!-- Seção de Pagamento -->

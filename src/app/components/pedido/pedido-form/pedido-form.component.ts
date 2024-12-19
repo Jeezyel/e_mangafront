@@ -72,8 +72,8 @@ export class PedidoFormComponent implements OnInit {
         logradouro: ['', Validators.required],
         complemento: [''],
         bairro: ['', Validators.required],
-        municipio: ['', Validators.required], // Ajustado para ser um controle único
-        nomeEstado: ['', Validators.required], // Ajustado para ser um controle único
+        municipio: ['', Validators.required], 
+        nomeEstado: ['', Validators.required], 
       }),
       formaDePagamento: ['', Validators.required],
       quantidadeDeParcelas: [null],
@@ -126,23 +126,6 @@ export class PedidoFormComponent implements OnInit {
       }
     );
   }
-
-  onMunicipioChange(event: Event): void {
-    const municipioId = parseInt((event.target as HTMLSelectElement).value, 10);
-    const municipioSelecionado = this.municipios.find((m) => m.idMunicipio === municipioId);
-  
-    if (municipioSelecionado) {
-      this.pedidoForm.patchValue({
-        endereco: {
-          municipio: {
-            idMunicipio: municipioSelecionado.idMunicipio,
-            nome: municipioSelecionado.nome, // Atualiza o nome do município
-            nomeEstado: municipioSelecionado.nomeEstado // Atualiza a sigla do estado
-          },
-        },
-      });
-    }
-  }
     
   carregarCarrinho(): void {
     this.carrinhoItens = this.carrinhoService.obter();
@@ -190,11 +173,11 @@ export class PedidoFormComponent implements OnInit {
     // Transformando os dados do formulário para o formato esperado pelo backend
     const pedido = {
       id: 0,
-      usuario: this.pedidoForm.get('id')?.value,// ID do usuário logado
+      usuario: this.pedidoForm.get('id')?.value, // ID do usuário logado
       produto: this.carrinhoItens, // Apenas os IDs dos produtos
       valortotal: this.totalCarrinho, // Total do carrinho
       formaDePagamento: this.pedidoForm.get('formaDePagamento')?.value,
-      quantidadeParcela: this.pedidoForm.get('quantidadeDeParcela')?.value || 1,
+      quantidadeParcela: this.pedidoForm.get('quantidadeDeParcelas')?.value || 1,
       nome: this.pedidoForm.get('nome')?.value,
       email: this.pedidoForm.get('email')?.value,
       telefone: [
@@ -212,14 +195,9 @@ export class PedidoFormComponent implements OnInit {
           complemento: this.pedidoForm.get('endereco.complemento')?.value || '',
           bairro: this.pedidoForm.get('endereco.bairro')?.value,
           municipio: {
-            idMunicipio: 0, // Assumindo que será gerado pelo backend
-            nome: this.pedidoForm.get('endereco.municipio.nome')?.value,
-            nomeEstado: this.pedidoForm.get('endereco.municipio.nomeEstado')?.value,
-            estado: {
-              id: 0, // Assumindo que será gerado pelo backend
-              nome: this.pedidoForm.get('endereco.municipio.estado.nome')?.value,
-              sigla: this.pedidoForm.get('endereco.municipio.estado.sigla')?.value,
-            },
+            idMunicipio: 0, 
+            nome: this.pedidoForm.get('endereco.municipio')?.value,
+            nomeEstado: this.pedidoForm.get('endereco.nomeEstado')?.value,
           },
         },
       ],
