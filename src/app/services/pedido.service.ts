@@ -43,7 +43,7 @@ export class PedidoService {
     //cria um novo pedido no backend
     criarPedido(pedido: Pedido): Observable<Pedido> {
         // Validação básica para evitar erros no envio de dados
-        if (!pedido.endereco || !pedido.telefone || !pedido.formaDePagamento || !pedido.itens || pedido.itens.length === 0) {
+        if (!pedido.endereco || !pedido.telefone || !pedido.formaDePagamento || !pedido.produto || pedido.produto.length === 0) {
             throw new Error('Pedido incompleto. Certifique-se de preencher todos os campos e incluir itens no carrinho.');
         }
         return this.http.post<Pedido>(this.baseUrl, pedido);

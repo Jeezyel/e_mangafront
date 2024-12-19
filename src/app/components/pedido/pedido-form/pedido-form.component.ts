@@ -6,9 +6,13 @@ import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../services/auth.service';
 import { CarrinhoService } from '../../../services/carrinho.service';
 import { PedidoService } from '../../../services/pedido.service';
+import { UsuarioService } from '../../../services/usuario.service';
 
 import { FormaDePagamento } from '../../../models/formaDePagamento.model';
 import { ItemCarrinho } from '../../../models/item-carrinho.model';
+import { Telefone } from '../../../models/telefone.model';
+import { Endereco } from '../../../models/endereco.model';
+import { Usuario } from '../../../models/usuario.model';
 
 @Component({
   selector: 'app-pedido',
@@ -22,7 +26,7 @@ export class PedidoFormComponent implements OnInit {
   pedidoForm!: FormGroup;
   carrinhoItens: ItemCarrinho[] = [];
   totalCarrinho: number = 0;
-  quantidadeDeParcelas: number [] = [];
+  quantidadeDeParcela: number [] = [];
   formaDePagamento: FormaDePagamento[]= []; 
   qrCodePix: string = '';
   copiaColaPix: string = '';
@@ -44,10 +48,8 @@ export class PedidoFormComponent implements OnInit {
 
   inicializarFormulario(): void {
     this.pedidoForm = this.fb.group({
-      nome: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
       telefone: this.fb.group({
-        codigoDeArea: ['', Validators.required],
+        codegoDeArea: ['', Validators.required],
         numero: ['', Validators.required]
       }),
       endereco: this.fb.group({
@@ -64,13 +66,7 @@ export class PedidoFormComponent implements OnInit {
         })
       }),
       formaDePagamento: ['', Validators.required],
-      quantidadeDeParcelas: [null],
-      cartao: this.fb.group({
-        numero: ['', Validators.required],
-        nomeTitular: ['', Validators.required],
-        validade: ['', Validators.required],
-        cvv: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(4)]]
-      })
+      quantidadeDeParcelas: [null]
     });
   }
 
@@ -78,6 +74,7 @@ export class PedidoFormComponent implements OnInit {
     this.authService.getUsuarioLogado().subscribe(usuario => {
       if (usuario) {
         this.pedidoForm.patchValue({
+          id: usuario.id,
           nome: usuario.nome,
           email: usuario.email,
         });
@@ -92,7 +89,7 @@ export class PedidoFormComponent implements OnInit {
   }
 
   calcularParcelas(): void {
-    this.quantidadeDeParcelas = Array.from({ length: 12 }, (_, i) => i + 1).map((parcela) => {
+    this.quantidadeDeParcela = Array.from({ length: 12 }, (_, i) => i + 1).map((parcela) => {
       return Number((this.totalCarrinho / parcela).toFixed(2));
     });
   }
@@ -115,17 +112,68 @@ export class PedidoFormComponent implements OnInit {
       return;
     }
 
+    // Obtendo o ID do usuário logado
+    const usuarioLogado = this.authService.getUsuarioLogado();
+
+    if (!usuarioLogado) {
+      alert('Erro: Não foi possível identificar o usuário logado.');
+      return;
+    }
+
+    // Transformando os dados do formulário para o formato esperado pelo backend
     const pedido = {
-      ...this.pedidoForm.value,
-      itens: this.carrinhoItens,
-      valorTotal: this.totalCarrinho,
-      status: 'PENDENTE'
+      id: 0,
+      usuario: this.pedidoForm.get('id')?.value,// ID do usuário logado
+      produto: this.carrinhoItens, // Apenas os IDs dos produtos
+      valortotal: this.totalCarrinho, // Total do carrinho
+      formaDePagamento: this.pedidoForm.get('formaDePagamento')?.value,
+      quantidadeParcela: this.pedidoForm.get('quantidadeDeParcela')?.value || 1,
+      nome: this.pedidoForm.get('nome')?.value,
+      email: this.pedidoForm.get('email')?.value,
+      telefone: [
+        {
+          id: 0, // Assumindo que será gerado pelo backend
+          codegoDeArea: this.pedidoForm.get('telefone.codegoDeArea')?.value,
+          numero: this.pedidoForm.get('telefone.numero')?.value,
+        },
+      ],
+      endereco: [
+        {
+          id: 0, // Assumindo que será gerado pelo backend
+          cep: this.pedidoForm.get('endereco.cep')?.value,
+          logradouro: this.pedidoForm.get('endereco.logradouro')?.value,
+          complemento: this.pedidoForm.get('endereco.complemento')?.value || '',
+          bairro: this.pedidoForm.get('endereco.bairro')?.value,
+          municipio: {
+            id: 0, // Assumindo que será gerado pelo backend
+            nome: this.pedidoForm.get('endereco.municipio.nome')?.value,
+            estado: {
+              id: 0, // Assumindo que será gerado pelo backend
+              nome: this.pedidoForm.get('endereco.municipio.estado.nome')?.value,
+              sigla: this.pedidoForm.get('endereco.municipio.estado.sigla')?.value,
+            },
+          },
+        },
+      ],
     };
 
+    console.log('Enviando pedido:', pedido);
+
+    // Enviando o pedido ao backend
     this.pedidoService.criarPedido(pedido).subscribe(() => {
       alert('Pedido realizado com sucesso!');
-      this.router.navigate(['user/usuario/pedidos']);
+      this.router.navigate(['/usuario/pedidos']);
     });
+  
+    // Armazenando dados extras no Local Storage
+    const dadosExtras = {
+      parcelasDetalhadas: this.quantidadeDeParcela, // Dados de parcelas detalhadas
+      qrCodePix: this.qrCodePix, // QR Code para Pix
+      copiaColaPix: this.copiaColaPix, // Código para Pix
+    };
+
+    localStorage.setItem('dadosExtrasPedido', JSON.stringify(dadosExtras));      
+  
   }
   
   cancelarPedido(): void {
