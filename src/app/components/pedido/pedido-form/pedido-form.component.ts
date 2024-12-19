@@ -215,6 +215,9 @@ export class PedidoFormComponent implements OnInit {
       alert('Pedido realizado com sucesso!');
       this.router.navigate(['/usuario/pedidos']);
     });
+    alert('pedido enviado')
+    localStorage.removeItem("carrinho")
+    this.router.navigate(['/ecommerce']);
   
     // Armazenando dados extras no Local Storage
     const dadosExtras = {

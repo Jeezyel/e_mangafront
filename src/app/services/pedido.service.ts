@@ -16,6 +16,8 @@ export class PedidoService {
     
     private baseUrl = 'http://localhost:8080/pedido';
     
+    idsProduto: number[] = [];
+
     constructor(
         private http: HttpClient, 
         private carrinhoService: CarrinhoService, 
@@ -46,7 +48,32 @@ export class PedidoService {
         if (!pedido.endereco || !pedido.telefone || !pedido.formaDePagamento || !pedido.produto || pedido.produto.length === 0) {
             throw new Error('Pedido incompleto. Certifique-se de preencher todos os campos e incluir itens no carrinho.');
         }
-        return this.http.post<Pedido>(`${this.baseUrl}/insert/`, pedido);
+
+        this.idsProduto = pedido.produto.map(produto => produto.id);
+
+
+        let params = {};
+        if (pedido !== undefined) {
+
+          params = {
+            id: this.localStorageService.getItem("usuario_logado").id,
+            produto: this.idsProduto,
+            valortotal: pedido.valortotal,
+            formaDePagamento: pedido.formaDePagamento,
+            quantidadeParcela: pedido.quantidadeParcela,
+            nome: pedido.nome,
+            email: pedido.email,
+            telefone: pedido.telefone,
+            endereco: pedido.endereco
+
+            
+          };
+        }
+
+        console.log(params);
+
+
+        return this.http.post<Pedido>(`${this.baseUrl}/insert/`, params);
         
     }
 
