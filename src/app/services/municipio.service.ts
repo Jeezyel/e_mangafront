@@ -38,7 +38,7 @@ export class MunicipioService {
 
     const data = {
       nome: municipio.nome,
-      idEstado: municipio.estado.id
+      idEstado: municipio.nomeEstado.id
     }
 
     return this.httpClient.put<Municipio>(`${this.baseUrl}/update/${municipio.idMunicipio}`, data); 

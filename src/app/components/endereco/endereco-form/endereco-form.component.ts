@@ -108,7 +108,7 @@ export class EnderecoFormComponent implements OnInit {
                   municipio: {
                     idMunicipio: endereco.municipio.idMunicipio,
                     nome: endereco.municipio.nome, // Nome do município
-                    estado: endereco.municipio.estado, // Estado do município
+                    nomeEstado: endereco.municipio.nomeEstado, // Estado do município
                   }, // Objeto para update
               }); // Método update
 

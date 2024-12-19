@@ -73,7 +73,7 @@ export class PedidoFormComponent implements OnInit {
         complemento: [''],
         bairro: ['', Validators.required],
         municipio: ['', Validators.required], // Ajustado para ser um controle único
-        estado: ['', Validators.required], // Ajustado para ser um controle único
+        nomeEstado: ['', Validators.required], // Ajustado para ser um controle único
       }),
       formaDePagamento: ['', Validators.required],
       quantidadeDeParcelas: [null],
@@ -134,8 +134,11 @@ export class PedidoFormComponent implements OnInit {
     if (municipioSelecionado) {
       this.pedidoForm.patchValue({
         endereco: {
-          municipio: municipioSelecionado.nome, // Atualiza o nome do município
-          estado: municipioSelecionado.estado.nome || '', // Atualiza a sigla do estado
+          municipio: {
+            idMunicipio: municipioSelecionado.idMunicipio,
+            nome: municipioSelecionado.nome, // Atualiza o nome do município
+            nomeEstado: municipioSelecionado.nomeEstado // Atualiza a sigla do estado
+          },
         },
       });
     }
@@ -211,6 +214,7 @@ export class PedidoFormComponent implements OnInit {
           municipio: {
             idMunicipio: 0, // Assumindo que será gerado pelo backend
             nome: this.pedidoForm.get('endereco.municipio.nome')?.value,
+            nomeEstado: this.pedidoForm.get('endereco.municipio.nomeEstado')?.value,
             estado: {
               id: 0, // Assumindo que será gerado pelo backend
               nome: this.pedidoForm.get('endereco.municipio.estado.nome')?.value,

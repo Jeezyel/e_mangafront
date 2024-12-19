@@ -55,7 +55,7 @@ export class MunicipioFormComponent implements OnInit {
       nome: [(municipio && municipio.nome) ? municipio.nome : null, 
               Validators.compose([Validators.required, Validators.minLength(4)])
             ],
-      estado: [(estado) ? { id: estado.id, nome: estado.nome, sigla: estado.sigla } : null] // Inclua a sigla
+      nomeEstado: [(estado) ? { id: estado.id, nome: estado.nome, sigla: estado.sigla } : null] // Inclua a sigla
     });
   }
 

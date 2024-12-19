@@ -35,15 +35,15 @@
   
     <!-- Município -->
     <label for="municipio">Município</label>
-    <select id="idMunicipio" formControlName="municipio" (change)="onMunicipioChange($event)">
+    <select id="municipio" formControlName="municipio" (change)="onMunicipioChange($event)">
       <option *ngFor="let municipio of municipios" [value]="municipio.idMunicipio">
         {{ municipio.nome }} 
       </option>
     </select>
 
     <!-- Estado -->    
-    <label for="estado">Estado</label>
-    <input id="estado" type="text" formControlName="estado" readonly />
+    <label for="nomeEstado">Estado</label>
+    <input id="nomeEstado" type="text" [value]="pedidoForm.get('endereco.nomeEstado')?.value" readonly />
   
   </div>
   <!-- Seção de Pagamento -->

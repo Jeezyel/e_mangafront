@@ -17,7 +17,6 @@ import { MunicipioService } from '../../../services/municipio.service';
   standalone: true,
   imports: [
     MatPaginatorModule,
-    NgFor, 
     MatToolbarModule, 
     MatIconModule, 
     MatButtonModule, 
