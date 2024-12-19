@@ -1,21 +1,3 @@
-/* Barra Superior */
-mat-toolbar {
-  color: #333;
-  background-color: #F7F1E3;
-  padding: 15px;
-  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.1);
-  border-radius: 10px;
-  margin-bottom: 20px;
-  text-align: center;
-}
-
-.toolbar-title {
-  font-size: 1.5rem;
-  font-family: Arial, sans-serif;
-  font-weight: bold;
-  color: #333;
-}
-
 /* Formulário Principal */
 form {
   display: flex;
@@ -23,18 +5,22 @@ form {
   gap: 20px;
   padding: 30px;
   background-color: #FFF;
-  border-radius: 8px;
+  border-radius: 10px;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
   max-width: 800px;
-  margin: 0 auto;
+  margin: 20px auto;
+  font-family: 'Arial', sans-serif;
 }
 
+/* Labels */
 label {
   font-weight: bold;
   color: #333;
   margin-bottom: 5px;
+  display: inline-block;
 }
 
+/* Inputs */
 input, select {
   width: 100%;
   padding: 10px;
@@ -43,6 +29,7 @@ input, select {
   border-radius: 8px;
   background-color: #F7F1E3;
   font-size: 1rem;
+  transition: all 0.3s ease;
 }
 
 input:focus, select:focus {
@@ -51,62 +38,94 @@ input:focus, select:focus {
   background-color: #FFE4C4;
 }
 
-/* Botões */
-button {
-  padding: 10px 15px;
-  background-color: #FFE4C4;
-  color: #333;
-  border: none;
-  border-radius: 8px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+input[readonly] {
+  background-color: #f4f4f4;
+  cursor: not-allowed;
 }
 
-button:hover {
-  background-color: #FFDAB9;
-}
-
-/* Seções de Telefone e Endereço */
+/* Seção de Pagamento */
 .section-container {
   margin-top: 20px;
   padding: 20px;
   background-color: #FAFAFA;
   border: 1px solid #EEE;
-  border-radius: 8px;
+  border-radius: 10px;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.05);
 }
 
-.section-title {
-  font-size: 1.2rem;
-  font-weight: bold;
-  color: #555;
-  margin-bottom: 15px;
-  border-bottom: 2px solid #FFDAB9;
-  padding-bottom: 10px;
-}
-
-.section-content {
+.payment-options {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 10px;
+  padding: 15px;
+  background-color: #FFF;
+  border: 1px solid #FFDAB9;
+  border-radius: 8px;
+  margin-top: 10px;
 }
 
-.section-content input {
-  margin-bottom: 10px;
+.payment-options label {
+  display: flex;
+  align-items: center;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.payment-options input[type="radio"] {
+  margin-right: 10px;
+}
+
+/* QR Code */
+img {
+  max-width: 150px;
+  margin: 10px 0;
+  border: 2px solid #eceff1;
+  border-radius: 5px;
+}
+
+/* Botões */
+.button-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+button {
+  padding: 15px 20px;
+  background-color: #FFDAB9;
+  color: #333;
+  border: none;
+  border-radius: 10px;
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+button:hover {
+  background-color: #FFC07C;
+  transform: translateY(-2px);
+}
+
+button:disabled {
+  background-color: #ddd;
+  color: #999;
+  cursor: not-allowed;
 }
 
 /* Responsividade */
 @media (max-width: 768px) {
   form {
-      padding: 15px;
+    padding: 15px;
   }
 
-  .section-container {
-      padding: 10px;
+  .button-container {
+    flex-direction: column;
   }
 
   button {
-      font-size: 0.9rem;
+    width: 100%;
   }
 }
