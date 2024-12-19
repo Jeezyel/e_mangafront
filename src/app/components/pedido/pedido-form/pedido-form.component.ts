@@ -197,7 +197,12 @@ export class PedidoFormComponent implements OnInit {
           municipio: {
             idMunicipio: 0, 
             nome: this.pedidoForm.get('endereco.municipio')?.value,
-            nomeEstado: this.pedidoForm.get('endereco.nomeEstado')?.value,
+            nomeEstado: this.pedidoForm.get('endereco.municipio.nomeEstado')?.value,
+            estado: {
+              id: this.pedidoForm.get('endereco.municipio.estado.id')?.value,
+              nome: this.pedidoForm.get('endereco.municipio.estado.nome')?.value,
+              sigla: this.pedidoForm.get('endereco.municipio.estado.sigla')?.value,
+            }
           },
         },
       ],
