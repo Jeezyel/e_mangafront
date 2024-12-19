@@ -132,20 +132,20 @@ export class PedidoFormComponent implements OnInit {
       email: this.pedidoForm.get('email')?.value,
       telefone: [
         {
-          id: 0, // Assumindo que será gerado pelo backend
+          idTelefone: 0, // Assumindo que será gerado pelo backend
           codegoDeArea: this.pedidoForm.get('telefone.codegoDeArea')?.value,
           numero: this.pedidoForm.get('telefone.numero')?.value,
         },
       ],
       endereco: [
         {
-          id: 0, // Assumindo que será gerado pelo backend
+          idEndereco: 0, // Assumindo que será gerado pelo backend
           cep: this.pedidoForm.get('endereco.cep')?.value,
           logradouro: this.pedidoForm.get('endereco.logradouro')?.value,
           complemento: this.pedidoForm.get('endereco.complemento')?.value || '',
           bairro: this.pedidoForm.get('endereco.bairro')?.value,
           municipio: {
-            id: 0, // Assumindo que será gerado pelo backend
+            idMunicipio: 0, // Assumindo que será gerado pelo backend
             nome: this.pedidoForm.get('endereco.municipio.nome')?.value,
             estado: {
               id: 0, // Assumindo que será gerado pelo backend
