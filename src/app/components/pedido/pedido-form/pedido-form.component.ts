@@ -7,12 +7,14 @@ import { AuthService } from '../../../services/auth.service';
 import { CarrinhoService } from '../../../services/carrinho.service';
 import { PedidoService } from '../../../services/pedido.service';
 import { UsuarioService } from '../../../services/usuario.service';
+import { MunicipioService } from '../../../services/municipio.service';
 
 import { FormaDePagamento } from '../../../models/formaDePagamento.model';
 import { ItemCarrinho } from '../../../models/item-carrinho.model';
 import { Telefone } from '../../../models/telefone.model';
 import { Endereco } from '../../../models/endereco.model';
 import { Usuario } from '../../../models/usuario.model';
+import { Municipio } from '../../../models/municipio.model';
 
 @Component({
   selector: 'app-pedido',
@@ -24,17 +26,27 @@ import { Usuario } from '../../../models/usuario.model';
 export class PedidoFormComponent implements OnInit {
 
   pedidoForm!: FormGroup;
+  municipios: Municipio[] = [];
   carrinhoItens: ItemCarrinho[] = [];
   totalCarrinho: number = 0;
   quantidadeDeParcela: number [] = [];
-  formaDePagamento: FormaDePagamento[]= []; 
+  formaDePagamento: FormaDePagamento[]= [];
+  // Para PIX 
   qrCodePix: string = '';
   copiaColaPix: string = '';
+  // Para Cartão
+  numero: string = '';
+  nomeTitular: string = '';
+  cpf: string = '';
+  validade: string = '';
+  cvv: string = '';
+  
   errorMessage: string = '';
 
   constructor(
     private fb: FormBuilder,
     private router: Router,
+    private municipioService: MunicipioService,
     private pedidoService: PedidoService,
     private authService: AuthService,
     private carrinhoService: CarrinhoService
@@ -43,45 +55,92 @@ export class PedidoFormComponent implements OnInit {
   ngOnInit(): void {
     this.inicializarFormulario();
     this.carregarDadosDoUsuario();
+    this.carregarMunicipios(); 
     this.carregarCarrinho();
   }
 
   inicializarFormulario(): void {
     this.pedidoForm = this.fb.group({
+      nome: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
       telefone: this.fb.group({
         codegoDeArea: ['', Validators.required],
-        numero: ['', Validators.required]
+        numero: ['', Validators.required],
       }),
       endereco: this.fb.group({
         cep: ['', Validators.required],
         logradouro: ['', Validators.required],
         complemento: [''],
         bairro: ['', Validators.required],
-        municipio: this.fb.group({
-          nome: ['', Validators.required],
-          estado: this.fb.group({
-            nome: ['', Validators.required],
-            sigla: ['', Validators.required]
-          })
-        })
+        municipio: ['', Validators.required], // Ajustado para ser um controle único
+        estado: ['', Validators.required], // Ajustado para ser um controle único
       }),
       formaDePagamento: ['', Validators.required],
-      quantidadeDeParcelas: [null]
+      quantidadeDeParcelas: [null],
     });
   }
 
   carregarDadosDoUsuario(): void {
-    this.authService.getUsuarioLogado().subscribe(usuario => {
-      if (usuario) {
-        this.pedidoForm.patchValue({
-          id: usuario.id,
-          nome: usuario.nome,
-          email: usuario.email,
-        });
+    try {
+      // Recupera o valor do localStorage
+      const usuarioLogadoString = localStorage.getItem('usuario_logado');
+  
+      // Verifica se o valor existe
+      if (!usuarioLogadoString) {
+        console.warn('Nenhum dado encontrado no localStorage para "usuario_logado".');
+        return;
       }
-    });
+  
+      // Tenta parsear o JSON
+      const usuarioLogado = JSON.parse(usuarioLogadoString);
+  
+      // Verifica se os dados do usuário logado são válidos
+      if (usuarioLogado?.nome && usuarioLogado?.email) {
+        this.pedidoForm.patchValue({
+          nome: usuarioLogado.nome,
+          email: usuarioLogado.email,
+        });
+  
+        // Desabilita os campos para edição
+        this.pedidoForm.get('nome')?.disable();
+        this.pedidoForm.get('email')?.disable();
+      } else {
+        console.error('Usuário logado inválido ou incompleto:', usuarioLogado);
+      }
+    } catch (error) {
+      console.error('Erro ao parsear usuário do localStorage:', error);
+    }
+  }
+  
+
+  carregarMunicipios(): void {
+    const page = 0; // Primeira página
+    const size = 100; // Quantidade de registros por página
+    this.municipioService.findAll(page, size).subscribe(
+      (data) => {
+        console.log('Dados dos municípios:', data); // Verifique a estrutura aqui
+        this.municipios = data;
+      },
+      (error) => {
+        console.error('Erro ao carregar municípios:', error);
+      }
+    );
   }
 
+  onMunicipioChange(event: Event): void {
+    const municipioId = parseInt((event.target as HTMLSelectElement).value, 10);
+    const municipioSelecionado = this.municipios.find((m) => m.idMunicipio === municipioId);
+  
+    if (municipioSelecionado) {
+      this.pedidoForm.patchValue({
+        endereco: {
+          municipio: municipioSelecionado.nome, // Atualiza o nome do município
+          estado: municipioSelecionado.estado.nome || '', // Atualiza a sigla do estado
+        },
+      });
+    }
+  }
+    
   carregarCarrinho(): void {
     this.carrinhoItens = this.carrinhoService.obter();
     this.totalCarrinho = this.carrinhoItens.reduce((total, item) => total + item.preco * item.quantidade, 0);
@@ -103,6 +162,11 @@ export class PedidoFormComponent implements OnInit {
       this.pedidoForm.get('cartao')?.disable();
     } else if (pagamentoSelecionado?.label === 'CARTAO') {
       this.pedidoForm.get('cartao')?.enable();
+      this.numero = '';
+      this.nomeTitular = '';
+      this.cpf = '';
+      this.validade = '';
+      this.cvv = '';
     }
   }
 

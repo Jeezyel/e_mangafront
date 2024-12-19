@@ -2,49 +2,50 @@
   <!-- Campos Principais do Pedido -->
   <div>
     <label>Nome:</label>
-    <input formControlName="nome" />
+    <input id="nome" type="text" formControlName="nome" readonly />
   </div>
 
   <div>
     <label>Email:</label>
-    <input formControlName="email" />
+    <input id="email" type="email" formControlName="email" readonly />
   </div>
 
   <!-- Telefones -->
-  <div>
-    <label>Código de Área:</label>
-    <input formControlName="telefone.codegoDeArea" placeholder="código de área" />
-    <label>Telefone:</label>
-    <input formControlName="telefone.numero" placeholder="Número de Telefone" />
+  <div formGroupName="telefone">
+    <label for="codegoDeArea">Código de Área:</label>
+    <input id="codegoDeArea" formControlName="codegoDeArea" />
+  
+    <label for="numero">Telefone:</label>
+    <input id="numero" formControlName="numero" />
   </div>
 
   <!-- Endereço -->
-  <div>
-    <label>CEP:</label>
-    <input formControlName="endereco.cep" />
+  <div formGroupName="endereco">
+    <label for = 'cep'>CEP:</label>
+    <input id="cep" formControlName="cep" />
 
-    <label>Logradouro:</label>
-    <input formControlName="endereco.logradouro" />
+    <label for = 'logradouro'>Logradouro:</label>
+    <input id = 'logradouro' formControlName="logradouro" />
 
-    <label>Bairro:</label>
-    <input formControlName="endereco.bairro" />
+    <label for = 'bairro'>Bairro:</label>
+    <input id = 'bairro' formControlName="bairro" />
 
-    <label>Complemento:</label>
-    <input formControlName="endereco.complemento" />
+    <label for = 'complemento'>Complemento:</label>
+    <input id = 'complemento' formControlName="complemento" />
+  
+    <!-- Município -->
+    <label for="municipio">Município</label>
+    <select id="idMunicipio" formControlName="municipio" (change)="onMunicipioChange($event)">
+      <option *ngFor="let municipio of municipios" [value]="municipio.idMunicipio">
+        {{ municipio.nome }} 
+      </option>
+    </select>
 
-    <!-- Município e Estado -->
-    <div formGroupName="endereco.municipio">
-      <label>Município:</label>
-      <input formControlName="nome" />
-
-      <div formGroupName="estado">
-        <label>Estado:</label>
-        <input formControlName="nome" placeholder="Nome do Estado" />
-        <input formControlName="sigla" placeholder="Sigla do Estado" />
-      </div>
-    </div>
+    <!-- Estado -->    
+    <label for="estado">Estado</label>
+    <input id="estado" type="text" formControlName="estado" readonly />
+  
   </div>
-
   <!-- Seção de Pagamento -->
   <div>
     <label>Forma de Pagamento:</label>
@@ -67,6 +68,9 @@
 
     <label>Nome do Titular:</label>
     <input formControlName="nomeTitular" />
+
+    <label>CPF:</label>
+    <input formControlName="cpf" />
 
     <label>Validade:</label>
     <input formControlName="validade" placeholder="MM/AA" />
