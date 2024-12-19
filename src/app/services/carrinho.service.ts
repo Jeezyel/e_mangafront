@@ -10,14 +10,18 @@ import { LocalStorageService } from './local-storage.service';
 export class CarrinhoService {
 
   private carrinhoSubject = new BehaviorSubject<ItemCarrinho[]>([]);
+
+  // Um observable que mantém o estado atual do carrinho.  
   carrinho$ = this.carrinhoSubject.asObservable();
 
+  // Adiciona um item ao carrinho. Se o item já existir, incrementa a quantidade.
   constructor(private localStorageService: LocalStorageService) { 
     // verificando se tem dados no carrinho no local storage e atualiza o subject
     const carrinhoArmazenado = localStorageService.getItem('carrinho') || [];
     this.carrinhoSubject.next(carrinhoArmazenado);
   }
 
+  //Verifica se o usuário está logado e se o carrinho não está vazio antes de finalizar a compra.
   adicionar(itemCarrinho: ItemCarrinho): void {
     const carrinhoAtual = this.carrinhoSubject.value;
     const itemExistente = carrinhoAtual.find(item => item.id === itemCarrinho.id);
@@ -50,11 +54,13 @@ export class CarrinhoService {
     return true;
   }
 
+  //Remove todos os itens do carrinho e recarrega a página.
   removerTudo(): void {
     this.localStorageService.removeItem('carrinho');
     window.location.reload(); // reload na pagina
   }
 
+  //Remove um item específico do carrinho.
   removerItem(itemCarrinho: ItemCarrinho): void {
     const carrinhoAtual = this.carrinhoSubject.value;
     const carrinhoAtualizado = carrinhoAtual.filter(item => item.id !== itemCarrinho.id);
@@ -63,14 +69,17 @@ export class CarrinhoService {
     this.atualizarArmazenamentoLocal();
   }
 
+  //Retorna a lista atual de itens no carrinho.
   obter() : ItemCarrinho[] {
     return this.carrinhoSubject.value;
   }
 
+  //Atualiza o estado do carrinho no LocalStorage.
   private atualizarArmazenamentoLocal(): void {
     this.localStorageService.setItem('carrinho', this.carrinhoSubject.value);
   }
 
+  //Limpa o carrinho, removendo todos os itens.
   limparCarrinho(): void {
     this.carrinhoSubject.next([]); // Limpa o carrinho
     this.atualizarArmazenamentoLocal(); // Atualiza o armazenamento local

@@ -12,5 +12,4 @@ export class Pedido {
     valorTotal!: number;
     formaDePagamento!: string;
     quantidadeDeParcelas?: number;
-    status!: string;
 }

@@ -1,69 +1,88 @@
 <form [formGroup]="pedidoForm" (ngSubmit)="onSubmit()">
   <!-- Campos Principais do Pedido -->
-  <label>Nome:</label>
-  <input formControlName="nome" />
-
-  <label>Email:</label>
-  <input formControlName="email" />
-
-  <!-- Telefones -->
-  <div class="section-container">
-    <div class="section-title">Telefones</div>
-    <div formArrayName="telefone">
-      <div *ngFor="let t of telefones.controls; let i = index" [formGroupName]="i">
-        <label>Telefone {{ i + 1 }}</label>
-        <input placeholder="Código de Área" formControlName="codigoDeArea" />
-        <input placeholder="Número" formControlName="numero" />
-      </div>
-    </div>
-    <button type="button" (click)="adicionarTelefone()">Adicionar Telefone</button>
+  <div>
+    <label>Nome:</label>
+    <input formControlName="nome" />
   </div>
 
-  <!-- Endereços -->
-  <div class="section-container">
-    <div class="section-title">Endereços</div>
-    <div formArrayName="endereco">
-      <div *ngFor="let e of enderecos.controls; let i = index" [formGroupName]="i">
-        <label>CEP:</label>
-        <input formControlName="cep" />
-        <label>Logradouro:</label>
-        <input formControlName="logradouro" />
-        <label>Bairro:</label>
-        <input formControlName="bairro" />
-        <label>Complemento:</label>
-        <input formControlName="complemento" />
+  <div>
+    <label>Email:</label>
+    <input formControlName="email" />
+  </div>
 
-        <!-- Município e Estado -->
-        <div formGroupName="municipio">
-          <label>Município:</label>
-          <input formControlName="nome" />
-          <div formGroupName="estado">
-            <label>Estado:</label>
-            <input placeholder="Nome" formControlName="nome" />
-            <input placeholder="Sigla" formControlName="sigla" />
-          </div>
-        </div>
+  <!-- Telefones -->
+  <div>
+    <label>Telefone:</label>
+    <input formControlName="telefone.numero" placeholder="Número de Telefone" />
+  </div>
+
+  <!-- Endereço -->
+  <div>
+    <label>CEP:</label>
+    <input formControlName="endereco.cep" />
+
+    <label>Logradouro:</label>
+    <input formControlName="endereco.logradouro" />
+
+    <label>Bairro:</label>
+    <input formControlName="endereco.bairro" />
+
+    <label>Complemento:</label>
+    <input formControlName="endereco.complemento" />
+
+    <!-- Município e Estado -->
+    <div formGroupName="endereco.municipio">
+      <label>Município:</label>
+      <input formControlName="nome" />
+
+      <div formGroupName="estado">
+        <label>Estado:</label>
+        <input formControlName="nome" placeholder="Nome do Estado" />
+        <input formControlName="sigla" placeholder="Sigla do Estado" />
       </div>
     </div>
-    <button type="button" (click)="adicionarEndereco()">Adicionar Endereço</button>
   </div>
 
   <!-- Seção de Pagamento -->
-  <div class="section-container">
-    <div class="section-title">Forma de Pagamento</div>
+  <div>
+    <label>Forma de Pagamento:</label>
     <div>
       <label>
-        <input type="radio" formControlName="formaPagamento" value="Pix" /> Pix
+        <input type="radio" formControlName="formaDePagamento" value="PIX" (change)="atualizarFormaDePagamento()" />
+        PIX
       </label>
       <label>
-        <input type="radio" formControlName="formaPagamento" value="Cartão" /> Cartão
+        <input type="radio" formControlName="formaDePagamento" value="CARTAO" (change)="atualizarFormaDePagamento()" />
+        Cartão
       </label>
     </div>
   </div>
 
+  <!-- Campos do Cartão (habilitados apenas se Cartão for selecionado) -->
+  <div *ngIf="pedidoForm.get('formaDePagamento')?.value === 'CARTAO'" formGroupName="cartao">
+    <label>Número do Cartão:</label>
+    <input formControlName="numero" />
+
+    <label>Nome do Titular:</label>
+    <input formControlName="nomeTitular" />
+
+    <label>Validade:</label>
+    <input formControlName="validade" placeholder="MM/AA" />
+
+    <label>CVV:</label>
+    <input formControlName="cvv" />
+  </div>
+
+  <!-- Pix QR Code -->
+  <div *ngIf="pedidoForm.get('formaDePagamento')?.value === 'PIX'">
+    <label>QR Code:</label>
+    <img [src]="qrCodePix" alt="QR Code Pix" />
+    <p>Copia e Cola: {{ copiaColaPix }}</p>
+  </div>
+
   <!-- Botões de Ação -->
-  <div class="action-buttons">
-    <button type="submit" class="primary">Confirmar Pedido</button>
-    <button type="button" class="secondary" (click)="cancelarPedido()">Cancelar</button>
+  <div>
+    <button type="submit" [disabled]="pedidoForm.invalid">Confirmar Pedido</button>
+    <button type="button" (click)="cancelarPedido()">Cancelar</button>
   </div>
 </form>

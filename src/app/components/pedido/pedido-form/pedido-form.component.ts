@@ -1,12 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-
-import { PedidoService } from '../../../services/pedido.service';
-import { AuthService } from '../../../services/auth.service';
-import { UsuarioService } from '../../../services/usuario.service';
-import { FormaDePagamento } from '../../../models/formaDePagamento.model';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators, FormArray } from '@angular/forms';
-import { CommonModule } from '@angular/common'; // Importação necessária para *ngFor e *ngIf
+import { CommonModule } from '@angular/common';
+
+import { AuthService } from '../../../services/auth.service';
+import { CarrinhoService } from '../../../services/carrinho.service';
+import { PedidoService } from '../../../services/pedido.service';
+
+import { FormaDePagamento } from '../../../models/formaDePagamento.model';
+import { ItemCarrinho } from '../../../models/item-carrinho.model';
 
 @Component({
   selector: 'app-pedido',
@@ -18,160 +20,111 @@ import { CommonModule } from '@angular/common'; // Importação necessária para
 export class PedidoFormComponent implements OnInit {
 
   pedidoForm!: FormGroup;
-
-  endereco: string = '';
-  formaDePagamento: FormaDePagamento | null = null;
+  carrinhoItens: ItemCarrinho[] = [];
+  totalCarrinho: number = 0;
+  quantidadeDeParcelas: number [] = [];
+  formaDePagamento: FormaDePagamento[]= []; 
+  qrCodePix: string = '';
+  copiaColaPix: string = '';
   errorMessage: string = '';
-  itensCarrinho: any[] = [];
-  total: number = 0;
 
   constructor(
     private fb: FormBuilder,
     private router: Router,
     private pedidoService: PedidoService,
     private authService: AuthService,
-    private usuarioService: UsuarioService
+    private carrinhoService: CarrinhoService
   ){}
 
   ngOnInit(): void {
-    // Verifica se o usuário está logado
-    if (!this.authService.isLoggedIn()) {
-      this.router.navigate(['/login'], { queryParams: { perfil: 'USER' } });
-    }
-
-    // Inicializa o formulário antes de preencher valores
     this.inicializarFormulario();
-
-    // Busca os dados do usuário logado
-    this.usuarioService.buscarUsuarioLogado().subscribe(
-      (usuario: any) => {
-        // Preenche o endereço com os dados do usuário
-        this.endereco = usuario.endereco && usuario.endereco[0] ? usuario.endereco[0].logradouro : '';
-      },
-      (error: any) => {
-        this.errorMessage = 'Erro ao carregar os dados do usuário.';
-      }
-    );
-    // Carrega os itens do carrinho e o total
-    this.itensCarrinho = this.pedidoService.getCarrinhoItens();
-    this.total = this.pedidoService.calcularTotalCarrinho();
+    this.carregarDadosDoUsuario();
+    this.carregarCarrinho();
   }
 
-  inicializarFormulario(): void {  
-    console.log("iniciando o forme")
+  inicializarFormulario(): void {
     this.pedidoForm = this.fb.group({
       nome: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      telefone: this.fb.array([this.criarTelefone()]),
-      endereco: this.fb.array([this.criarEndereco()]),
-      formaPagamento: ['', Validators.required]
-    });
-  }
-
-  criarTelefone(): FormGroup {
-    return this.fb.group({
-      codigoDeArea: ['', Validators.required],
-      numero: ['', Validators.required]
-    });
-  }
-
-  criarEndereco(): FormGroup {
-    return this.fb.group({
-      cep: ['', Validators.required],
-      logradouro: ['', Validators.required],
-      complemento: [''],
-      bairro: ['', Validators.required],
-      municipio: this.fb.group({
-        nome: ['', Validators.required],
-        estado: this.fb.group({
+      telefone: this.fb.group({
+        codigoDeArea: ['', Validators.required],
+        numero: ['', Validators.required]
+      }),
+      endereco: this.fb.group({
+        cep: ['', Validators.required],
+        logradouro: ['', Validators.required],
+        complemento: [''],
+        bairro: ['', Validators.required],
+        municipio: this.fb.group({
           nome: ['', Validators.required],
-          sigla: ['', Validators.required]
+          estado: this.fb.group({
+            nome: ['', Validators.required],
+            sigla: ['', Validators.required]
+          })
         })
+      }),
+      formaDePagamento: ['', Validators.required],
+      quantidadeDeParcelas: [null],
+      cartao: this.fb.group({
+        numero: ['', Validators.required],
+        nomeTitular: ['', Validators.required],
+        validade: ['', Validators.required],
+        cvv: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(4)]]
       })
     });
   }
 
-  get telefones(): FormArray {
-    return this.pedidoForm.get('telefone') as FormArray;
+  carregarDadosDoUsuario(): void {
+    this.authService.getUsuarioLogado().subscribe(usuario => {
+      if (usuario) {
+        this.pedidoForm.patchValue({
+          nome: usuario.nome,
+          email: usuario.email,
+        });
+      }
+    });
   }
 
-  get enderecos(): FormArray {
-    return this.pedidoForm.get('endereco') as FormArray;
+  carregarCarrinho(): void {
+    this.carrinhoItens = this.carrinhoService.obter();
+    this.totalCarrinho = this.carrinhoItens.reduce((total, item) => total + item.preco * item.quantidade, 0);
+    this.calcularParcelas();
   }
 
-  adicionarTelefone(): void {
-    this.telefones.push(this.criarTelefone());
+  calcularParcelas(): void {
+    this.quantidadeDeParcelas = Array.from({ length: 12 }, (_, i) => i + 1).map((parcela) => {
+      return Number((this.totalCarrinho / parcela).toFixed(2));
+    });
   }
 
-  adicionarEndereco(): void {
-    this.enderecos.push(this.criarEndereco());
-  }
-
-  onSubmit(): void{
-    if (this.pedidoForm.valid) {
-      console.log('Pedido enviado:', this.pedidoForm.value);
-      // Adicione lógica para processar o pedido aqui
-    } else {
-      console.error('Formulário inválido');
+  atualizarFormaDePagamento(): void {
+    const forma = this.pedidoForm.get('formaDePagamento')?.value;
+    const pagamentoSelecionado = this.formaDePagamento.find(f => f.label === forma);
+    if (pagamentoSelecionado?.label === 'PIX') {
+      this.qrCodePix = 'URL_DA_IMAGEM_DO_QRCODE';
+      this.copiaColaPix = 'chave-aleatoria-pix';
+      this.pedidoForm.get('cartao')?.disable();
+    } else if (pagamentoSelecionado?.label === 'CARTAO') {
+      this.pedidoForm.get('cartao')?.enable();
     }
   }
 
-  selecionarFormaDePagamento(forma: FormaDePagamento): void {
-    this.formaDePagamento = forma;
-  }
-
-  finalizarPedido(): void {
-    if (!this.endereco || !this.formaDePagamento) {
-      this.errorMessage = 'Por favor, preencha todos os dados antes de finalizar o pedido.';
+  onSubmit(): void {
+    if (this.pedidoForm.invalid) {
+      alert('Preencha todos os campos obrigatórios.');
       return;
     }
-  
-    // Obtém o usuário logado
-    this.authService.getUsuarioLogado().subscribe((usuarioLogado) => {
-      if (!usuarioLogado) {
-        this.errorMessage = 'Erro ao obter informações do usuário logado.';
-        return;
-      }
-  
-      // Ajusta o endereço para corresponder ao tipo esperado
-      const endereco = {
-        idEndereco: 0, // Defina como 0 ou deixe o backend preencher
-        cep: this.enderecos.getRawValue()[0].cep,
-        logradouro: this.enderecos.getRawValue()[0].logradouro,
-        complemento: this.enderecos.getRawValue()[0].complemento,
-        bairro: this.enderecos.getRawValue()[0].bairro,
-        municipio: {
-          idMunicipio: 0,
-          nome: this.enderecos.getRawValue()[0].municipio.nome,
-          estado: {
-            id: 0,
-            nome: this.enderecos.getRawValue()[0].municipio.estado.nome,
-            sigla: this.enderecos.getRawValue()[0].municipio.estado.sigla,
-          },
-        },
-      };
-  
-      // Construindo o objeto 'pedido' com todas as propriedades obrigatórias
-      const novoPedido = {
-        id: 0, // Inicialize como 0 ou deixe que o backend gere
-        usuario: usuarioLogado, // Usa o objeto do usuário
-        endereco: endereco,
-        telefone: this.telefones.getRawValue()[0], // Converte para o tipo Telefone
-        itens: this.itensCarrinho,
-        formaDePagamento: this.formaDePagamento?.label || '', // Comparação usando string (ajuste se for enum)
-        quantidadeDeParcelas: this.formaDePagamento?.label === 'CARTAO' ? 1 : undefined,
-        valorTotal: this.total,
-        status: 'PENDENTE', // Status inicial do pedido
-      };
-  
-      this.pedidoService.criarPedido(novoPedido).subscribe(
-        (response: any) => {
-          this.router.navigate(['/user/pedidos/new']);
-        },
-        (error: any) => {
-          this.errorMessage = 'Erro ao finalizar o pedido.';
-        }
-      );
+
+    const pedido = {
+      ...this.pedidoForm.value,
+      itens: this.carrinhoItens,
+      valorTotal: this.totalCarrinho,
+      status: 'PENDENTE'
+    };
+
+    this.pedidoService.criarPedido(pedido).subscribe(() => {
+      alert('Pedido realizado com sucesso!');
+      this.router.navigate(['user/usuario/pedidos']);
     });
   }
   
